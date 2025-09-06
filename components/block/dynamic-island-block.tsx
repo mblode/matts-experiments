@@ -586,8 +586,8 @@ export const DynamicIslandBlock = () => {
               </motion.div>
             </motion.div>
 
-            <div className="pointer-events-none absolute left-1/2 top-0 flex h-[200px] w-[300px] -translate-x-1/2 items-start justify-center">
-              <AnimatePresence mode="popLayout" custom={transition}>
+            <div className="pointer-events-none absolute left-1/2 top-0 flex h-[200px] w-[300px] -translate-x-1/2 items-start justify-center opacity-0">
+              <AnimatePresence initial={false} mode="popLayout" custom={transition}>
                 <motion.div
                   key={state + "second"}
                   initial={{ opacity: 0 }}

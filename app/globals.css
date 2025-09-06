@@ -38,6 +38,7 @@
   --color-ios-secondary: rgb(161, 161, 161);
   --color-ios-divider: rgb(52, 52, 52);
   --color-ios-card-bg: rgb(28, 28, 30);
+  --color-navy: rgb(0, 0, 128);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);

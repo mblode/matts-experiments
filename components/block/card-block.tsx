@@ -77,13 +77,15 @@ export const CardBlock = ({ item, index = 0 }: Props) => {
             />
           </FormControl>
 
-          <Button size="block" variant="blockPrimary">
-            Primary
-          </Button>
+          <div className="flex gap-2">
+            <Button size="block" variant="blockPrimary">
+              Primary
+            </Button>
 
-          <Button size="block" variant="blockSecondary">
-            Secondary
-          </Button>
+            <Button size="block" variant="blockSecondary">
+              Secondary
+            </Button>
+          </div>
         </div>
       </div>
     </motion.div>

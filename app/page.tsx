@@ -49,9 +49,9 @@ export default function Home() {
         "Card stack component for displaying collections of images in an organised grid layout.",
     },
     {
-      name: "Animated button",
-      href: "/animated-button",
-      description: "Animated button component for interactive user actions.",
+      name: "Expand",
+      href: "/expand",
+      description: "Expand component for interactive user actions.",
     },
   ];
 
