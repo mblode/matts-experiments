@@ -12,6 +12,7 @@ import React, {
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { Button } from "../ui/button";
 
 interface DynamicIslandContextType {
   state: string;
@@ -83,7 +84,7 @@ const AudioBar = memo(function AudioBar({
               duration: 1.1,
               ease: "easeInOut",
               times: [0.2, 0.3, 0.5, 0.7, 1.1, 1.3, 1.7],
-              repeat: Infinity,
+              repeat: 1 / 0,
             }
       }
     />
@@ -358,7 +359,6 @@ function ListeningView() {
       setSeconds((prev) => {
         if (paused) return prev;
         if (prev === 214) {
-          setSeconds(0);
           return 0;
         }
         return prev + 1;
@@ -377,10 +377,10 @@ function ListeningView() {
   return (
     <div className="w-[316px] p-[18px]">
       <div className="flex items-center gap-3">
-        <Image
+        <img
           className="rounded-lg"
           alt="Anniversary's album cover"
-          src="/anniversary.jpg"
+          src="https://placehold.co/100x100"
           width={52}
           height={52}
         />
@@ -392,7 +392,7 @@ function ListeningView() {
             Bryson Tiller
           </span>
         </div>
-        <div className="grid h-full grid-cols-9 justify-center gap-[2px] bg-transparent">
+        <div className="grid h-full grid-cols-11 justify-center gap-[2px] bg-transparent">
           <AudioBar paused={paused} baseLength={50} />
           <AudioBar paused={paused} baseLength={60} />
           <AudioBar paused={paused} baseLength={70} />
@@ -483,15 +483,20 @@ const transitionVariants: Record<string, any> = {
   "ring-mode-idle": { scale: 0.9, scaleX: 0.9 },
   "timer-ring-mode": { scale: 0.7, y: -7.5 },
   "ring-mode-timer": { scale: 1.4, y: 7.5 },
-  "timer-listening": { scaleY: 1.1, y: 7.5 },
-  "listening-ring-mode": { scale: 0.65, y: -32 },
-  "ring-mode-listening": { scale: 1.5, y: 12.5 },
+  "timer-listenning": { scaleY: 1.1, y: 7.5 },
+  "listenning-ring-mode": { scale: 0.65, y: -32 },
+  "ring-mode-listenning": { scale: 1.5, y: 12.5 },
   "timer-idle": { scale: 0.7, y: -7.5 },
-  "listening-timer": { scaleY: 0.9, y: -12 },
-  "listening-idle": { scale: 0.4, y: -36 },
-  "idle-ring-mode": { scale: 0.9, scaleX: 0.9 },
-  "idle-timer": { scale: 0.7, y: -7.5 },
-  "idle-listening": { scale: 0.4, y: -36 },
+  "listenning-timer": { scaleY: 0.9, y: -12 },
+  "listenning-idle": { scale: 0.4, y: -36 },
+};
+
+const exitVariants = {
+  exit: (custom: any) => ({
+    ...custom,
+    opacity: [1, 0],
+    filter: "blur(5px)",
+  }),
 };
 
 export const DynamicIslandBlock = () => {
@@ -505,7 +510,7 @@ export const DynamicIslandBlock = () => {
     switch (state) {
       case "timer":
         return <TimerView />;
-      case "listening":
+      case "listenning":
         return <ListeningView />;
       case "ring-mode":
         return <RingModeView />;
@@ -532,7 +537,7 @@ export const DynamicIslandBlock = () => {
       setPreviousHeight(height);
       setBounceValue(bounce);
     }
-  }, [state, previousHeight]);
+  }, [state]);
 
   const handleStateChange = (newState: string) => {
     const transitionKey = `${state}-${newState}`;
@@ -580,50 +585,30 @@ export const DynamicIslandBlock = () => {
                 {renderContent()}
               </motion.div>
             </motion.div>
+
             <div className="pointer-events-none absolute left-1/2 top-0 flex h-[200px] w-[300px] -translate-x-1/2 items-start justify-center">
               <AnimatePresence mode="popLayout" custom={transition}>
                 <motion.div
                   key={state + "second"}
                   initial={{ opacity: 0 }}
                   exit="exit"
-                  variants={{
-                    exit: (custom: any) => ({
-                      ...custom,
-                      opacity: [1, 0],
-                      filter: "blur(5px)",
-                    }),
-                  }}
+                  variants={exitVariants}
                 >
                   {renderContent()}
                 </motion.div>
               </AnimatePresence>
             </div>
           </div>
+
           <div className="flex gap-2">
-            <button
-              onClick={() => handleStateChange("idle")}
-              className="rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-900 shadow-sm hover:bg-gray-50"
-            >
-              Idle
-            </button>
-            <button
-              onClick={() => handleStateChange("ring-mode")}
-              className="rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-900 shadow-sm hover:bg-gray-50"
-            >
+            <Button onClick={() => handleStateChange("idle")}>Idle</Button>
+            <Button onClick={() => handleStateChange("ring-mode")}>
               Ring Mode
-            </button>
-            <button
-              onClick={() => handleStateChange("timer")}
-              className="rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-900 shadow-sm hover:bg-gray-50"
-            >
-              Timer
-            </button>
-            <button
-              onClick={() => handleStateChange("listening")}
-              className="rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-900 shadow-sm hover:bg-gray-50"
-            >
+            </Button>
+            <Button onClick={() => handleStateChange("timer")}>Timer</Button>
+            <Button onClick={() => handleStateChange("listenning")}>
               Listening
-            </button>
+            </Button>
           </div>
         </div>
       </div>

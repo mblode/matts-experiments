@@ -10,7 +10,7 @@ interface ListProps {
 
 export function List({ selectedId, setSelectedId }: ListProps) {
   return (
-    <ul className="flex flex-wrap content-start list-none p-0 m-0">
+    <ul className="max-w-2xl mx-auto w-full gap-4">
       {items.map((card, index) => {
         const isLarge = index % 4 === 0 || index % 4 === 3;
         return (

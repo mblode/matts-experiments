@@ -2,7 +2,12 @@
 
 import * as React from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
-import { motion, AnimatePresence } from "motion/react";
+import {
+  motion,
+  AnimatePresence,
+  Transition,
+  HTMLMotionProps,
+} from "motion/react";
 
 import { cn } from "@/lib/utils";
 
@@ -96,7 +101,7 @@ function AccordionTrigger({
         ref={triggerRef}
         data-slot="accordion-trigger"
         className={cn(
-          "focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 items-start justify-between gap-4 rounded-md py-4 text-left text-sm font-medium transition-all outline-none hover:underline focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50",
+          "cursor-pointer focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 items-start justify-between gap-4 rounded-md py-4 text-left text-sm font-medium transition-all outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50",
           className,
         )}
         {...props}
@@ -104,14 +109,15 @@ function AccordionTrigger({
         {children}
         <div className="relative flex items-center justify-center w-4 h-4 shrink-0">
           <motion.div
-            animate={{ opacity: isOpen ? 0 : 1 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="bg-muted-foreground pointer-events-none w-4 h-0.5 rounded-full absolute"
+            animate={{ rotate: isOpen ? 180 : 0 }}
+            transition={{ duration: 0.3, ease: [0.645, 0.045, 0.355, 1] }}
+            className="bg-foreground pointer-events-none w-4 h-0.5 rounded-full absolute"
           />
           <motion.div
-            animate={{ rotate: isOpen ? 270 : 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="bg-muted-foreground pointer-events-none h-4 w-0.5 rounded-full absolute"
+            animate={{ scale: isOpen ? 0 : 1, rotateZ: isOpen ? 80 : 0 }}
+            transition={{ duration: 0.3, ease: [0.645, 0.045, 0.355, 1] }}
+            className="bg-foreground pointer-events-none h-4 w-0.5 rounded-full absolute"
+            style={{ transformOrigin: "center" }}
           />
         </div>
       </AccordionPrimitive.Trigger>

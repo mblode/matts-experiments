@@ -3,15 +3,15 @@
 import React, { useState, useRef, useLayoutEffect } from "react";
 import { Drawer } from "vaul";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  X, 
-  Lock, 
-  Grid3x3, 
-  AlertTriangle, 
-  Shield, 
-  Ban, 
+import {
+  X,
+  Lock,
+  Grid3x3,
+  AlertTriangle,
+  Shield,
+  Ban,
   Eye,
-  ScanFace
+  ScanFace,
 } from "lucide-react";
 
 interface MultiStageSheetProps {
@@ -27,15 +27,15 @@ function useMeasure() {
 
   useLayoutEffect(() => {
     if (ref.current) {
-      const resizeObserver = new ResizeObserver(entries => {
+      const resizeObserver = new ResizeObserver((entries) => {
         for (let entry of entries) {
           setHeight(entry.contentRect.height);
         }
       });
-      
+
       resizeObserver.observe(ref.current);
       setHeight(ref.current.getBoundingClientRect().height);
-      
+
       return () => {
         resizeObserver.disconnect();
       };
@@ -61,7 +61,7 @@ const contentVariants = {
       opacity: 0,
       scale: 0.96,
     };
-    
+
     // Faster exit for remove stage
     if (custom === "remove") {
       return {
@@ -72,29 +72,31 @@ const contentVariants = {
         },
       };
     }
-    
+
     return base;
   },
 };
 
-export function MultiStageSheet({ 
-  open: controlledOpen, 
+export function MultiStageSheet({
+  open: controlledOpen,
   onOpenChange,
-  trigger 
+  trigger,
 }: MultiStageSheetProps) {
-  const [stage, setStage] = useState<"default" | "phrase" | "key" | "remove">("default");
+  const [stage, setStage] = useState<"default" | "phrase" | "key" | "remove">(
+    "default",
+  );
   const [localOpen, setLocalOpen] = useState(false);
   const [contentRef, contentHeight] = useMeasure();
-  
+
   // Use controlled open if provided, otherwise use local state
   const isOpen = controlledOpen !== undefined ? controlledOpen : localOpen;
-  
+
   const handleOpenChange = (newOpen: boolean) => {
     if (controlledOpen === undefined) {
       setLocalOpen(newOpen);
     }
     onOpenChange?.(newOpen);
-    
+
     // Reset stage after closing animation
     if (!newOpen) {
       setTimeout(() => setStage("default"), 300);
@@ -107,7 +109,11 @@ export function MultiStageSheet({
       case "default":
         return 290;
       case "remove":
-        return 320;
+        return 312;
+      case "phrase":
+        return 465;
+      case "key":
+        return 441;
       default:
         return contentHeight || 500;
     }
@@ -118,21 +124,17 @@ export function MultiStageSheet({
   };
 
   return (
-    <Drawer.Root 
-      open={isOpen} 
+    <Drawer.Root
+      open={isOpen}
       onOpenChange={handleOpenChange}
       shouldScaleBackground
       modal={true}
     >
-      {trigger && (
-        <Drawer.Trigger asChild>
-          {trigger}
-        </Drawer.Trigger>
-      )}
-      
+      {trigger && <Drawer.Trigger asChild>{trigger}</Drawer.Trigger>}
+
       <Drawer.Portal>
-        <Drawer.Overlay 
-          className="fixed inset-0 bg-black/30" 
+        <Drawer.Overlay
+          className="fixed inset-0 bg-black/30"
           style={{ zIndex: 9998 }}
         />
         <Drawer.Content asChild>
@@ -142,8 +144,8 @@ export function MultiStageSheet({
               height: getHeight(),
               transition: {
                 duration: 0.27,
-                ease: [0.25, 1, 0.5, 1]
-              }
+                ease: [0.25, 1, 0.5, 1],
+              },
             }}
             className="fixed inset-x-4 bottom-4 mx-auto max-w-[361px] overflow-hidden rounded-[36px] bg-white outline-none md:mx-auto md:w-full"
             style={{ zIndex: 9999 }}
@@ -155,11 +157,11 @@ export function MultiStageSheet({
                   initial={false}
                   animate={{
                     top: stage === "default" ? 28 : 32,
-                    right: stage === "default" ? 28 : 32
+                    right: stage === "default" ? 28 : 32,
                   }}
                   transition={{
                     ease: [0.25, 1, 0.5, 1],
-                    duration: 0.27
+                    duration: 0.27,
                   }}
                   className="absolute z-10 flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-500 transition-transform hover:bg-gray-200 focus:scale-95 active:scale-75"
                   type="button"
@@ -180,7 +182,7 @@ export function MultiStageSheet({
                     variants={contentVariants}
                     transition={{
                       ease: [0.26, 0.08, 0.25, 1],
-                      duration: 0.22
+                      duration: 0.22,
                     }}
                   >
                     <header className="mb-4 flex h-[72px] items-center border-b border-gray-100 pl-2">
@@ -188,9 +190,9 @@ export function MultiStageSheet({
                         Options
                       </h2>
                     </header>
-                    
+
                     <div className="space-y-3">
-                      <button 
+                      <button
                         onClick={() => handleStageChange("key")}
                         className="flex h-12 w-full items-center gap-3 rounded-2xl bg-gray-100 px-4 text-left text-[17px] font-semibold text-gray-900 transition-transform hover:bg-gray-200 focus:scale-95 active:scale-[0.98]"
                         type="button"
@@ -198,8 +200,8 @@ export function MultiStageSheet({
                         <Lock className="h-5 w-5 text-gray-600" />
                         View Private Key
                       </button>
-                      
-                      <button 
+
+                      <button
                         onClick={() => handleStageChange("phrase")}
                         className="flex h-12 w-full items-center gap-3 rounded-2xl bg-gray-100 px-4 text-left text-[17px] font-semibold text-gray-900 transition-transform hover:bg-gray-200 focus:scale-95 active:scale-[0.98]"
                         type="button"
@@ -207,8 +209,8 @@ export function MultiStageSheet({
                         <Grid3x3 className="h-5 w-5 text-gray-600" />
                         View Recovery Phrase
                       </button>
-                      
-                      <button 
+
+                      <button
                         onClick={() => handleStageChange("remove")}
                         className="flex h-12 w-full items-center gap-3 rounded-2xl bg-red-50 px-4 text-left text-[17px] font-semibold text-red-500 transition-transform hover:bg-red-100 focus:scale-95 active:scale-[0.98]"
                         type="button"
@@ -230,7 +232,7 @@ export function MultiStageSheet({
                     custom={stage}
                     transition={{
                       ease: [0.26, 0.08, 0.25, 1],
-                      duration: 0.27
+                      duration: 0.27,
                     }}
                   >
                     <div className="px-2">
@@ -242,10 +244,11 @@ export function MultiStageSheet({
                           Secret Recovery Phrase
                         </h2>
                         <p className="mt-3 text-[17px] leading-[24px] text-gray-500">
-                          Your Secret Recovery Phrase is the key used to back up your wallet. Keep it secret at all times.
+                          Your Secret Recovery Phrase is the key used to back up
+                          your wallet. Keep it secret at all times.
                         </p>
                       </header>
-                      
+
                       <ul className="mt-6 space-y-4">
                         <li className="flex items-center gap-3 text-[15px] font-medium text-gray-600">
                           <Shield className="h-6 w-6 text-gray-400" />
@@ -261,7 +264,7 @@ export function MultiStageSheet({
                         </li>
                       </ul>
                     </div>
-                    
+
                     <div className="mt-7 flex gap-4">
                       <button
                         onClick={() => handleStageChange("default")}
@@ -270,7 +273,7 @@ export function MultiStageSheet({
                       >
                         Cancel
                       </button>
-                      <button 
+                      <button
                         className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-blue-500 text-[19px] font-semibold text-white transition-transform hover:bg-blue-600 focus:scale-95 active:scale-[0.98]"
                         type="button"
                       >
@@ -291,7 +294,7 @@ export function MultiStageSheet({
                     custom={stage}
                     transition={{
                       ease: [0.26, 0.08, 0.25, 1],
-                      duration: 0.27
+                      duration: 0.27,
                     }}
                   >
                     <div className="px-2">
@@ -303,10 +306,11 @@ export function MultiStageSheet({
                           Private Key
                         </h2>
                         <p className="mt-3 text-[17px] leading-[24px] text-gray-500">
-                          Your Private Key is used to access your wallet. Never share it with anyone.
+                          Your Private Key is used to access your wallet. Never
+                          share it with anyone.
                         </p>
                       </header>
-                      
+
                       <ul className="mt-6 space-y-4">
                         <li className="flex items-center gap-3 text-[15px] font-medium text-gray-600">
                           <Shield className="h-6 w-6 text-gray-400" />
@@ -322,7 +326,7 @@ export function MultiStageSheet({
                         </li>
                       </ul>
                     </div>
-                    
+
                     <div className="mt-7 flex gap-4">
                       <button
                         onClick={() => handleStageChange("default")}
@@ -331,7 +335,7 @@ export function MultiStageSheet({
                       >
                         Cancel
                       </button>
-                      <button 
+                      <button
                         className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-blue-500 text-[19px] font-semibold text-white transition-transform hover:bg-blue-600 focus:scale-95 active:scale-[0.98]"
                         type="button"
                       >
@@ -352,7 +356,7 @@ export function MultiStageSheet({
                     custom={stage}
                     transition={{
                       ease: [0.26, 0.08, 0.25, 1],
-                      duration: stage === "remove" ? 0.15 : 0.27
+                      duration: stage === "remove" ? 0.15 : 0.27,
                     }}
                   >
                     <div className="px-2">
@@ -367,10 +371,11 @@ export function MultiStageSheet({
                         </h2>
                       </header>
                       <p className="mt-3 text-[17px] leading-[24px] text-gray-500 text-center">
-                        You haven't backed up your wallet yet. If you remove it, you could lose access forever.
+                        You haven't backed up your wallet yet. If you remove it,
+                        you could lose access forever.
                       </p>
                     </div>
-                    
+
                     <div className="mt-7 flex gap-4">
                       <button
                         onClick={() => handleStageChange("default")}
@@ -379,7 +384,7 @@ export function MultiStageSheet({
                       >
                         Cancel
                       </button>
-                      <button 
+                      <button
                         className="flex h-12 w-full items-center justify-center rounded-full bg-red-500 text-[19px] font-semibold text-white transition-transform hover:bg-red-600 focus:scale-95 active:scale-[0.98]"
                         type="button"
                       >

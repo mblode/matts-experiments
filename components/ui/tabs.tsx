@@ -14,107 +14,120 @@ const TabsList = React.forwardRef<
     floatingBgClassName?: string;
     variant?: "default" | "clip-path";
   }
->(({ className, floatingBgClassName, variant = "default", children, ...props }, ref) => {
-  const [lineStyle, setLineStyle] = React.useState({ width: 0, left: 0 });
-  const { mounted, listRef } = useTabObserver({
-    onActiveTabChange: (_, activeTab) => {
-      const { offsetWidth: width, offsetLeft: left } = activeTab;
-      setLineStyle({ width, left });
-    },
-  });
+>(
+  (
+    { className, floatingBgClassName, variant = "default", children, ...props },
+    ref,
+  ) => {
+    const [lineStyle, setLineStyle] = React.useState({ width: 0, left: 0 });
+    const [hasInitialized, setHasInitialized] = React.useState(false);
+    const { mounted, listRef } = useTabObserver({
+      onActiveTabChange: (_, activeTab) => {
+        const { offsetWidth: width, offsetLeft: left } = activeTab;
+        setLineStyle({ width, left });
+        if (!hasInitialized && width > 0) {
+          setHasInitialized(true);
+        }
+      },
+    });
 
-  const containerRef = React.useRef<HTMLDivElement>(null);
+    const containerRef = React.useRef<HTMLDivElement>(null);
 
-  React.useEffect(() => {
-    if (variant === "clip-path" && mounted && containerRef.current) {
-      const { width, left } = lineStyle;
-      const container = containerRef.current;
-      if (width > 0) {
-        const clipLeft = left;
-        const clipRight = left + width;
-        container.style.clipPath = `inset(0 ${Number(100 - (clipRight / container.offsetWidth) * 100).toFixed()}% 0 ${Number((clipLeft / container.offsetWidth) * 100).toFixed()}% round 17px)`;
+    React.useEffect(() => {
+      if (variant === "clip-path" && mounted && containerRef.current) {
+        const { width, left } = lineStyle;
+        const container = containerRef.current;
+        if (width > 0) {
+          const clipLeft = left;
+          const clipRight = left + width;
+          container.style.clipPath = `inset(0 ${Number(100 - (clipRight / container.offsetWidth) * 100).toFixed()}% 0 ${Number((clipLeft / container.offsetWidth) * 100).toFixed()}% round 17px)`;
+        }
       }
-    }
-  }, [lineStyle, mounted, variant]);
+    }, [lineStyle, mounted, variant]);
 
-  if (variant === "clip-path") {
-    return (
-      <div className="relative">
-        <TabsPrimitive.List
-          ref={mergeRefs(ref, listRef)}
-          className={cn(
-            "relative inline-flex items-center justify-center gap-2",
-            className,
-          )}
-          {...props}
-        >
-          {children}
-        </TabsPrimitive.List>
-        
-        <div
-          aria-hidden
-          ref={containerRef}
-          className={cn(
-            "absolute inset-0 z-10 overflow-hidden transition-[clip-path] duration-300 ease-in-out pointer-events-none",
-            !mounted && "opacity-0"
-          )}
-          style={{ clipPath: "inset(0px 75% 0px 0% round 17px)" }}
-        >
+    if (variant === "clip-path") {
+      return (
+        <div className="relative">
           <TabsPrimitive.List
+            ref={mergeRefs(ref, listRef)}
             className={cn(
-              "inline-flex items-center justify-center gap-2",
-              floatingBgClassName || "bg-blue-500",
-              className
+              "relative inline-flex items-center justify-center gap-2",
+              className,
             )}
+            {...props}
           >
-            {React.Children.map(children, (child) => {
-              if (React.isValidElement(child)) {
-                return React.cloneElement(child as React.ReactElement<any>, {
-                  className: cn(
-                    (child.props as any).className,
-                    "text-white data-[state=active]:text-white"
-                  ),
-                  tabIndex: -1,
-                  "aria-hidden": true,
-                });
-              }
-              return child;
-            })}
+            {children}
           </TabsPrimitive.List>
-        </div>
-      </div>
-    );
-  }
 
-  return (
-    <TabsPrimitive.List
-      ref={mergeRefs(ref, listRef)}
-      className={cn(
-        "relative isolate inline-flex h-10 items-center justify-center rounded-xl bg-gray-150 dark:bg-gray-750 p-1 text-muted-foreground",
-        className,
-      )}
-      {...props}
-    >
-      {children}
-      <div
+          <div
+            aria-hidden
+            ref={containerRef}
+            className={cn(
+              "absolute inset-0 z-10 overflow-hidden transition-[clip-path] duration-300 ease-in-out pointer-events-none",
+              (!mounted || !hasInitialized) && "opacity-0",
+            )}
+            style={{
+              clipPath: hasInitialized
+                ? undefined
+                : "inset(0px 100% 0px 0% round 17px)",
+            }}
+          >
+            <TabsPrimitive.List
+              className={cn(
+                "inline-flex items-center justify-center gap-2",
+                floatingBgClassName || "bg-blue-500",
+                className,
+              )}
+            >
+              {React.Children.map(children, (child) => {
+                if (React.isValidElement(child)) {
+                  return React.cloneElement(child as React.ReactElement<any>, {
+                    className: cn(
+                      (child.props as any).className,
+                      "text-primary-foreground data-[state=active]:text-primary-foreground",
+                    ),
+                    tabIndex: -1,
+                    "aria-hidden": true,
+                  });
+                }
+                return child;
+              })}
+            </TabsPrimitive.List>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <TabsPrimitive.List
+        ref={mergeRefs(ref, listRef)}
         className={cn(
-          "absolute inset-y-1 left-0 -z-10 rounded-lg bg-background shadow-sm transition-all duration-300",
-          {
-            "opacity-0": !mounted,
-            "opacity-100": mounted,
-          },
-          floatingBgClassName,
+          "relative isolate inline-flex h-10 items-center justify-center rounded-xl bg-card p-1 text-muted-foreground",
+          className,
         )}
-        style={{
-          transform: `translateX(${lineStyle.left}px)`,
-          width: `${lineStyle.width}px`,
-          transitionTimingFunction: "cubic-bezier(0.65, 0, 0.35, 1)",
-        }}
-        aria-hidden="true"
-      />
-    </TabsPrimitive.List>
-  );
-});
+        {...props}
+      >
+        {children}
+        <div
+          className={cn(
+            "absolute inset-y-1 left-0 -z-10 rounded-lg bg-background shadow-sm transition-all duration-300",
+            {
+              "opacity-0": !mounted || !hasInitialized,
+              "opacity-100": mounted && hasInitialized,
+            },
+            floatingBgClassName,
+          )}
+          style={{
+            transform: `translateX(${lineStyle.left}px)`,
+            width: `${lineStyle.width}px`,
+            transitionTimingFunction: "cubic-bezier(0.65, 0, 0.35, 1)",
+          }}
+          aria-hidden="true"
+        />
+      </TabsPrimitive.List>
+    );
+  },
+);
 TabsList.displayName = TabsPrimitive.List.displayName;
 
 const TabsTrigger = React.forwardRef<

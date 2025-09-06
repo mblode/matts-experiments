@@ -1,82 +1,77 @@
-"use client";
-import { ThemeBackground } from "@/components/theme/theme-background";
-import { ThemeFont } from "@/components/theme/theme-font";
-import { ThemeStyle } from "@/components/theme/theme-style";
-import { Button } from "@/components/ui/button";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { themes } from "@/lib/themes";
-import { CardBlock } from "@/components/block/card-block";
-import { FaqBlock } from "@/components/block/faq-block";
-import { SheetBlock } from "@/components/block/sheet-block";
-import { AlbumBlock } from "@/components/block/album-block";
-import TabsBlock from "@/components/block/tabs-block";
-import { PromiseBlock } from "@/components/block/promise-block";
-import { IosCardsBlock } from "@/components/block/ios-cards-block";
-import { DynamicIslandBlock } from "@/components/block/dynamic-island-block";
+import Link from "next/link";
 
 export default function Home() {
-  const [themeContent, setThemeContent] = useState<any>(null);
-
-  useEffect(() => {
-    const randomIndex = Math.floor(Math.random() * themes.length);
-    const randomTheme = themes[randomIndex];
-    setThemeContent(JSON.parse(randomTheme?.content));
-  }, [themes]);
-
-  const handleShuffleClick = useCallback(() => {
-    const randomIndex = Math.floor(Math.random() * themes.length);
-    const randomTheme = themes[randomIndex];
-    setThemeContent(JSON.parse(randomTheme?.content));
-  }, [themes]);
+  const blocks = [
+    {
+      name: "Shuffle theme",
+      href: "/shuffle-theme",
+      description: "Interactive card components with theme variations",
+    },
+    {
+      name: "FAQ",
+      href: "/faq",
+      description: "Frequently asked questions accordion component",
+    },
+    {
+      name: "Sheet",
+      href: "/sheet",
+      description: "Bottom sheet modal component",
+    },
+    {
+      name: "Tabs",
+      href: "/tabs",
+      description: "Tabbed content navigation component",
+    },
+    {
+      name: "Toast",
+      href: "/toast",
+      description: "Toast display component",
+    },
+    {
+      name: "iOS cards",
+      href: "/ios-cards",
+      description: "iOS-style card components",
+    },
+    {
+      name: "Dynamic island",
+      href: "/dynamic-island",
+      description: "Dynamic island notification component",
+    },
+    {
+      name: "Map",
+      href: "/map",
+      description: "Map component",
+    },
+    {
+      name: "Card stack",
+      href: "/card-stack",
+      description:
+        "Card stack component for displaying collections of images in an organised grid layout.",
+    },
+    {
+      name: "Animated button",
+      href: "/animated-button",
+      description: "Animated button component for interactive user actions.",
+    },
+  ];
 
   return (
-    <>
-      <ThemeBackground content={themeContent} />
-      <ThemeStyle content={themeContent} />
-      <ThemeFont content={themeContent} />
-
-      <div className="relative flex h-full flex-col">
-        <div className="relative z-1 w-full font-page-body font-page-body-weight text-page-text">
-          <div className="relative z-30 mx-auto w-full max-w-[480px]">
-            <div className="px-4">
-              <Button onClick={handleShuffleClick}>Shuffle theme</Button>
-
-              <h1 className="min-w-0 font-page-heading-weight font-page-heading text-4xl tracking-tight leading-[1.2] w-full">
-                Title
-              </h1>
-
-              <p className="text-fluid-lg font-page-body font-page-body-weight break-words">
-                Eu veniam aliquip anim duis aute ullamco cillum laborum eu amet
-                id duis anim excepteur. Exercitation occaecat qui adipisicing
-                excepteur consequat est. Labore minim labore sit ullamco ad
-                laboris sit. Mollit amet aliquip irure anim pariatur occaecat
-                nulla dolor reprehenderit voluptate mollit. Sit veniam deserunt
-                et.
-              </p>
-            </div>
-
-            <div className="p-4">
-              <FaqBlock />
-              <SheetBlock />
-              <AlbumBlock />
-              <TabsBlock />
-              <PromiseBlock />
-              <IosCardsBlock />
-              <DynamicIslandBlock />
-              {[
-                { id: 1 },
-                { id: 2 },
-                { id: 3 },
-                { id: 4 },
-                { id: 5 },
-                { id: 6 },
-              ].map((item) => (
-                <CardBlock key={item.id} item={item} />
-              ))}
-            </div>
-          </div>
+    <div className="min-h-screen p-8 bg-background">
+      <div className="mx-auto max-w-4xl">
+        <h1 className="mb-8 text-4xl font-bold">Component Blocks</h1>
+        <div className="grid gap-4 md:grid-cols-2">
+          {blocks.map((block) => (
+            <Link
+              key={block.href}
+              href={block.href}
+              className="bg-card block rounded-lg border p-6 transition-colors hover:bg-card"
+            >
+              <h2 className="mb-2 text-xl font-semibold">{block.name}</h2>
+              <p className="text-muted-foreground">{block.description}</p>
+            </Link>
+          ))}
         </div>
       </div>
-    </>
+    </div>
   );
 }

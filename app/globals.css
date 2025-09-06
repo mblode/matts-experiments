@@ -230,6 +230,21 @@
     }
   }
 
+  @keyframes pulse-map {
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+    35% {
+      transform: translate(-50%, -50%) scale(8);
+      opacity: 0;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(8);
+      opacity: 0;
+    }
+  }
+
   .admin-container-shell {
     @apply flex flex-row flex-auto border-t border-border md:shadow-[0_3px_6px_-2px_rgb(0_0_0/2%),0_1px_1px_rgb(0_0_0/4%)] md:dark:shadow-[0_4px_4px_-1px_rgb(0_0_0/4%),0_1px_1px_rgb(0_0_0/8%)] md:mt-2 md:mb-2 md:mr-2 md:border-0.5 md:rounded-lg bg-background overflow-hidden;
   }
