@@ -192,7 +192,7 @@ export const SkyBlock = () => {
     <>
       <div className="relative z-10 p-8 bg-background">
         <div className="mx-auto max-w-4xl">
-          <Header id="sky" />
+          <Header id="sky" className="mb-0!" />
         </div>
       </div>
 

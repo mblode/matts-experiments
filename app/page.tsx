@@ -11,9 +11,7 @@ export default function Page() {
   return (
     <div className="min-h-screen p-8 bg-background">
       <div className="mx-auto max-w-4xl">
-        <h1 className="mb-8 text-4xl font-bold text-center">
-          Matt's experiments
-        </h1>
+        <h1 className="mb-8 text-4xl font-bold">Matt's experiments</h1>
 
         <div className="grid gap-4 md:grid-cols-2">
           {Object.entries(blocks).map(([key, block]) => (

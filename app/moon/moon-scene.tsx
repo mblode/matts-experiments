@@ -219,6 +219,7 @@ export const MoonScene = (props: Props) => {
         // Disable any WebGL shadow filtering
         gl.shadowMap.needsUpdate = true;
       }}
+      style={{ width: '100%', height: '100vh' }}
     >
       <color attach="background" args={["#05060a"]} />
       <Suspense fallback={null}>
