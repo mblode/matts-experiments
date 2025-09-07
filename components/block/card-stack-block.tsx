@@ -29,7 +29,7 @@ export const CardStackBlock = () => {
             ease: [0.165, 0.84, 0.44, 1],
           }}
           style={{ zIndex: 1 }}
-          className="absolute aspect-[9/16] max-w-[170px] w-full pointer-events-auto bg-blue-500 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow"
+          className="absolute aspect-[9/16] max-w-[170px] w-full pointer-events-auto bg-blue-500 rounded-2xl shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-[shadow,scale]"
         />
 
         <motion.div
@@ -50,7 +50,7 @@ export const CardStackBlock = () => {
             ease: [0.165, 0.84, 0.44, 1],
           }}
           style={{ zIndex: 2 }}
-          className="absolute aspect-[9/16] max-w-[170px] w-full pointer-events-auto bg-green-500 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow"
+          className="absolute aspect-[9/16] max-w-[170px] w-full pointer-events-auto bg-green-500 rounded-2xl shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-[shadow,scale]"
         />
 
         <motion.div
@@ -71,7 +71,7 @@ export const CardStackBlock = () => {
             ease: [0.165, 0.84, 0.44, 1],
           }}
           style={{ zIndex: 3 }}
-          className="absolute aspect-[9/16] max-w-[170px] w-full pointer-events-auto bg-red-500 rounded-2xl shadow-xl hover:shadow-2xl transition-shadow"
+          className="absolute aspect-[9/16] max-w-[170px] w-full pointer-events-auto bg-red-500 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-[shadow,scale]"
         />
       </div>
     </div>
