@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Linkapps Prototype",
-  description: "A collection of experiments",
+  title: "Matt's experiments",
+  description: "A collection of Matthew Blode's UI experiments",
 };
 
 export default function RootLayout({
