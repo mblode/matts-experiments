@@ -5,10 +5,7 @@ export default function Page() {
   return (
     <div className="min-h-screen p-8 bg-background">
       <div className="mx-auto max-w-4xl">
-        <Header
-          title="iOS Cards"
-          description="iOS-style card components with smooth animations and native iOS design patterns."
-        />
+        <Header id="ios-cards" />
         <IosCardsBlock />
       </div>
     </div>

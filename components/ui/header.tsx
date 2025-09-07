@@ -3,13 +3,13 @@
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { blocks } from "@/lib/blocks";
 
-interface HeaderProps {
-  title: string;
-  description?: string;
-}
+type Props = {
+  id: keyof typeof blocks;
+};
 
-export function Header({ title, description }: HeaderProps) {
+export const Header = ({ id }: Props) => {
   const router = useRouter();
 
   return (
@@ -22,10 +22,9 @@ export function Header({ title, description }: HeaderProps) {
       >
         <ArrowLeft className="h-4 w-4" />
       </Button>
-      <h1 className="mb-4 text-4xl font-bold">{title}</h1>
-      {description && (
-        <p className="text-lg text-muted-foreground">{description}</p>
-      )}
+
+      <h1 className="mb-4 text-4xl font-bold">{blocks[id].name}</h1>
+      <p className="text-lg text-muted-foreground">{blocks[id].description}</p>
     </div>
   );
-}
+};

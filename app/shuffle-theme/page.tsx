@@ -27,7 +27,7 @@ export default function Page() {
     <>
       <div className="p-8 bg-background">
         <div className="mx-auto max-w-4xl">
-          <Header title="Theme" />
+          <Header id="shuffle-theme" />
           <Button onClick={handleShuffleClick}>Shuffle theme</Button>
         </div>
       </div>

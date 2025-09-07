@@ -10,7 +10,7 @@ export const ios = () => {
 
   return (
     <>
-      <List selectedId={selectedId} setSelectedId={setSelectedId} />
+      <List setSelectedId={setSelectedId} />
       <AnimatePresence>
         {selectedId && (
           <Item id={selectedId} key="item" setSelectedId={setSelectedId} />

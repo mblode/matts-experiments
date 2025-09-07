@@ -67,7 +67,7 @@ const contentVariants = {
       return {
         ...base,
         transition: {
-          ease: [0.26, 0.08, 0.25, 1],
+          ease: [0.26, 0.08, 0.25, 1] as [number, number, number, number],
           duration: 0.15,
         },
       };
@@ -181,7 +181,7 @@ export function MultiStageSheet({
                     exit="hidden"
                     variants={contentVariants}
                     transition={{
-                      ease: [0.26, 0.08, 0.25, 1],
+                      ease: [0.26, 0.08, 0.25, 1] as [number, number, number, number],
                       duration: 0.22,
                     }}
                   >
@@ -231,7 +231,7 @@ export function MultiStageSheet({
                     variants={contentVariants}
                     custom={stage}
                     transition={{
-                      ease: [0.26, 0.08, 0.25, 1],
+                      ease: [0.26, 0.08, 0.25, 1] as [number, number, number, number],
                       duration: 0.27,
                     }}
                   >
@@ -293,7 +293,7 @@ export function MultiStageSheet({
                     variants={contentVariants}
                     custom={stage}
                     transition={{
-                      ease: [0.26, 0.08, 0.25, 1],
+                      ease: [0.26, 0.08, 0.25, 1] as [number, number, number, number],
                       duration: 0.27,
                     }}
                   >
@@ -355,7 +355,7 @@ export function MultiStageSheet({
                     variants={contentVariants}
                     custom={stage}
                     transition={{
-                      ease: [0.26, 0.08, 0.25, 1],
+                      ease: [0.26, 0.08, 0.25, 1] as [number, number, number, number],
                       duration: stage === "remove" ? 0.15 : 0.27,
                     }}
                   >

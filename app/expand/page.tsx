@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <div className="min-h-screen p-8 bg-background">
       <div className="mx-auto max-w-4xl">
-        <Header title="Expand" description="Expand list" />
+        <Header id="expand" />
         <ExpandBlock />
       </div>
     </div>
