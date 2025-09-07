@@ -1,16 +1,32 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const apercu = localFont({
+  src: [
+    {
+      path: "../public/fonts/apercu-regular-pro.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/apercu-italic-pro.woff2",
+      weight: "400",
+      style: "italic",
+    },
+    {
+      path: "../public/fonts/apercu-bold-pro.woff2",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/apercu-bold-italic-pro.woff2",
+      weight: "700",
+      style: "italic",
+    },
+  ],
+  variable: "--font-apercu",
 });
 
 export const metadata: Metadata = {
@@ -26,7 +42,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full font-sans font-normal antialiased`}
+      className={`${apercu.variable} h-full font-sans font-normal antialiased`}
       suppressHydrationWarning
     >
       <body className="h-full bg-page-background">
