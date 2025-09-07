@@ -2,69 +2,69 @@ export const blocks: Record<string, { name: string; description: string }> = {
   "animated-button": {
     name: "Animated subscribe button",
     description:
-      "Toggle button that morphs between follow and subscribed states with smooth animations",
+      "A toggle button that morphs seamlessly between follow and subscribed states",
   },
   "shuffle-theme": {
     name: "Theme shuffler",
     description:
-      "Dynamically shuffle through different visual themes with random backgrounds and card styles",
+      "Cycle through vibrant visual themes with randomised backgrounds and card styles",
   },
   faq: {
     name: "FAQ accordion",
-    description: "Expandable FAQ section with smooth accordion animations",
+    description: "An expandable FAQ section with fluid accordion animations",
   },
   sheet: {
     name: "Bottom sheet",
-    description: "Multi-stage draggable bottom sheet modal with swipe gestures",
+    description: "A multi-stage draggable modal with intuitive swipe gestures",
   },
   tabs: {
     name: "Tab navigation",
     description:
-      "Clean tabbed interface for switching between different content sections",
+      "A clean tabbed interface for organising content into distinct sections",
   },
   toast: {
     name: "Toast notifications",
     description:
-      "Temporary notification popups with various styles and animations",
+      "Temporary notification pop-ups with customisable styles and animations",
   },
   "ios-cards": {
     name: "iOS-style cards",
-    description: "Native iOS-inspired card components with smooth transitions",
+    description: "Native iOS-inspired cards with polished transitions",
   },
   "dynamic-island": {
     name: "Dynamic island",
     description:
-      "iPhone-style dynamic island with expandable states and smooth morphing animations",
+      "An iPhone-style dynamic island with expandable states and fluid morphing effects",
   },
   map: {
     name: "Interactive map",
     description:
-      "Mapbox-powered location display with custom markers and directions button",
+      "A Mapbox-powered location viewer with custom markers and navigation controls",
   },
   "card-stack": {
     name: "Stacked cards",
-    description: "Animated card stack that expands into a grid layout on click",
+    description: "An animated card stack that transforms into a grid layout on interaction",
   },
   expand: {
     name: "Expandable date cards",
     description:
-      "Interactive date cards that expand to reveal additional information with smooth transitions",
+      "Interactive date cards that reveal additional details with smooth transitions",
   },
   preview: {
     name: "Preview block",
     description:
-      "Interactive preview block that expands to reveal additional information with smooth transitions",
+      "An interactive preview component that expands to show more content",
   },
   sky: {
     name: "Sky",
-    description: "Interactive sky with smooth transitions",
+    description: "An interactive sky animation with dynamic transitions",
   },
   album: {
     name: "Album",
-    description: "Interactive album with smooth transitions",
+    description: "An interactive album viewer with smooth transitions",
   },
   moon: {
     name: "Moon",
-    description: "3D moon with accurate phases",
+    description: "A 3D moon visualisation with accurate lunar phases",
   },
 };

@@ -64,7 +64,7 @@ const TabsList = React.forwardRef<
               aria-hidden
               ref={containerRef}
               className={cn(
-                "absolute inset-0 z-10 overflow-hidden transition-[clip-path] duration-300 ease-in-out pointer-events-none",
+                "absolute inset-0 z-10 overflow-hidden transition-[clip-path] duration-1000 ease-in-out pointer-events-none",
                 (!mounted || !hasInitialized) && "opacity-0",
               )}
               style={{
@@ -82,14 +82,17 @@ const TabsList = React.forwardRef<
               >
                 {React.Children.map(children, (child) => {
                   if (React.isValidElement(child)) {
-                    return React.cloneElement(child as React.ReactElement<any>, {
-                      className: cn(
-                        (child.props as any).className,
-                        "text-primary-foreground data-[state=active]:text-primary-foreground",
-                      ),
-                      tabIndex: -1,
-                      "aria-hidden": true,
-                    });
+                    return React.cloneElement(
+                      child as React.ReactElement<any>,
+                      {
+                        className: cn(
+                          (child.props as any).className,
+                          "text-primary-foreground data-[state=active]:text-primary-foreground",
+                        ),
+                        tabIndex: -1,
+                        "aria-hidden": true,
+                      },
+                    );
                   }
                   return child;
                 })}
@@ -111,22 +114,22 @@ const TabsList = React.forwardRef<
           {...props}
         >
           {children}
-        <div
-          className={cn(
-            "absolute inset-y-1 left-0 -z-10 rounded-lg bg-background shadow-sm transition-all duration-300",
-            {
-              "opacity-0": !mounted || !hasInitialized,
-              "opacity-100": mounted && hasInitialized,
-            },
-            floatingBgClassName,
-          )}
-          style={{
-            transform: `translateX(${lineStyle.left}px)`,
-            width: `${lineStyle.width}px`,
-            transitionTimingFunction: "cubic-bezier(0.65, 0, 0.35, 1)",
-          }}
-          aria-hidden="true"
-        />
+          <div
+            className={cn(
+              "absolute inset-y-1 left-0 -z-10 rounded-lg bg-background shadow-sm transition-all duration-300",
+              {
+                "opacity-0": !mounted || !hasInitialized,
+                "opacity-100": mounted && hasInitialized,
+              },
+              floatingBgClassName,
+            )}
+            style={{
+              transform: `translateX(${lineStyle.left}px)`,
+              width: `${lineStyle.width}px`,
+              transitionTimingFunction: "cubic-bezier(0.65, 0, 0.35, 1)",
+            }}
+            aria-hidden="true"
+          />
         </TabsPrimitive.List>
       </div>
     );
