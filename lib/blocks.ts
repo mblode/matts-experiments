@@ -63,4 +63,8 @@ export const blocks: Record<string, { name: string; description: string }> = {
     name: "Album",
     description: "Interactive album with smooth transitions",
   },
+  moon: {
+    name: "Moon",
+    description: "3D moon with accurate phases",
+  },
 };

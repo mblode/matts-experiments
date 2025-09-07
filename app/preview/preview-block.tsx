@@ -25,7 +25,7 @@ const Card = ({ id, isExpanded, onToggle }: RabbitCardProps) => {
       transition={springConfig}
     >
       <motion.div
-        className="relative rounded-2xl cursor-pointer overflow-hidden border border-border will-change-transform"
+        className="relative cursor-pointer overflow-hidden border border-border"
         onClick={onToggle}
         initial={false}
         animate={{
@@ -37,17 +37,19 @@ const Card = ({ id, isExpanded, onToggle }: RabbitCardProps) => {
         transition={{
           height: { duration: 0.5, ease: smoothEasing },
           backgroundColor: { duration: 0.5, ease: smoothEasing },
-          borderColor: { duration: 0.5, ease: smoothEasing },
           scale: { duration: 0.15, ease: "easeOut" },
         }}
         style={{
+          borderRadius: 16,
           transformOrigin: "center top",
+          WebkitBackfaceVisibility: "hidden",
+          backfaceVisibility: "hidden",
         }}
       >
         {/* Content wrapper */}
         <motion.div
           className="p-4 h-full"
-          layout="preserve-aspect"
+          layout="position"
           initial={false}
           transition={springConfig}
           style={{
@@ -62,29 +64,31 @@ const Card = ({ id, isExpanded, onToggle }: RabbitCardProps) => {
             src="https://placehold.co/500x500"
             alt={`Rabbit ${id}`}
             className="object-cover select-none"
-            layout="preserve-aspect"
+            layout="position"
             initial={false}
             animate={{
               width: isExpanded ? "100%" : 86,
               height: isExpanded ? "auto" : 86,
-              borderRadius: isExpanded ? 8 : 12,
             }}
             transition={{
               width: { duration: 0.5, ease: smoothEasing },
               height: { duration: 0.5, ease: smoothEasing },
-              borderRadius: { duration: 0.5, ease: smoothEasing },
             }}
             style={{
+              borderRadius: isExpanded ? 24 : 12,
               aspectRatio: isExpanded ? "1/1" : undefined,
               order: isExpanded ? 2 : 1,
               maxWidth: isExpanded ? 280 : 86,
+              WebkitBackfaceVisibility: "hidden",
+              backfaceVisibility: "hidden",
+              transform: "translate3d(0, 0, 0)",
             }}
           />
 
           {/* Text */}
           <motion.h1
             className="font-semibold whitespace-nowrap select-none"
-            layout="preserve-aspect"
+            layout="position"
             initial={false}
             animate={{
               fontSize: isExpanded ? "1.5rem" : "1.125rem",
