@@ -1,4 +1,4 @@
-import { SheetBlock } from "@/components/block/sheet-block";
+import { SheetBlock } from "./sheet-block";
 import { Header } from "@/components/ui/header";
 
 export default function Page() {

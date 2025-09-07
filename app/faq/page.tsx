@@ -1,4 +1,4 @@
-import { FaqBlock } from "@/components/block/faq-block";
+import { FaqBlock } from "./faq-block";
 import { Header } from "@/components/ui/header";
 
 export default function Page() {

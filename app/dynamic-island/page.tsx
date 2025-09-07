@@ -1,4 +1,4 @@
-import { DynamicIslandBlock } from "@/components/block/dynamic-island-block";
+import { DynamicIslandBlock } from "./dynamic-island-block";
 import { Header } from "@/components/ui/header";
 
 export default function Page() {

@@ -1,4 +1,4 @@
-import { MapBlock } from "@/components/block/map-block";
+import { MapBlock } from "./map-block";
 import { Header } from "@/components/ui/header";
 
 export default function Page() {

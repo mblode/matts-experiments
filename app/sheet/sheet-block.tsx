@@ -1,5 +1,5 @@
 import { MultiStageSheet } from "@/components/ui/multi-stage-sheet";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 
 export const SheetBlock = () => {
   return (

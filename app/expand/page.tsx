@@ -1,4 +1,4 @@
-import { ExpandBlock } from "@/components/block/expand-block";
+import { ExpandBlock } from "./expand-block";
 import { Header } from "@/components/ui/header";
 
 export default function Page() {

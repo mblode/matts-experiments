@@ -1,4 +1,4 @@
-import TabsBlock from "@/components/block/tabs-block";
+import { TabsBlock } from "@/app/tabs/tabs-block";
 import { Header } from "@/components/ui/header";
 
 export default function Page() {

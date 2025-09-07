@@ -12,7 +12,7 @@ import React, {
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 
 interface DynamicIslandContextType {
   state: string;
@@ -587,7 +587,11 @@ export const DynamicIslandBlock = () => {
             </motion.div>
 
             <div className="pointer-events-none absolute left-1/2 top-0 flex h-[200px] w-[300px] -translate-x-1/2 items-start justify-center opacity-0">
-              <AnimatePresence initial={false} mode="popLayout" custom={transition}>
+              <AnimatePresence
+                initial={false}
+                mode="popLayout"
+                custom={transition}
+              >
                 <motion.div
                   key={state + "second"}
                   initial={{ opacity: 0 }}

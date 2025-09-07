@@ -160,7 +160,9 @@ function AccordionContent({
             className="overflow-hidden"
             {...props}
           >
-            <div className={cn("pb-4 pt-0 text-sm", className)}>{children}</div>
+            <div className={cn("pb-4 pt-0 text-sm leading-[1.5]", className)}>
+              {children}
+            </div>
           </motion.div>
         </AccordionPrimitive.Content>
       )}

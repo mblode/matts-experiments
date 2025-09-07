@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { items } from "./data";
+import { X } from "lucide-react";
 
 interface ItemProps {
   id: string;
@@ -26,17 +27,27 @@ export function Item({ id, setSelectedId }: ItemProps) {
         onClick={() => setSelectedId(null)}
       />
 
-      <div className="fixed top-0 left-0 right-0 z-10 p-10 max-sm:p-0 pointer-events-none">
+      <div className="fixed top-0 left-0 right-0 bottom-0 z-10 flex items-center justify-center p-4 sm:p-10 pointer-events-none">
         <motion.div
-          className="relative h-auto max-w-[700px] mx-auto bg-ios-card-bg rounded-[20px] overflow-hidden pointer-events-auto"
+          className="relative h-auto w-full max-w-[700px] mx-auto bg-ios-card-bg rounded-[20px] overflow-hidden pointer-events-auto max-h-[90vh] overflow-y-auto"
           layoutId={`card-container-${id}`}
         >
+          <motion.button
+            className="absolute top-4 right-4 z-20 w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition-colors"
+            onClick={() => setSelectedId(null)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            <X className="w-5 h-5 text-white" />
+          </motion.button>
+          
           <motion.div
-            className="relative h-[420px] w-full overflow-hidden"
+            className="relative h-[250px] sm:h-[420px] w-full overflow-hidden"
             layoutId={`card-image-container-${id}`}
           >
             <img
-              src={`https://placehold.co/800x600/${item.backgroundColor.slice(1)}/ffffff`}
+              src={item.imageUrl}
               alt={title}
               width={800}
               height={600}
@@ -45,20 +56,20 @@ export function Item({ id, setSelectedId }: ItemProps) {
           </motion.div>
 
           <motion.div
-            className="absolute top-[30px] left-[30px] max-w-[300px] z-10"
+            className="absolute top-4 sm:top-[30px] left-4 sm:left-[30px] max-w-[300px] z-10"
             layoutId={`title-container-${id}`}
           >
-            <span className="text-white text-sm uppercase">{category}</span>
-            <h2 className="text-white my-2 text-2xl font-semibold">{title}</h2>
+            <span className="text-white text-xs sm:text-sm uppercase">{category}</span>
+            <h2 className="text-white my-1 sm:my-2 text-xl sm:text-2xl font-semibold">{title}</h2>
           </motion.div>
 
           <motion.div
-            className="pt-10 px-9 pb-9"
+            className="pt-6 sm:pt-10 px-4 sm:px-9 pb-6 sm:pb-9"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.15, duration: 0.5 }}
           >
-            <p className="text-[#9d9ca1] text-xl leading-7">
+            <p className="text-[#9d9ca1] text-base sm:text-xl leading-6 sm:leading-7">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
               enim ad minim veniam, quis nostrud exercitation ullamco laboris

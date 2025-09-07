@@ -5,7 +5,7 @@ import { ThemeStyle } from "@/components/theme/theme-style";
 import { Button } from "@/components/ui/button";
 import { useCallback, useEffect, useState } from "react";
 import { themes } from "@/lib/themes";
-import { CardBlock } from "@/components/block/card-block";
+import { CardBlock } from "./card-block";
 import { Header } from "@/components/ui/header";
 
 export default function Page() {

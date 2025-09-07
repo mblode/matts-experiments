@@ -1,7 +1,7 @@
 "use client";
-import { AbsoluteMapLabel } from "../map/absolute-map-label";
-import { CustomMapDot } from "../map/custom-map-dot";
-import { GetDirectionsButton } from "../map/get-directions-button";
+import { AbsoluteMapLabel } from "./absolute-map-label";
+import { CustomMapDot } from "./custom-map-dot";
+import { GetDirectionsButton } from "./get-directions-button";
 import NextImage from "next/image";
 
 export const MapBlock = () => {
@@ -14,11 +14,10 @@ export const MapBlock = () => {
 
   return (
     <a
-      className="relative block size-full overflow-hidden rounded-3xl bg-white"
+      className="relative block w-full max-w-[400px] overflow-hidden rounded-3xl bg-white"
       href="https://www.google.com/maps/place/Melbourne+VIC/data=!4m2!3m1!1s0x6ad646b5d2ba4df7:0x4045675218ccd90?sa=X&ved=1t:242&ictx=111"
       target="_blank"
       style={{
-        width: WIDTH,
         height: HEIGHT,
       }}
     >

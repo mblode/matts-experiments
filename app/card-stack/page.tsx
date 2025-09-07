@@ -1,4 +1,4 @@
-import { CardStackBlock } from "@/components/block/card-stack-block";
+import { CardStackBlock } from "./card-stack-block";
 import { Header } from "@/components/ui/header";
 
 export default function Page() {

@@ -47,67 +47,70 @@ const TabsList = React.forwardRef<
 
     if (variant === "clip-path") {
       return (
-        <div className="relative">
-          <TabsPrimitive.List
-            ref={mergeRefs(ref, listRef)}
-            className={cn(
-              "relative inline-flex items-center justify-center gap-2",
-              className,
-            )}
-            {...props}
-          >
-            {children}
-          </TabsPrimitive.List>
-
-          <div
-            aria-hidden
-            ref={containerRef}
-            className={cn(
-              "absolute inset-0 z-10 overflow-hidden transition-[clip-path] duration-300 ease-in-out pointer-events-none",
-              (!mounted || !hasInitialized) && "opacity-0",
-            )}
-            style={{
-              clipPath: hasInitialized
-                ? undefined
-                : "inset(0px 100% 0px 0% round 17px)",
-            }}
-          >
+        <div className="overflow-x-auto">
+          <div className="relative inline-block min-w-max">
             <TabsPrimitive.List
+              ref={mergeRefs(ref, listRef)}
               className={cn(
-                "inline-flex items-center justify-center gap-2",
-                floatingBgClassName || "bg-blue-500",
+                "relative inline-flex items-center justify-start gap-2",
                 className,
               )}
+              {...props}
             >
-              {React.Children.map(children, (child) => {
-                if (React.isValidElement(child)) {
-                  return React.cloneElement(child as React.ReactElement<any>, {
-                    className: cn(
-                      (child.props as any).className,
-                      "text-primary-foreground data-[state=active]:text-primary-foreground",
-                    ),
-                    tabIndex: -1,
-                    "aria-hidden": true,
-                  });
-                }
-                return child;
-              })}
+              {children}
             </TabsPrimitive.List>
+
+            <div
+              aria-hidden
+              ref={containerRef}
+              className={cn(
+                "absolute inset-0 z-10 overflow-hidden transition-[clip-path] duration-300 ease-in-out pointer-events-none",
+                (!mounted || !hasInitialized) && "opacity-0",
+              )}
+              style={{
+                clipPath: hasInitialized
+                  ? undefined
+                  : "inset(0px 100% 0px 0% round 17px)",
+              }}
+            >
+              <TabsPrimitive.List
+                className={cn(
+                  "inline-flex items-center justify-start gap-2",
+                  floatingBgClassName || "bg-blue-500",
+                  className,
+                )}
+              >
+                {React.Children.map(children, (child) => {
+                  if (React.isValidElement(child)) {
+                    return React.cloneElement(child as React.ReactElement<any>, {
+                      className: cn(
+                        (child.props as any).className,
+                        "text-primary-foreground data-[state=active]:text-primary-foreground",
+                      ),
+                      tabIndex: -1,
+                      "aria-hidden": true,
+                    });
+                  }
+                  return child;
+                })}
+              </TabsPrimitive.List>
+            </div>
           </div>
         </div>
       );
     }
 
     return (
-      <TabsPrimitive.List
-        ref={mergeRefs(ref, listRef)}
-        className={cn(
-          "relative isolate inline-flex h-10 items-center justify-center rounded-xl bg-card p-1 text-muted-foreground",
-          className,
-        )}
-        {...props}
-      >
-        {children}
+      <div className="overflow-x-auto">
+        <TabsPrimitive.List
+          ref={mergeRefs(ref, listRef)}
+          className={cn(
+            "relative isolate inline-flex h-10 items-center justify-start rounded-xl bg-card p-1 text-muted-foreground min-w-max",
+            className,
+          )}
+          {...props}
+        >
+          {children}
         <div
           className={cn(
             "absolute inset-y-1 left-0 -z-10 rounded-lg bg-background shadow-sm transition-all duration-300",
@@ -124,7 +127,8 @@ const TabsList = React.forwardRef<
           }}
           aria-hidden="true"
         />
-      </TabsPrimitive.List>
+        </TabsPrimitive.List>
+      </div>
     );
   },
 );
@@ -137,7 +141,7 @@ const TabsTrigger = React.forwardRef<
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      "inline-flex items-center justify-center cursor-pointer whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:text-foreground",
+      "inline-flex items-center justify-center cursor-pointer whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:text-foreground flex-shrink-0",
       className,
     )}
     {...props}

@@ -1,4 +1,4 @@
-import { IosCardsBlock } from "@/components/block/ios-cards-block";
+import { IosCardsBlock } from "./ios-cards-block";
 import { Header } from "@/components/ui/header";
 
 export default function Page() {

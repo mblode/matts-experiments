@@ -1,5 +1,5 @@
 "use client";
-import { ToastBlock } from "@/components/block/toast-block";
+import { ToastBlock } from "./toast-block";
 import { Header } from "@/components/ui/header";
 
 export default function Page() {
