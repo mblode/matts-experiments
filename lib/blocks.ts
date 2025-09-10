@@ -43,7 +43,8 @@ export const blocks: Record<string, { name: string; description: string }> = {
   },
   "card-stack": {
     name: "Stacked cards",
-    description: "An animated card stack that transforms into a grid layout on interaction",
+    description:
+      "An animated card stack that transforms into a grid layout on interaction",
   },
   expand: {
     name: "Expandable date cards",
@@ -66,5 +67,10 @@ export const blocks: Record<string, { name: string; description: string }> = {
   moon: {
     name: "Moon",
     description: "A 3D moon visualisation with accurate lunar phases",
+  },
+  "staggered-fade": {
+    name: "Staggered fade",
+    description:
+      "A block that fades in elements with a staggered delay for a smooth reveal effect",
   },
 };
