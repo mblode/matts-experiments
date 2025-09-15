@@ -17,9 +17,9 @@ const texts = [
 /**
  * Hook to cycle through texts automatically
  */
-function useTextLoop(): [string, React.RefObject<HTMLDivElement | null>] {
+function useTextLoop(): [string, React.RefObject<HTMLElement | null>] {
   const [active, setActive] = useState(texts[0]);
-  const ref = useRef<HTMLDivElement | null>(null);
+  const ref = useRef<HTMLElement | null>(null);
   const isInView = useInView(ref);
 
   useEffect(() => {
@@ -65,7 +65,7 @@ export const StaggeredFadeBlock = () => {
         >
           {/* Content that gets measured */}
           <div
-            ref={mergeRefs(measureRef, loopRef)}
+            ref={mergeRefs(measureRef, loopRef) as React.Ref<HTMLDivElement>}
             className="flex items-center gap-3 w-fit"
           >
             {/* Static checkmark */}
