@@ -50,8 +50,8 @@ export const StatusBlock = () => {
                 }}
                 transition={{
                   type: "spring",
-                  stiffness: 350,
-                  damping: 55,
+                  stiffness: 200,
+                  damping: 20,
                 }}
               >
                 <div ref={ref} className="flex items-center gap-2 w-fit">
@@ -99,8 +99,8 @@ export const StatusBlock = () => {
                               filter: "blur(0px)",
                               transition: {
                                 type: "spring",
-                                stiffness: 350,
-                                damping: 55,
+                                stiffness: 200,
+                                damping: 20,
                                 delay: index * 0.015,
                               },
                             }}
@@ -110,13 +110,13 @@ export const StatusBlock = () => {
                               transition: {
                                 type: "spring",
                                 stiffness: 500,
-                                damping: 55,
+                                damping: 20,
                               },
                             }}
                             transition={{
                               type: "spring",
-                              stiffness: 350,
-                              damping: 55,
+                              stiffness: 200,
+                              damping: 20,
                             }}
                             key={index + letter + status}
                             className="inline-block font-semibold"
@@ -139,8 +139,8 @@ export const StatusBlock = () => {
                 }}
                 transition={{
                   type: "spring",
-                  stiffness: 350,
-                  damping: 55,
+                  stiffness: 200,
+                  damping: 20,
                 }}
               >
                 <XIcon size={12} />
@@ -184,9 +184,8 @@ export const StatusBlock = () => {
                   }}
                   transition={{
                     type: "spring",
-                    stiffness: 350,
-                    damping: 25,
-                    mass: 0.8,
+                    stiffness: 200,
+                    damping: 20,
                   }}
                 >
                   {Object.entries(statuses).map(([id, { text, emoji }]) => (
