@@ -5,7 +5,6 @@ import * as PopoverPrimitive from "@radix-ui/react-popover";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { CircleDotDashedIcon, XIcon } from "lucide-react";
 import useMeasure from "react-use-measure";
-import { mergeRefs } from "@/lib/utils";
 
 const statuses = {
   vacation: { id: "vacation", text: "On vacation", emoji: "🌴" },
@@ -190,44 +189,42 @@ export const StatusBlock = () => {
                     mass: 0.8,
                   }}
                 >
-                    {Object.entries(statuses).map(([id, { text, emoji }]) => (
-                      <TooltipPrimitive.Root data-slot="tooltip">
-                        <TooltipPrimitive.Trigger
-                          data-slot="tooltip-trigger"
-                          asChild
+                  {Object.entries(statuses).map(([id, { text, emoji }]) => (
+                    <TooltipPrimitive.Root data-slot="tooltip">
+                      <TooltipPrimitive.Trigger
+                        data-slot="tooltip-trigger"
+                        asChild
+                      >
+                        <motion.button
+                          key={id}
+                          onClick={() => setStatus(id as keyof typeof statuses)}
+                          className="cursor-pointer"
+                          initial={{
+                            paddingLeft: 2,
+                            paddingRight: 2,
+                            paddingTop: 8,
+                            paddingBottom: 8,
+                          }}
+                          whileHover={{ paddingTop: 4, paddingBottom: 12 }}
+                          whileTap={{ paddingTop: 4, paddingBottom: 12 }}
                         >
-                          <motion.button
-                            key={id}
-                            onClick={() =>
-                              setStatus(id as keyof typeof statuses)
-                            }
-                            className="cursor-pointer"
-                            initial={{
-                              paddingLeft: 2,
-                              paddingRight: 2,
-                              paddingTop: 8,
-                              paddingBottom: 8,
-                            }}
-                            whileHover={{ paddingTop: 4, paddingBottom: 12 }}
-                            whileTap={{ paddingTop: 4, paddingBottom: 12 }}
-                          >
-                            <div className="rounded-full size-10 flex items-center justify-center bg-muted">
-                              {emoji}
-                            </div>
-                          </motion.button>
-                        </TooltipPrimitive.Trigger>
+                          <div className="rounded-full size-10 flex items-center justify-center bg-muted">
+                            {emoji}
+                          </div>
+                        </motion.button>
+                      </TooltipPrimitive.Trigger>
 
-                        <TooltipPrimitive.Portal>
-                          <TooltipPrimitive.Content
-                            sideOffset={8}
-                            data-slot="tooltip-content"
-                            className="bg-muted text-muted-foreground animate-in duration-300 fade-in-0 zoom-in-95 blur-in-xs data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:blur-out-xs data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:zoom-out-95 z-50 w-fit origin-(--radix-tooltip-content-transform-origin) rounded-full px-3 py-1.5 text-xs text-balance"
-                          >
-                            {text}
-                          </TooltipPrimitive.Content>
-                        </TooltipPrimitive.Portal>
-                      </TooltipPrimitive.Root>
-                    ))}
+                      <TooltipPrimitive.Portal>
+                        <TooltipPrimitive.Content
+                          sideOffset={8}
+                          data-slot="tooltip-content"
+                          className="bg-muted text-muted-foreground animate-in duration-300 fade-in-0 zoom-in-95 blur-in-xs data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:blur-out-xs data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:zoom-out-95 z-50 w-fit origin-(--radix-tooltip-content-transform-origin) rounded-full px-3 py-1.5 text-xs text-balance"
+                        >
+                          {text}
+                        </TooltipPrimitive.Content>
+                      </TooltipPrimitive.Portal>
+                    </TooltipPrimitive.Root>
+                  ))}
                 </motion.div>
               </PopoverPrimitive.Content>
             </AnimatePresence>

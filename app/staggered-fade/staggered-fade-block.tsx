@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import useMeasure from "react-use-measure";
 import { AnimatePresence, motion, useInView } from "motion/react";
 import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
+import mergeRefs from "merge-refs";
 
 const texts = [
   "Line graph",
@@ -37,21 +38,6 @@ function useTextLoop(): [string, React.RefObject<HTMLDivElement | null>] {
 }
 
 /**
- * Merge multiple refs into one
- */
-function mergeRefs<T>(refs: Array<React.Ref<T> | undefined>) {
-  return (value: T) => {
-    refs.forEach(ref => {
-      if (typeof ref === "function") {
-        ref(value);
-      } else if (ref != null) {
-        (ref as React.MutableRefObject<T | null>).current = value;
-      }
-    });
-  };
-}
-
-/**
  * StaggeredFadeBlock with dynamic width measurement
  */
 export const StaggeredFadeBlock = () => {
@@ -79,7 +65,7 @@ export const StaggeredFadeBlock = () => {
         >
           {/* Content that gets measured */}
           <div
-            ref={mergeRefs([measureRef, loopRef])}
+            ref={mergeRefs(measureRef, loopRef)}
             className="flex items-center gap-3 w-fit"
           >
             {/* Static checkmark */}
@@ -94,9 +80,9 @@ export const StaggeredFadeBlock = () => {
                   {activeText.split("").map((letter, index) => (
                     <motion.span
                       key={index + letter + activeText}
-                      initial={{ 
-                        opacity: 0, 
-                        filter: "blur(2px)" 
+                      initial={{
+                        opacity: 0,
+                        filter: "blur(2px)",
                       }}
                       animate={{
                         opacity: isExpanded ? 1 : 0.7,
