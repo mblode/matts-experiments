@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { motion, LayoutGroup } from "framer-motion";
+import { motion, LayoutGroup } from "motion/react";
 
 interface RabbitCardProps {
   id: number;

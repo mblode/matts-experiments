@@ -73,4 +73,8 @@ export const blocks: Record<string, { name: string; description: string }> = {
     description:
       "A block that fades in elements with a staggered delay for a smooth reveal effect",
   },
+  status: {
+    name: "Status",
+    description: "Set status interaction",
+  },
 };

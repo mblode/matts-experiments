@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useLayoutEffect } from "react";
 import { Drawer } from "vaul";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import {
   X,
   Lock,
@@ -181,7 +181,12 @@ export function MultiStageSheet({
                     exit="hidden"
                     variants={contentVariants}
                     transition={{
-                      ease: [0.26, 0.08, 0.25, 1] as [number, number, number, number],
+                      ease: [0.26, 0.08, 0.25, 1] as [
+                        number,
+                        number,
+                        number,
+                        number,
+                      ],
                       duration: 0.22,
                     }}
                   >
@@ -231,7 +236,12 @@ export function MultiStageSheet({
                     variants={contentVariants}
                     custom={stage}
                     transition={{
-                      ease: [0.26, 0.08, 0.25, 1] as [number, number, number, number],
+                      ease: [0.26, 0.08, 0.25, 1] as [
+                        number,
+                        number,
+                        number,
+                        number,
+                      ],
                       duration: 0.27,
                     }}
                   >
@@ -293,7 +303,12 @@ export function MultiStageSheet({
                     variants={contentVariants}
                     custom={stage}
                     transition={{
-                      ease: [0.26, 0.08, 0.25, 1] as [number, number, number, number],
+                      ease: [0.26, 0.08, 0.25, 1] as [
+                        number,
+                        number,
+                        number,
+                        number,
+                      ],
                       duration: 0.27,
                     }}
                   >
@@ -355,7 +370,12 @@ export function MultiStageSheet({
                     variants={contentVariants}
                     custom={stage}
                     transition={{
-                      ease: [0.26, 0.08, 0.25, 1] as [number, number, number, number],
+                      ease: [0.26, 0.08, 0.25, 1] as [
+                        number,
+                        number,
+                        number,
+                        number,
+                      ],
                       duration: stage === "remove" ? 0.15 : 0.27,
                     }}
                   >

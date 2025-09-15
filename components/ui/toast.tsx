@@ -9,7 +9,7 @@ import React, {
   useRef,
   memo,
 } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Button } from "./button";
@@ -55,7 +55,9 @@ function PendingView() {
           />
         </svg>
       </div>
-      <span className="text-base font-semibold text-[#4EAFFF] whitespace-nowrap">Loading...</span>
+      <span className="text-base font-semibold text-[#4EAFFF] whitespace-nowrap">
+        Loading...
+      </span>
     </div>
   );
 }
@@ -63,7 +65,7 @@ function PendingView() {
 function ErrorView() {
   return (
     <div className="flex h-[48px] items-center justify-center gap-2.5 px-5 bg-[#FFE4E3] rounded-full">
-      <motion.div 
+      <motion.div
         className="inline-flex items-center justify-center w-5 h-5 flex-shrink-0"
         initial={{ x: 0 }}
         animate={{
@@ -82,15 +84,17 @@ function ErrorView() {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <path 
-            fillRule="evenodd" 
-            clipRule="evenodd" 
-            d="M8.6026 4.07088C10.1677 1.5532 13.8318 1.5532 15.3969 4.07088L21.4996 13.8884C23.156 16.5529 21.2399 20.0001 18.1025 20.0001H5.89699C2.75962 20.0001 0.843525 16.5529 2.49985 13.8884L8.6026 4.07088ZM12 8C12.5523 8 13 8.44771 13 9V12C13 12.5523 12.5523 13 12 13C11.4477 13 11 12.5523 11 12V9C11 8.44771 11.4477 8 12 8ZM10.75 15C10.75 14.3096 11.3096 13.75 12 13.75C12.6904 13.75 13.25 14.3096 13.25 15C13.25 15.6904 12.6904 16.25 12 16.25C11.3096 16.25 10.75 15.6904 10.75 15Z" 
+          <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M8.6026 4.07088C10.1677 1.5532 13.8318 1.5532 15.3969 4.07088L21.4996 13.8884C23.156 16.5529 21.2399 20.0001 18.1025 20.0001H5.89699C2.75962 20.0001 0.843525 16.5529 2.49985 13.8884L8.6026 4.07088ZM12 8C12.5523 8 13 8.44771 13 9V12C13 12.5523 12.5523 13 12 13C11.4477 13 11 12.5523 11 12V9C11 8.44771 11.4477 8 12 8ZM10.75 15C10.75 14.3096 11.3096 13.75 12 13.75C12.6904 13.75 13.25 14.3096 13.25 15C13.25 15.6904 12.6904 16.25 12 16.25C11.3096 16.25 10.75 15.6904 10.75 15Z"
             fill="#FF403F"
           />
         </svg>
       </motion.div>
-      <span className="text-base font-semibold text-[#FF403F] whitespace-nowrap">Error occurred</span>
+      <span className="text-base font-semibold text-[#FF403F] whitespace-nowrap">
+        Error occurred
+      </span>
     </div>
   );
 }
@@ -106,15 +110,17 @@ function SuccessView() {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <path 
-            fillRule="evenodd" 
-            clipRule="evenodd" 
-            d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM15.774 10.1333C16.1237 9.70582 16.0607 9.0758 15.6332 8.72607C15.2058 8.37635 14.5758 8.43935 14.226 8.86679L10.4258 13.5116L9.20711 12.2929C8.81658 11.9024 8.18342 11.9024 7.79289 12.2929C7.40237 12.6834 7.40237 13.3166 7.79289 13.7071L9.79289 15.7071C9.99267 15.9069 10.2676 16.0129 10.5498 15.9988C10.832 15.9847 11.095 15.8519 11.274 15.6333L15.774 10.1333Z" 
+          <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM15.774 10.1333C16.1237 9.70582 16.0607 9.0758 15.6332 8.72607C15.2058 8.37635 14.5758 8.43935 14.226 8.86679L10.4258 13.5116L9.20711 12.2929C8.81658 11.9024 8.18342 11.9024 7.79289 12.2929C7.40237 12.6834 7.40237 13.3166 7.79289 13.7071L9.79289 15.7071C9.99267 15.9069 10.2676 16.0129 10.5498 15.9988C10.832 15.9847 11.095 15.8519 11.274 15.6333L15.774 10.1333Z"
             fill="#35C759"
           />
         </svg>
       </div>
-      <span className="text-base font-semibold text-[#35C759] whitespace-nowrap">Success!</span>
+      <span className="text-base font-semibold text-[#35C759] whitespace-nowrap">
+        Success!
+      </span>
     </div>
   );
 }

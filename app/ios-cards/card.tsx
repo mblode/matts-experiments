@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 type Props = {
   id: string;
@@ -44,8 +44,12 @@ export const Card = ({
             className="absolute top-3 sm:top-4 left-3 sm:left-4 max-w-[250px] sm:max-w-[300px]"
             layoutId={`title-container-${id}`}
           >
-            <span className="text-white text-xs sm:text-sm uppercase">{category}</span>
-            <h2 className="text-white my-1 sm:my-2 text-lg sm:text-xl font-semibold">{title}</h2>
+            <span className="text-white text-xs sm:text-sm uppercase">
+              {category}
+            </span>
+            <h2 className="text-white my-1 sm:my-2 text-lg sm:text-xl font-semibold">
+              {title}
+            </h2>
           </motion.div>
         </motion.div>
       </div>

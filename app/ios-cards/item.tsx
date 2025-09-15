@@ -1,7 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
-import Image from "next/image";
+import { motion } from "motion/react";
 import { items } from "./data";
 import { X } from "lucide-react";
 
@@ -41,7 +40,7 @@ export function Item({ id, setSelectedId }: ItemProps) {
           >
             <X className="w-5 h-5 text-white" />
           </motion.button>
-          
+
           <motion.div
             className="relative h-[250px] sm:h-[420px] w-full overflow-hidden"
             layoutId={`card-image-container-${id}`}
@@ -59,8 +58,12 @@ export function Item({ id, setSelectedId }: ItemProps) {
             className="absolute top-4 sm:top-[30px] left-4 sm:left-[30px] max-w-[300px] z-10"
             layoutId={`title-container-${id}`}
           >
-            <span className="text-white text-xs sm:text-sm uppercase">{category}</span>
-            <h2 className="text-white my-1 sm:my-2 text-xl sm:text-2xl font-semibold">{title}</h2>
+            <span className="text-white text-xs sm:text-sm uppercase">
+              {category}
+            </span>
+            <h2 className="text-white my-1 sm:my-2 text-xl sm:text-2xl font-semibold">
+              {title}
+            </h2>
           </motion.div>
 
           <motion.div

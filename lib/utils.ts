@@ -1,8 +1,23 @@
 import { clsx, type ClassValue } from "clsx";
+import { MutableRefObject, LegacyRef, RefCallback } from "react";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
+}
+
+export function mergeRefs<T = any>(
+  refs: Array<MutableRefObject<T> | LegacyRef<T> | undefined | null>,
+): RefCallback<T> {
+  return (value) => {
+    refs.forEach((ref) => {
+      if (typeof ref === "function") {
+        ref(value);
+      } else if (ref != null) {
+        (ref as MutableRefObject<T | null>).current = value;
+      }
+    });
+  };
 }
 
 export const imageLoader = ({
