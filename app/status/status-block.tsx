@@ -43,10 +43,8 @@ export const StatusBlock = () => {
             >
               <motion.div
                 animate={{
-                  width:
-                    bounds.width > 0
-                      ? bounds.width - (status ? 0 : 20)
-                      : "auto",
+                  width: bounds.width > 0 ? bounds.width : "auto",
+                  marginRight: bounds.width > 0 ? 0 : 20,
                 }}
                 transition={{
                   type: "spring",
@@ -59,11 +57,6 @@ export const StatusBlock = () => {
                     {status ? (
                       <motion.div
                         key={status}
-                        initial={{
-                          opacity: 0,
-                          scale: 0.5,
-                          filter: "blur(7px)",
-                        }}
                         animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
                         exit={{ opacity: 0, scale: 0.5, filter: "blur(7px)" }}
                         transition={{ duration: 0.2 }}
@@ -74,11 +67,6 @@ export const StatusBlock = () => {
                     ) : (
                       <motion.div
                         key="default"
-                        initial={{
-                          opacity: 0,
-                          scale: 0.5,
-                          filter: "blur(7px)",
-                        }}
                         animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
                         exit={{ opacity: 0, scale: 0.5, filter: "blur(7px)" }}
                         transition={{ duration: 0.2 }}
@@ -110,6 +98,7 @@ export const StatusBlock = () => {
                               transition: {
                                 type: "spring",
                                 stiffness: 500,
+                                damping: 55,
                               },
                             }}
                             transition={{
