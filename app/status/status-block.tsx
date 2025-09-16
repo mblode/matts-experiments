@@ -132,6 +132,7 @@ export const StatusBlock = () => {
 
               <motion.div
                 className="ml-2 flex rounded-full text-background bg-muted-foreground/50 items-center justify-center size-4 transition-colors ease duration-200 hover:bg-muted-foreground"
+                initial={{ opacity: 0, filter: "blur(2px)" }}
                 animate={{
                   opacity: status ? 1 : 0,
                   filter: status ? "blur(0px)" : "blur(2px)",
