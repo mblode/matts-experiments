@@ -43,8 +43,10 @@ export const StatusBlock = () => {
             >
               <motion.div
                 animate={{
-                  width: bounds.width > 0 ? bounds.width : "auto",
-                  marginRight: bounds.width > 0 ? 0 : 20,
+                  width:
+                    bounds.width > 0
+                      ? bounds.width - (status ? 0 : 20)
+                      : "auto",
                 }}
                 transition={{
                   type: "spring",
