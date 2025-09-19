@@ -14,7 +14,7 @@ export const TableBlock = () => {
       transition: {
         duration: 0.5,
         delay: 0.07 * row + 0.1 * column,
-        ease: [0.65, 0, 0.35, 1],
+        ease: [0.65, 0, 0.35, 1] as [number, number, number, number],
       },
     };
   }
@@ -214,7 +214,7 @@ export const TableBlock = () => {
     ],
   };
 
-  const tableData = tables[activeTable];
+  const tableData = tables[activeTable as keyof typeof tables];
 
   const getBadgeStyles = (variant: string) => {
     const styles = {
@@ -224,7 +224,7 @@ export const TableBlock = () => {
       purple: "border-[#E8DDFE] bg-[#F5EEFF] text-[#4711BB]",
       cyan: "border-[#C3EDF9] bg-[#DAF4FC] text-[#0A5A70]",
     };
-    return styles[variant] || styles.blue;
+    return styles[variant as keyof typeof styles] || styles.blue;
   };
 
   const renderCellContent = (cell: any, rowIndex: number, colIndex: number) => {
