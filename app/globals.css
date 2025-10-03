@@ -551,3 +551,245 @@
     transform: rotate(360deg);
   }
 }
+
+@keyframes commuting-light {
+  0% {
+    opacity: 0.5;
+    transform: rotate(-50deg);
+  }
+  50% {
+    opacity: 0.4;
+  }
+  60% {
+    opacity: 0.7;
+  }
+  63% {
+    opacity: 0.7;
+  }
+  70% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0.5;
+    transform: rotate(-50deg) skew(5deg) scaleX(1.4) scaleY(1.2);
+  }
+}
+
+@keyframes commuting-grain {
+  0% {
+    transform: translateY(2rem);
+  }
+  10% {
+    transform: translate(-1rem, -2rem);
+  }
+  20% {
+    transform: translate(-4rem, 1rem);
+  }
+  30% {
+    transform: translate(4.5rem, -4.5rem);
+  }
+  40% {
+    transform: translate(-1rem, 3.5rem);
+  }
+  50% {
+    transform: translate(-4.5rem, -2rem);
+  }
+  60% {
+    transform: translate(1rem, 3rem);
+  }
+  70% {
+    transform: translate(3.5rem, -4rem);
+  }
+  80% {
+    transform: translate(-4.5rem, 0.5rem);
+  }
+  90% {
+    transform: translate(3rem, -2.5rem);
+  }
+  100% {
+    transform: translate(-3.5rem);
+  }
+}
+
+@keyframes commuting-light-2 {
+  0%,
+  100% {
+    opacity: 0.2;
+    filter: blur(4px);
+    transform: rotate(20deg) skew(20deg);
+  }
+  30% {
+    opacity: 0.2;
+    filter: blur(6px);
+    transform: rotate(20deg) skew(28deg) translateY(-30px) scale(1.1);
+  }
+  60% {
+    opacity: 0.5;
+  }
+  63% {
+    opacity: 0.5;
+  }
+  70% {
+    opacity: 0.2;
+    filter: blur(7px);
+  }
+}
+
+.commuting-container {
+  width: 100vw;
+  height: 100dvh;
+  background: linear-gradient(#3a3939, #2a2929);
+  pointer-events: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.commuting-light {
+  mix-blend-mode: plus-lighter;
+  filter: blur(10px);
+  transform-origin: 0 0;
+  pointer-events: none;
+  background: conic-gradient(
+    from 60deg,
+    rgba(217, 217, 217, 0) 28.33%,
+    rgba(202, 89, 2, 0.4) 41.31%,
+    rgba(0, 250, 3, 0) 90%
+  );
+  border-radius: 50%;
+  width: 1000px;
+  height: 2000px;
+  animation: 8s ease-in-out 3s infinite alternate commuting-light;
+  position: fixed;
+  top: -300px;
+  left: -600px;
+  transform: rotate(-50deg);
+}
+
+.commuting-grain {
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  width: 2000px;
+  height: 2000px;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.commuting-grain::before {
+  content: "";
+  opacity: 0.16;
+  pointer-events: none;
+  background-image: url(https://upload.wikimedia.org/wikipedia/commons/5/5c/Image_gaussian_noise_example.png);
+  width: calc(200% + 20rem);
+  height: calc(200% + 20rem);
+  transition: opacity 0.5s;
+  animation: 1s steps(2, end) infinite commuting-grain;
+  position: fixed;
+  top: -10rem;
+  left: -10rem;
+}
+
+.commuting-circular-light {
+  pointer-events: none;
+  mix-blend-mode: plus-lighter;
+  filter: blur(4px);
+  transform-origin: 0 0;
+  background: conic-gradient(
+    rgba(217, 217, 217, 0) 8.33%,
+    rgba(202, 119, 2, 0.757) 41.31%,
+    rgba(0, 250, 3, 0) 90%
+  );
+  border-radius: 50%;
+  width: 150px;
+  height: 120px;
+  animation: 8s ease-in-out 3s infinite alternate commuting-light-2;
+  position: fixed;
+  top: 180px;
+  left: 260px;
+  transform: rotate(20deg) skew(20deg);
+}
+
+.commuting-artifact-top {
+  pointer-events: none;
+  mix-blend-mode: plus-lighter;
+  filter: blur(5px);
+  transform-origin: 0 0;
+  background: conic-gradient(
+    rgba(217, 217, 217, 0) 8.33%,
+    rgba(202, 119, 2, 0.557) 41.31%,
+    rgba(0, 250, 3, 0) 90%
+  );
+  border-radius: 50%;
+  width: 50px;
+  height: 20px;
+  animation: 8s ease-in-out 3s infinite alternate commuting-light-2;
+  position: fixed;
+  top: 100px;
+  left: 600px;
+  transform: rotate(20deg) skew(20deg);
+}
+
+.commuting-circular-light-artifact {
+  pointer-events: none;
+  mix-blend-mode: plus-lighter;
+  filter: blur(5px);
+  transform-origin: 0 0;
+  background: conic-gradient(
+    from 280deg,
+    rgba(217, 217, 217, 0) 8.33%,
+    rgba(202, 119, 2, 0.557) 41.31%,
+    rgba(0, 250, 3, 0) 90%
+  );
+  border-radius: 50%;
+  width: 50px;
+  height: 60px;
+  animation: 8s ease-in-out 3s infinite alternate commuting-light-2;
+  position: fixed;
+  top: 230px;
+  left: 300px;
+  transform: rotate(20deg) skew(20deg);
+}
+
+.commuting-tiny-circular-light {
+  pointer-events: none;
+  mix-blend-mode: plus-lighter;
+  filter: blur(4px);
+  transform-origin: 0 0;
+  background: conic-gradient(
+    rgba(217, 217, 217, 0) 8.33%,
+    rgba(202, 119, 2, 0.46) 11.31%,
+    rgba(0, 250, 3, 0) 90%
+  );
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  animation: 8s ease-in-out 3s infinite alternate commuting-light-2;
+  position: fixed;
+  top: 150px;
+  left: 400px;
+  transform: rotate(20deg) skew(20deg);
+}
+
+.commuting-yummy-color-grading {
+  mix-blend-mode: color-dodge;
+  pointer-events: none;
+  background: linear-gradient(#976846, #4b2501);
+  width: 2000px;
+  height: 100dvh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  opacity: 0.3;
+}
+
+.commuting-warmth {
+  opacity: 0.3;
+  mix-blend-mode: color-dodge;
+  pointer-events: none;
+  background: linear-gradient(#976846, #4b2501);
+  width: 2000px;
+  height: 100dvh;
+  position: fixed;
+  top: 0;
+  left: 0;
+}

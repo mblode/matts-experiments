@@ -79,6 +79,12 @@ export const blocks: Record<string, { name: string; description: string }> = {
   },
   table: {
     name: "Table",
-    description: "An animated table with toggle buttons and staggered cell animations",
+    description:
+      "An animated table with toggle buttons and staggered cell animations",
+  },
+  commuting: {
+    name: "Commuting",
+    description:
+      "A block that simulates a commuting experience with a grainy background",
   },
 };
