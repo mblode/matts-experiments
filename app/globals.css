@@ -552,7 +552,7 @@
   }
 }
 
-@keyframes commuting-light {
+@keyframes lighting-light {
   0% {
     opacity: 0.5;
     transform: rotate(-50deg);
@@ -575,7 +575,7 @@
   }
 }
 
-@keyframes commuting-grain {
+@keyframes lighting-grain {
   0% {
     transform: translateY(2rem);
   }
@@ -611,7 +611,7 @@
   }
 }
 
-@keyframes commuting-light-2 {
+@keyframes lighting-light-2 {
   0%,
   100% {
     opacity: 0.2;
@@ -635,7 +635,7 @@
   }
 }
 
-.commuting-container {
+.lighting-container {
   width: 100vw;
   height: 100dvh;
   background: linear-gradient(#3a3939, #2a2929);
@@ -644,7 +644,7 @@
   overflow: hidden;
 }
 
-.commuting-light {
+.lighting-light {
   mix-blend-mode: plus-lighter;
   filter: blur(10px);
   transform-origin: 0 0;
@@ -658,14 +658,14 @@
   border-radius: 50%;
   width: 1000px;
   height: 2000px;
-  animation: 8s ease-in-out 3s infinite alternate commuting-light;
+  animation: 8s ease-in-out 3s infinite alternate lighting-light;
   position: fixed;
   top: -300px;
   left: -600px;
   transform: rotate(-50deg);
 }
 
-.commuting-grain {
+.lighting-grain {
   pointer-events: none;
   mix-blend-mode: overlay;
   width: 2000px;
@@ -675,7 +675,7 @@
   left: 0;
 }
 
-.commuting-grain::before {
+.lighting-grain::before {
   content: "";
   opacity: 0.16;
   pointer-events: none;
@@ -683,13 +683,13 @@
   width: calc(200% + 20rem);
   height: calc(200% + 20rem);
   transition: opacity 0.5s;
-  animation: 1s steps(2, end) infinite commuting-grain;
+  animation: 1s steps(2, end) infinite lighting-grain;
   position: fixed;
   top: -10rem;
   left: -10rem;
 }
 
-.commuting-circular-light {
+.lighting-circular-light {
   pointer-events: none;
   mix-blend-mode: plus-lighter;
   filter: blur(4px);
@@ -702,14 +702,14 @@
   border-radius: 50%;
   width: 150px;
   height: 120px;
-  animation: 8s ease-in-out 3s infinite alternate commuting-light-2;
+  animation: 8s ease-in-out 3s infinite alternate lighting-light-2;
   position: fixed;
   top: 180px;
   left: 260px;
   transform: rotate(20deg) skew(20deg);
 }
 
-.commuting-artifact-top {
+.lighting-artifact-top {
   pointer-events: none;
   mix-blend-mode: plus-lighter;
   filter: blur(5px);
@@ -722,14 +722,14 @@
   border-radius: 50%;
   width: 50px;
   height: 20px;
-  animation: 8s ease-in-out 3s infinite alternate commuting-light-2;
+  animation: 8s ease-in-out 3s infinite alternate lighting-light-2;
   position: fixed;
   top: 100px;
   left: 600px;
   transform: rotate(20deg) skew(20deg);
 }
 
-.commuting-circular-light-artifact {
+.lighting-circular-light-artifact {
   pointer-events: none;
   mix-blend-mode: plus-lighter;
   filter: blur(5px);
@@ -743,14 +743,14 @@
   border-radius: 50%;
   width: 50px;
   height: 60px;
-  animation: 8s ease-in-out 3s infinite alternate commuting-light-2;
+  animation: 8s ease-in-out 3s infinite alternate lighting-light-2;
   position: fixed;
   top: 230px;
   left: 300px;
   transform: rotate(20deg) skew(20deg);
 }
 
-.commuting-tiny-circular-light {
+.lighting-tiny-circular-light {
   pointer-events: none;
   mix-blend-mode: plus-lighter;
   filter: blur(4px);
@@ -763,14 +763,14 @@
   border-radius: 50%;
   width: 80px;
   height: 80px;
-  animation: 8s ease-in-out 3s infinite alternate commuting-light-2;
+  animation: 8s ease-in-out 3s infinite alternate lighting-light-2;
   position: fixed;
   top: 150px;
   left: 400px;
   transform: rotate(20deg) skew(20deg);
 }
 
-.commuting-yummy-color-grading {
+.lighting-yummy-color-grading {
   mix-blend-mode: color-dodge;
   pointer-events: none;
   background: linear-gradient(#976846, #4b2501);
@@ -782,7 +782,7 @@
   opacity: 0.3;
 }
 
-.commuting-warmth {
+.lighting-warmth {
   opacity: 0.3;
   mix-blend-mode: color-dodge;
   pointer-events: none;
