@@ -14,17 +14,19 @@ export default function Page() {
         <h1 className="mb-8 text-4xl font-bold">Matt's experiments</h1>
 
         <div className="grid gap-4 md:grid-cols-2">
-          {Object.entries(blocks).map(([key, block]) => (
-            <Link key={key} href={`/${key}`} className="flex w-full">
-              <Card className="flex-1">
-                <CardHeader>
-                  <CardTitle>{block.name}</CardTitle>
+          {Object.entries(blocks)
+            .reverse()
+            .map(([key, block]) => (
+              <Link key={key} href={`/${key}`} className="flex w-full">
+                <Card className="flex-1">
+                  <CardHeader>
+                    <CardTitle>{block.name}</CardTitle>
 
-                  <CardDescription>{block.description}</CardDescription>
-                </CardHeader>
-              </Card>
-            </Link>
-          ))}
+                    <CardDescription>{block.description}</CardDescription>
+                  </CardHeader>
+                </Card>
+              </Link>
+            ))}
         </div>
 
         <footer className="mt-8 py-8 px-4 border-t border-border text-center">
