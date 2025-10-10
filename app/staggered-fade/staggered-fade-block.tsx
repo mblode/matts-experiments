@@ -127,19 +127,6 @@ export const StaggeredFadeBlock = () => {
           )}
         </div>
       </div>
-
-      {/* Dot indicator */}
-      <motion.div
-        className="absolute -right-2 -top-2 w-2 h-2 bg-green-500 rounded-full"
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{
-          delay: 0.3,
-          type: "spring",
-          stiffness: 350,
-          damping: 55,
-        }}
-      />
     </div>
   );
 };
