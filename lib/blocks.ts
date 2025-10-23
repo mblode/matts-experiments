@@ -87,4 +87,8 @@ export const blocks: Record<string, { name: string; description: string }> = {
     description:
       "A block that simulates a lighting experience with a grainy background",
   },
+  "password-strength": {
+    name: "Password strength",
+    description: "Animated password strength indicator",
+  },
 };

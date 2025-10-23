@@ -1,17 +1,7 @@
 "use client";
 
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  memo,
-} from "react";
+import React, { createContext, useState, useLayoutEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import Image from "next/image";
-import { cn } from "@/lib/utils";
 import { Button } from "./button";
 
 interface DynamicIslandContextType {
@@ -19,17 +9,10 @@ interface DynamicIslandContextType {
   setState: (state: string) => void;
 }
 
-const ToastContext = createContext<DynamicIslandContextType>({
+const ToastLoadingContext = createContext<DynamicIslandContextType>({
   state: "idle",
   setState: () => {},
 });
-
-const springTransition = {
-  type: "spring" as const,
-  bounce: 0.35,
-};
-
-const useDynamicIsland = () => useContext(ToastContext);
 
 function PendingView() {
   return (
@@ -140,7 +123,7 @@ const transitionVariants: Record<string, any> = {
   "idle-listening": { scale: 0.4, y: -36 },
 };
 
-export const Toast = () => {
+export const ToastLoading = () => {
   const [state, setState] = useState("idle");
   const [transition, setTransition] = useState<any>();
   const [bounceValue, setBounceValue] = useState(1);
@@ -185,7 +168,7 @@ export const Toast = () => {
   };
 
   return (
-    <ToastContext.Provider value={{ state, setState }}>
+    <ToastLoadingContext.Provider value={{ state, setState }}>
       <div className="flex h-[400px] w-full items-center justify-center bg-white border border-border">
         <div className="flex flex-col items-center gap-8">
           <div className="relative">
@@ -253,6 +236,6 @@ export const Toast = () => {
           </div>
         </div>
       </div>
-    </ToastContext.Provider>
+    </ToastLoadingContext.Provider>
   );
 };

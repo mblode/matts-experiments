@@ -1,9 +1,9 @@
-import { Toast } from "@/components/ui/toast";
+import { ToastLoading } from "@/components/ui/toast";
 
 export const ToastBlock = () => {
   return (
     <div>
-      <Toast />
+      <ToastLoading />
     </div>
   );
 };
