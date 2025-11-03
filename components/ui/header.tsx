@@ -3,8 +3,8 @@
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { blocks } from "@/lib/blocks";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 type Props = {
   id: keyof typeof blocks;
@@ -12,6 +12,16 @@ type Props = {
 };
 
 export const Header = ({ id, className }: Props) => {
+  const router = useRouter();
+
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      router.back();
+    } else {
+      router.push('/');
+    }
+  };
+
   return (
     <div className={cn("mb-8", className)}>
       <div className="flex items-center gap-2">
@@ -19,11 +29,9 @@ export const Header = ({ id, className }: Props) => {
           variant="ghost"
           size="icon"
           className="mb-4 rounded text-current! hover:text-foreground!"
-          asChild
+          onClick={handleBack}
         >
-          <Link href="/">
-            <ArrowLeft className="size-4 text-current" />
-          </Link>
+          <ArrowLeft className="size-4 text-current" />
         </Button>
 
         <h1 className="mb-4 text-4xl font-bold">{blocks[id].name}</h1>

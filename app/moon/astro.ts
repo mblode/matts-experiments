@@ -392,9 +392,9 @@ export function solveMoon(i: Inputs): MoonSolution {
 }
 
 /**
- * Reverse geocode helper (optional). Keeps previous behaviour.
- * Note: This function is called from a Client Component, so it cannot use "use cache".
- * For caching examples, see the cache-demo page.
+ * Reverse geocode helper (legacy - not cached).
+ * @deprecated Use getCachedLocationName from ./actions.ts instead for cached geocoding.
+ * This function remains for backward compatibility but is not optimized with cache.
  */
 export async function getLocationName(
   lat: number,

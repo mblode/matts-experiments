@@ -91,6 +91,7 @@ export const PasswordInput = React.forwardRef<
           ref={ref}
           value={value}
           onChange={handleChange}
+          data-1p-ignore
           {...props}
         />
         <button

@@ -1,7 +1,8 @@
 "use client";
 import React, { useMemo, useState, useEffect } from "react";
 import { MoonScene } from "./moon-scene";
-import { Inputs, solveMoon, getLocationName } from "./astro";
+import { Inputs, solveMoon } from "./astro";
+import { getCachedLocationName } from "./actions";
 import { create } from "zustand";
 
 type Store = {
@@ -60,8 +61,8 @@ export const MoonBlock = () => {
         const newLat = position.coords.latitude;
         const newLon = position.coords.longitude;
 
-        // Get location name
-        const name = await getLocationName(newLat, newLon);
+        // Get location name (cached server action)
+        const name = await getCachedLocationName(newLat, newLon);
 
         set({
           lat: newLat,

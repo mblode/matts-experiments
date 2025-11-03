@@ -2,102 +2,102 @@ export const blocks: Record<string, { name: string; description: string }> = {
   "animated-button": {
     name: "Animated subscribe button",
     description:
-      "A toggle button that morphs seamlessly between follow and subscribed states",
+      "Toggle button that smoothly transitions between follow and subscribed states",
   },
   "shuffle-theme": {
     name: "Theme shuffler",
     description:
-      "Cycle through vibrant visual themes with randomised backgrounds and card styles",
+      "Scroll-animated cards with multiple themed color schemes and backgrounds",
   },
   faq: {
     name: "FAQ accordion",
-    description: "An expandable FAQ section with fluid accordion animations",
+    description: "Expandable FAQ section with smooth accordion animations",
   },
   sheet: {
     name: "Bottom sheet",
-    description: "A multi-stage draggable modal with intuitive swipe gestures",
+    description: "Multi-stage draggable modal with swipe gestures",
   },
   tabs: {
     name: "Tab navigation",
     description:
-      "A clean tabbed interface for organising content into distinct sections",
+      "Tabbed interface for organizing content into sections",
   },
   toast: {
     name: "Toast notifications",
     description:
-      "Temporary notification pop-ups with customisable styles and animations",
+      "Temporary notification pop-ups with customizable styles and animations",
   },
   "ios-cards": {
     name: "iOS-style cards",
-    description: "Native iOS-inspired cards with polished transitions",
+    description: "iOS-inspired cards with smooth transitions",
   },
   "dynamic-island": {
     name: "Dynamic island",
     description:
-      "An iPhone-style dynamic island with expandable states and fluid morphing effects",
+      "iPhone-style dynamic island with expandable states and morphing animations",
   },
   map: {
     name: "Interactive map",
     description:
-      "A Mapbox-powered location viewer with custom markers and navigation controls",
+      "Mapbox-powered map with custom markers and navigation controls",
   },
   "card-stack": {
     name: "Stacked cards",
     description:
-      "An animated card stack that transforms into a grid layout on interaction",
+      "Three-card stack that expands into a grid layout on click",
   },
   expand: {
     name: "Expandable date cards",
     description:
-      "Interactive date cards that reveal additional details with smooth transitions",
+      "Date cards that expand to reveal additional details on click",
   },
   preview: {
     name: "Preview block",
     description:
-      "An interactive preview component that expands to show more content",
+      "Preview component that expands to show more content",
   },
   sky: {
     name: "Sky",
-    description: "An interactive sky animation with dynamic transitions",
+    description: "Scroll-driven sky gradient transitioning through sunrise, day, sunset, and night with animated stars",
   },
   album: {
     name: "Album",
-    description: "An interactive album viewer with smooth transitions",
+    description: "Interactive vinyl record player that toggles between spinning record and album cover",
   },
   moon: {
     name: "Moon",
-    description: "A 3D moon visualisation with accurate lunar phases",
+    description: "3D moon with accurate lunar phases and NASA textures",
   },
   "staggered-fade": {
     name: "Staggered fade",
     description:
-      "A block that fades in elements with a staggered delay for a smooth reveal effect",
+      "Auto-cycling text with letter-by-letter fade animations",
   },
   status: {
     name: "Status",
-    description: "Set status interaction",
+    description: "Popover menu to set user status with animated emoji icons",
   },
   table: {
     name: "Table",
     description:
-      "An animated table with toggle buttons and staggered cell animations",
+      "Animated data table with category toggle and staggered cell animations",
   },
   lighting: {
     name: "Lighting",
     description:
-      "A block that simulates a lighting experience with a grainy background",
+      "3D window scene with mouse-controlled light beams, parallax depth, and organic noise animations",
   },
   "password-strength": {
     name: "Password strength",
-    description: "Animated password strength indicator",
-  },
-  "cache-demo": {
-    name: "Cache Components Demo",
-    description:
-      "Demonstration of Next.js 16 Cache Components with PPR, use cache, and Suspense boundaries",
+    description: "Password input with animated 3-bar strength meter and color-coded feedback",
   },
   controls: {
     name: "Controls",
-    description: "Interactive controls for customizing UI elements",
+    description: "Design system playground with color and layout controls",
+  },
+  dither: {
+    name: "Dither",
+    description:
+      "3D asteroid shooter game with Obra Dinn-style dithering effects",
   },
 };
