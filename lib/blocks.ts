@@ -91,4 +91,13 @@ export const blocks: Record<string, { name: string; description: string }> = {
     name: "Password strength",
     description: "Animated password strength indicator",
   },
+  "cache-demo": {
+    name: "Cache Components Demo",
+    description:
+      "Demonstration of Next.js 16 Cache Components with PPR, use cache, and Suspense boundaries",
+  },
+  controls: {
+    name: "Controls",
+    description: "Interactive controls for customizing UI elements",
+  },
 };

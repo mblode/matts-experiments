@@ -330,17 +330,9 @@ export function solveMoon(i: Inputs): MoonSolution {
     Math.sin(elongationRad), // Z: varies to create side lighting for quarters
   ];
 
-  // DEBUG: Log elongation calculation more frequently to catch discontinuities
-  if (Math.random() < 0.02) {
-    console.log("🔄 Elongation Debug:", {
-      date: validDate.toISOString().slice(0, 16),
-      phaseAngle: phaseAngleDeg.toFixed(1) + "°",
-      isWaxing,
-      elongation: elongationDeg.toFixed(1) + "°",
-      sunDir: `[${sunDir[0].toFixed(2)}, ${sunDir[1].toFixed(2)}, ${sunDir[2].toFixed(2)}]`,
-      illumination: (illumFraction * 100).toFixed(1) + "%",
-    });
-  }
+  // DEBUG: Elongation calculation debug logging disabled for Cache Components compatibility
+  // Math.random() cannot be used in Client Components with cacheComponents enabled
+  // To enable debugging, wrap the component in a Suspense boundary or use a different logging approach
 
   // STEP 11: PHASE NAMING HEURISTICS
   // ===============================
@@ -401,6 +393,8 @@ export function solveMoon(i: Inputs): MoonSolution {
 
 /**
  * Reverse geocode helper (optional). Keeps previous behaviour.
+ * Note: This function is called from a Client Component, so it cannot use "use cache".
+ * For caching examples, see the cache-demo page.
  */
 export async function getLocationName(
   lat: number,
