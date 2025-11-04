@@ -405,7 +405,7 @@
 
   @media (max-width: 1023px) {
     /* All fluid spacing and dimensions automatically scale with this */
-    --control-scale: 0.67;
+    --control-scale: 0.6;
   }
 }
 
