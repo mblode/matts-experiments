@@ -310,15 +310,25 @@
 
   /* Control dimensions - scales with --control-scale */
   --control-scale: 1;
-  --control-outer-size: calc(204px * var(--control-scale)); /* 204px -> 102px (fixed rounding) */
+  --control-outer-size: calc(
+    204px * var(--control-scale)
+  ); /* 204px -> 102px (fixed rounding) */
   --control-padding: var(--spacing-fluid-4); /* 16px -> 8px */
   --control-marker-size: var(--spacing-fluid-6); /* 24px -> 12px */
-  --control-marker-dot-size: calc(14px * var(--control-scale)); /* 14px -> 7px */
-  --control-marker-border-width: calc(2.5px * var(--control-scale)); /* 2.5px -> 1.25px */
-  --control-inner-size: calc(var(--control-outer-size) - 2 * var(--control-padding));
+  --control-marker-dot-size: calc(
+    14px * var(--control-scale)
+  ); /* 14px -> 7px */
+  --control-marker-border-width: calc(
+    2.5px * var(--control-scale)
+  ); /* 2.5px -> 1.25px */
+  --control-inner-size: calc(
+    var(--control-outer-size) - 2 * var(--control-padding)
+  );
   --control-container-padding: var(--spacing-fluid-4); /* 16px -> 8px */
   --control-bottom-spacing: var(--spacing-fluid-8); /* 32px -> 16px */
-  --control-container-max-width: calc(676px * var(--control-scale)); /* 676px -> 338px */
+  --control-container-max-width: calc(
+    676px * var(--control-scale)
+  ); /* 676px -> 338px */
 
   /* Color control dimensions - using Tailwind spacing scale */
   --color-row-height: var(--spacing-fluid-9); /* 36px -> 18px */
@@ -326,17 +336,29 @@
   --color-cell-radius: var(--spacing-fluid-4_5); /* 18px -> 9px */
   --color-cell-min-size: var(--spacing-fluid-9); /* 36px -> 18px */
   --saturation-width: var(--spacing-fluid-18); /* 72px -> 36px */
-  --saturation-level-height: var(--spacing-fluid-7); /* 28px -> 14px (fixed rounding) */
+  --saturation-level-height: var(
+    --spacing-fluid-7
+  ); /* 28px -> 14px (fixed rounding) */
   --saturation-radius: var(--spacing-fluid-2_5); /* 10px -> 5px */
 
   /* Fluid border radius - scales with --control-scale */
   --border-radius-fluid-0: 0px;
   --border-radius-fluid-16: calc(16px * var(--control-scale)); /* 16px -> 8px */
-  --border-radius-fluid-32: calc(32px * var(--control-scale)); /* 32px -> 16px */
-  --border-radius-fluid-34: calc(34px * var(--control-scale)); /* 34px -> 17px */
-  --border-radius-fluid-48: calc(48px * var(--control-scale)); /* 48px -> 24px */
-  --border-radius-fluid-50: calc(50px * var(--control-scale)); /* 50px -> 25px */
-  --border-radius-fluid-64: calc(64px * var(--control-scale)); /* 64px -> 32px */
+  --border-radius-fluid-32: calc(
+    32px * var(--control-scale)
+  ); /* 32px -> 16px */
+  --border-radius-fluid-34: calc(
+    34px * var(--control-scale)
+  ); /* 34px -> 17px */
+  --border-radius-fluid-48: calc(
+    48px * var(--control-scale)
+  ); /* 48px -> 24px */
+  --border-radius-fluid-50: calc(
+    50px * var(--control-scale)
+  ); /* 50px -> 25px */
+  --border-radius-fluid-64: calc(
+    64px * var(--control-scale)
+  ); /* 64px -> 32px */
 
   /* Icon sizing - scales with --control-scale */
   --icon-size-fluid-8: calc(32px * var(--control-scale)); /* 32px -> 16px */
@@ -383,7 +405,7 @@
 
   @media (max-width: 1023px) {
     /* All fluid spacing and dimensions automatically scale with this */
-    --control-scale: 0.5;
+    --control-scale: 0.67;
   }
 }
 

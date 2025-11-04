@@ -469,9 +469,6 @@ export const ControlsBlock = () => {
             <motion.div
               layout
               className="flex flex-col items-center gap-2 flex-1"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, ...SPRING_CONFIG }}
             >
               <div
                 className="bg-white shadow-lg p-fluid-4 w-full"
@@ -494,6 +491,7 @@ export const ControlsBlock = () => {
                         <motion.div
                           key={row}
                           className="flex gap-fluid-3"
+                          initial={false}
                           animate={{
                             height: rowHeight,
                           }}
@@ -534,9 +532,6 @@ export const ControlsBlock = () => {
                                 {isSelected && (
                                   <motion.div
                                     className="absolute inset-0 flex items-center justify-center"
-                                    initial={{ scale: 0 }}
-                                    animate={{ scale: 1 }}
-                                    transition={SPRING_CONFIG}
                                   >
                                     <Check
                                       className="text-white relative z-10"
@@ -605,9 +600,6 @@ export const ControlsBlock = () => {
             <motion.div
               layout
               className="flex flex-col items-center gap-2"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, ...SPRING_CONFIG }}
             >
               <div
                 className="bg-white shadow-lg p-fluid-4 w-full"
@@ -627,65 +619,57 @@ export const ControlsBlock = () => {
                     style={{ padding: `var(--control-padding)` }}
                   >
                     {/* Corner shape outlines */}
-                    <motion.div
+                    <div
                       className="absolute pointer-events-none border-4 border-gray-300"
-                      animate={{
+                      style={{
+                        top: 0,
+                        left: 0,
+                        borderLeft: `none`,
+                        borderTop: `none`,
                         width: `calc(50% - ${layoutState.gap} / 2)`,
                         height: `calc(50% - ${layoutState.gap} / 2)`,
                         borderBottomRightRadius: layoutState.cornerRadius,
+                        transition: `width 0.4s cubic-bezier(0.4, 0, 0.2, 1), height 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-bottom-right-radius 0.4s cubic-bezier(0.4, 0, 0.2, 1)`,
                       }}
+                    />
+                    <div
+                      className="absolute pointer-events-none border-4 border-gray-300"
                       style={{
                         top: 0,
-                        left: 0,
-                        borderLeft: `none`,
+                        right: 0,
+                        borderRight: `none`,
                         borderTop: `none`,
-                      }}
-                      transition={SPRING_CONFIG}
-                    />
-                    <motion.div
-                      className="absolute pointer-events-none border-4 border-gray-300"
-                      animate={{
                         width: `calc(50% - ${layoutState.gap} / 2)`,
                         height: `calc(50% - ${layoutState.gap} / 2)`,
                         borderBottomLeftRadius: layoutState.cornerRadius,
+                        transition: `width 0.4s cubic-bezier(0.4, 0, 0.2, 1), height 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-bottom-left-radius 0.4s cubic-bezier(0.4, 0, 0.2, 1)`,
                       }}
-                      style={{
-                        top: 0,
-                        right: 0,
-                        borderRight: `none`,
-                        borderTop: `none`,
-                      }}
-                      transition={SPRING_CONFIG}
                     />
-                    <motion.div
+                    <div
                       className="absolute pointer-events-none border-4 border-gray-300"
-                      animate={{
-                        width: `calc(50% - ${layoutState.gap} / 2)`,
-                        height: `calc(50% - ${layoutState.gap} / 2)`,
-                        borderTopRightRadius: layoutState.cornerRadius,
-                      }}
                       style={{
                         bottom: 0,
                         left: 0,
                         borderLeft: `none`,
                         borderBottom: `none`,
-                      }}
-                      transition={SPRING_CONFIG}
-                    />
-                    <motion.div
-                      className="absolute pointer-events-none border-4 border-gray-300"
-                      animate={{
                         width: `calc(50% - ${layoutState.gap} / 2)`,
                         height: `calc(50% - ${layoutState.gap} / 2)`,
-                        borderTopLeftRadius: layoutState.cornerRadius,
+                        borderTopRightRadius: layoutState.cornerRadius,
+                        transition: `width 0.4s cubic-bezier(0.4, 0, 0.2, 1), height 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-top-right-radius 0.4s cubic-bezier(0.4, 0, 0.2, 1)`,
                       }}
+                    />
+                    <div
+                      className="absolute pointer-events-none border-4 border-gray-300"
                       style={{
                         bottom: 0,
                         right: 0,
                         borderRight: `none`,
                         borderBottom: `none`,
+                        width: `calc(50% - ${layoutState.gap} / 2)`,
+                        height: `calc(50% - ${layoutState.gap} / 2)`,
+                        borderTopLeftRadius: layoutState.cornerRadius,
+                        transition: `width 0.4s cubic-bezier(0.4, 0, 0.2, 1), height 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-top-left-radius 0.4s cubic-bezier(0.4, 0, 0.2, 1)`,
                       }}
-                      transition={SPRING_CONFIG}
                     />
 
                     {/* Markers */}
@@ -714,27 +698,28 @@ export const ControlsBlock = () => {
                       <motion.button
                         key={idx}
                         className="absolute cursor-pointer touch-manipulation"
-                        animate={position}
                         style={{
-                          width: `var(--control-marker-size)`,
-                          height: `var(--control-marker-size)`,
-                          transform: position.transform,
+                          ...position,
+                          width: `calc(var(--control-marker-size) * 2)`,
+                          height: `calc(var(--control-marker-size) * 2)`,
+                          transition: `top 0.4s cubic-bezier(0.4, 0, 0.2, 1), bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1), left 0.4s cubic-bezier(0.4, 0, 0.2, 1), right 0.4s cubic-bezier(0.4, 0, 0.2, 1)`,
                         }}
                         onHoverStart={() =>
                           layoutState.setIsCornerHovered(true)
                         }
                         onHoverEnd={() => layoutState.setIsCornerHovered(false)}
                         onClick={layoutState.cycleCornerRadius}
-                        transition={SPRING_CONFIG}
                         aria-label="Corner radius control"
                       >
                         {layoutState.isCornerHovered && (
                           <motion.div
-                            className="absolute inset-0 rounded-full"
+                            className="absolute rounded-full -translate-1/2"
                             style={{
                               border: `var(--control-marker-border-width) solid ${accentColor}`,
                               width: `var(--control-marker-size)`,
                               height: `var(--control-marker-size)`,
+                              top: "50%",
+                              left: "50%",
                             }}
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
@@ -761,8 +746,8 @@ export const ControlsBlock = () => {
                       style={{
                         top: "50%",
                         left: "50%",
-                        width: `var(--control-marker-size)`,
-                        height: `var(--control-marker-size)`,
+                        width: `calc(var(--control-marker-size) * 2)`,
+                        height: `calc(var(--control-marker-size) * 2)`,
                       }}
                       onHoverStart={() => layoutState.setIsCenterHovered(true)}
                       onHoverEnd={() => layoutState.setIsCenterHovered(false)}
@@ -773,11 +758,13 @@ export const ControlsBlock = () => {
                     >
                       {layoutState.isCenterHovered && (
                         <motion.div
-                          className="absolute inset-0 rounded-full"
+                          className="absolute rounded-full -translate-1/2"
                           style={{
                             border: `var(--control-marker-border-width) solid ${accentColor}`,
                             width: `var(--control-marker-size)`,
                             height: `var(--control-marker-size)`,
+                            top: "50%",
+                            left: "50%",
                           }}
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
