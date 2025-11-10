@@ -19,8 +19,7 @@ export const blocks: Record<string, { name: string; description: string }> = {
   },
   tabs: {
     name: "Tab navigation",
-    description:
-      "Tabbed interface for organizing content into sections",
+    description: "Tabbed interface for organizing content into sections",
   },
   toast: {
     name: "Toast notifications",
@@ -43,26 +42,25 @@ export const blocks: Record<string, { name: string; description: string }> = {
   },
   "card-stack": {
     name: "Stacked cards",
-    description:
-      "Three-card stack that expands into a grid layout on click",
+    description: "Three-card stack that expands into a grid layout on click",
   },
   expand: {
     name: "Expandable date cards",
-    description:
-      "Date cards that expand to reveal additional details on click",
+    description: "Date cards that expand to reveal additional details on click",
   },
   preview: {
     name: "Preview block",
-    description:
-      "Preview component that expands to show more content",
+    description: "Preview component that expands to show more content",
   },
   sky: {
     name: "Sky",
-    description: "Scroll-driven sky gradient transitioning through sunrise, day, sunset, and night with animated stars",
+    description:
+      "Scroll-driven sky gradient transitioning through sunrise, day, sunset, and night with animated stars",
   },
   album: {
     name: "Album",
-    description: "Interactive vinyl record player that toggles between spinning record and album cover",
+    description:
+      "Interactive vinyl record player that toggles between spinning record and album cover",
   },
   moon: {
     name: "Moon",
@@ -70,8 +68,7 @@ export const blocks: Record<string, { name: string; description: string }> = {
   },
   "staggered-fade": {
     name: "Staggered fade",
-    description:
-      "Auto-cycling text with letter-by-letter fade animations",
+    description: "Auto-cycling text with letter-by-letter fade animations",
   },
   status: {
     name: "Status",
@@ -89,7 +86,8 @@ export const blocks: Record<string, { name: string; description: string }> = {
   },
   "password-strength": {
     name: "Password strength",
-    description: "Password input with animated 3-bar strength meter and color-coded feedback",
+    description:
+      "Password input with animated 3-bar strength meter and color-coded feedback",
   },
   controls: {
     name: "Controls",
@@ -99,5 +97,19 @@ export const blocks: Record<string, { name: string; description: string }> = {
     name: "Dither",
     description:
       "3D asteroid shooter game with Obra Dinn-style dithering effects",
+  },
+  "timed-undo": {
+    name: "Timed undo",
+    description:
+      "Delete account button with animated countdown timer and undo functionality",
+  },
+  // "svg-animations": {
+  //   name: "SVG animations",
+  //   description: "Morphing SVG shapes with spring animations and color transitions",
+  // },
+  "document-shadow": {
+    name: "Document shadow",
+    description:
+      "Document card with ambient shadow overlay and interactive dice button",
   },
 };
