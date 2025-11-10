@@ -111,7 +111,7 @@ export const SVGAnimationsBlock = () => {
                   opacity: seg.opacity,
                   stroke: getShapeColor(),
                 }}
-                transition={{ duration: 0.55, easing: "ease-in-out" }}
+                transition={{ duration: 0.55, ease: "easeInOut" }}
               />
             );
           })}
