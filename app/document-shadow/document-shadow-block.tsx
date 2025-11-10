@@ -169,22 +169,17 @@ export const DocumentShadowBlock = () => {
         className="relative font-serif z-10 max-w-2xl w-full bg-[#E7EAED] p-8 sm:p-12 aspect-[1/1.414] after:content-[''] after:absolute after:inset-0 after:bg-repeat after:opacity-40 after:pointer-events-none after:mix-blend-multiply after:z-[-1]"
         style={{
           boxShadow:
-            "-8px 4px 8px rgba(0, 0, 0, 0.25), inset 2px 2px 4px rgba(255, 255, 255, 0.5)",
+            "var(--shadow-elevation-medium), inset -2px 2px 4px rgba(255, 255, 255, 0.5)",
         }}
       >
-        {/* Sphere with Shadow */}
-        <div className="mb-8 flex items-center gap-4">
-          <div className="relative size-16">
-            <div className="inset-0 absolute w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-700 rounded-full shadow-lg z-10" />
-            <div className="absolute bottom-[-2px] left-3 w-20 h-6 bg-gray-700 rounded-[50%]" />
-          </div>
-        </div>
-
         {/* Dice Button */}
         <button
-          className="cursor-pointer absolute -top-4 -right-4 bg-gradient-to-br from-gray-800 to-gray-900 rounded-3xl shadow-2xl z-[100] size-24 flex items-center justify-center"
+          className="cursor-pointer absolute -top-4 -right-4 bg-gradient-to-br from-gray-800 to-gray-900 rounded-3xl z-[100] size-24 flex items-center justify-center"
           onClick={rollDice}
           aria-label="Roll dice to randomize"
+          style={{
+            boxShadow: "var(--shadow-elevation-high)",
+          }}
         >
           <div className="relative group size-12">
             <motion.div
@@ -201,6 +196,14 @@ export const DocumentShadowBlock = () => {
             <div className="absolute inset-0 opacity-0 bg-white blur-lg rounded-xl size-12 transition-all group-hover:opacity-30" />
           </div>
         </button>
+
+        {/* Sphere with Shadow */}
+        <div className="mb-8 flex items-center gap-4">
+          <div className="relative size-16">
+            <div className="inset-0 absolute w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-700 rounded-full shadow-lg z-10" />
+            <div className="absolute bottom-[-2px] left-3 w-20 h-6 bg-gray-700 rounded-[50%]" />
+          </div>
+        </div>
 
         {/* Content */}
         <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
