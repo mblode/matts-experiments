@@ -157,7 +157,7 @@ export const TimedUndoBlock = () => {
             });
           }}
           className={clsx(
-            "flex items-center gap-2 h-14 py-2 rounded-full",
+            "cursor-pointer flex items-center gap-2 h-14 py-2 rounded-full",
             isDeleting ? "px-3" : "px-6",
           )}
         >

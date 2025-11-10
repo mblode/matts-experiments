@@ -160,7 +160,7 @@ export const DocumentShadowBlock = () => {
         <img
           src={`/shadows/${String(shadowNumber).padStart(3, "0")}.png`}
           alt="Shadow overlay"
-          className="w-full h-full object-cover opacity-30 mix-blend-multiply transition-opacity duration-1000"
+          className="w-full h-full object-cover opacity-20 mix-blend-multiply transition-opacity duration-1000"
         />
       </div>
 
@@ -181,11 +181,13 @@ export const DocumentShadowBlock = () => {
         </div>
 
         {/* Dice Button */}
-        <div className="absolute -top-4 -right-4 bg-gradient-to-br from-gray-800 to-gray-900 rounded-3xl shadow-2xl z-[100] size-24 flex items-center justify-center">
+        <button
+          className="cursor-pointer absolute -top-4 -right-4 bg-gradient-to-br from-gray-800 to-gray-900 rounded-3xl shadow-2xl z-[100] size-24 flex items-center justify-center"
+          onClick={rollDice}
+          aria-label="Roll dice to randomize"
+        >
           <div className="relative group size-12">
-            <motion.button
-              onClick={rollDice}
-              aria-label="Roll dice to randomize"
+            <motion.div
               className="cursor-pointer relative z-10 bg-white size-12 rounded-xl"
               animate={{ rotate: degree }}
               transition={{ type: "spring", stiffness: 260, damping: 20 }}
@@ -194,11 +196,11 @@ export const DocumentShadowBlock = () => {
               }}
             >
               {renderDots()}
-            </motion.button>
+            </motion.div>
 
             <div className="absolute inset-0 opacity-0 bg-white blur-lg rounded-xl size-12 transition-all group-hover:opacity-30" />
           </div>
-        </div>
+        </button>
 
         {/* Content */}
         <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
