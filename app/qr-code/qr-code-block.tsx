@@ -125,7 +125,7 @@ export function QRCodeBlock() {
   const [url, setUrl] = useState("https://example.com");
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
   const [rememberedSaturationIndex, setRememberedSaturationIndex] = useState(2); // Start at middle saturation
-  const [radius, setRadius] = useState<0 | 0.5 | 1>(0.5);
+  const [radius, setRadius] = useState<0 | 0.5 | 1>(1);
   const [isAnimating, setIsAnimating] = useState(false);
 
   // Ref for QR code component to access download methods
