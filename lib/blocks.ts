@@ -7,7 +7,7 @@ export const blocks: Record<string, { name: string; description: string }> = {
   "shuffle-theme": {
     name: "Theme shuffler",
     description:
-      "Scroll-animated cards with multiple themed color schemes and backgrounds",
+      "Scroll-animated cards with multiple themed colour schemes and backgrounds",
   },
   faq: {
     name: "FAQ accordion",
@@ -19,12 +19,12 @@ export const blocks: Record<string, { name: string; description: string }> = {
   },
   tabs: {
     name: "Tab navigation",
-    description: "Tabbed interface for organizing content into sections",
+    description: "Tabbed interface for organising content into sections",
   },
   toast: {
     name: "Toast notifications",
     description:
-      "Temporary notification pop-ups with customizable styles and animations",
+      "Temporary notification pop-ups with customisable styles and animations",
   },
   "ios-cards": {
     name: "iOS-style cards",
@@ -87,11 +87,11 @@ export const blocks: Record<string, { name: string; description: string }> = {
   "password-strength": {
     name: "Password strength",
     description:
-      "Password input with animated 3-bar strength meter and color-coded feedback",
+      "Password input with animated 3-bar strength metre and colour-coded feedback",
   },
   controls: {
     name: "Controls",
-    description: "Design system playground with color and layout controls",
+    description: "Design system playground with colour and layout controls",
   },
   dither: {
     name: "Dither",
@@ -111,5 +111,10 @@ export const blocks: Record<string, { name: string; description: string }> = {
     name: "Document shadow",
     description:
       "Document card with ambient shadow overlay and interactive dice button",
+  },
+  "qr-code": {
+    name: "QR code generator",
+    description:
+      "Customisable QR code generator with OKLCH colour picker and downloadable SVG/PNG output",
   },
 };
