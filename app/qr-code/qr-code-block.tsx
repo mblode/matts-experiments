@@ -123,6 +123,7 @@ export function oklchToHex(l: number, c: number, h: number): string {
 
 export function QRCodeBlock() {
   const [url, setUrl] = useState("https://example.com");
+  const [imageUrl, setImageUrl] = useState("");
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
   const [rememberedSaturationIndex, setRememberedSaturationIndex] = useState(2); // Start at middle saturation
   const [radius, setRadius] = useState<0 | 0.5 | 1>(1);
@@ -236,6 +237,8 @@ export function QRCodeBlock() {
                 backgroundColor={backgroundColor}
                 radius={radius}
                 padding={5}
+                logoUrl={imageUrl || undefined}
+                hasLogo={!!imageUrl}
                 className="w-full aspect-square flex items-center justify-center [&>svg]:w-full [&>svg]:h-full"
               />
             </div>
@@ -262,6 +265,22 @@ export function QRCodeBlock() {
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               placeholder="https://example.com"
+              className="h-14 rounded-full border-0 focus-visible:ring-0 bg-transparent!"
+            />
+          </Field>
+
+          {/* Image URL Input */}
+          <Field
+            orientation="horizontal"
+            className="bg-white rounded-full min-h-14 gap-0"
+          >
+            <FieldLabel className="px-6 py-2 min-w-[200px] cursor-pointer">
+              Image URL
+            </FieldLabel>
+            <Input
+              value={imageUrl}
+              onChange={(e) => setImageUrl(e.target.value)}
+              placeholder="https://example.com/image.png"
               className="h-14 rounded-full border-0 focus-visible:ring-0 bg-transparent!"
             />
           </Field>
