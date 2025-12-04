@@ -1,4 +1,7 @@
-export const blocks: Record<string, { name: string; description: string }> = {
+export const blocks: Record<
+  string,
+  { name: string; description: string; hidden?: boolean }
+> = {
   "animated-button": {
     name: "Animated subscribe button",
     description:
@@ -116,5 +119,14 @@ export const blocks: Record<string, { name: string; description: string }> = {
     name: "QR code generator",
     description:
       "Customisable QR code generator with OKLCH colour picker and downloadable SVG/PNG output",
+  },
+  dnd: {
+    name: "Drag and drop",
+    description: "Sortable list with spring physics drag animations",
+  },
+  "sticky-notes": {
+    name: "Sticky notes",
+    description: "Sticky notes with animated page turning",
+    hidden: true,
   },
 };

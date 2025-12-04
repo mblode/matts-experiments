@@ -15,6 +15,7 @@ export default function Page() {
 
         <div className="grid gap-4 md:grid-cols-2">
           {Object.entries(blocks)
+            .filter(([, block]) => !block.hidden)
             .reverse()
             .map(([key, block]) => (
               <Link key={key} href={`/${key}`} className="flex w-full">
