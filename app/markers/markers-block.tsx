@@ -1,9 +1,10 @@
 "use client";
 
-import type React from "react";
-import { useEffect, useState } from "react";
+import { type MouseEvent, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import styles from "./markers.module.css";
+
+const SCROLL_THRESHOLD = 120;
 
 // Types
 interface ChapterMarker {
@@ -15,8 +16,8 @@ interface ChapterMarker {
 // Progress Bar Component
 function ProgressBar({ show, progress }: { show: boolean; progress: number }) {
   return (
-    <div id="progress" className={cn("progress", show && "show")}>
-      <div className="progress-bar" style={{ height: `${progress}vh` }} />
+    <div className={cn(styles.progress, show && styles.progressShow)}>
+      <div className={styles.progressBar} style={{ height: `${progress}vh` }} />
     </div>
   );
 }
@@ -29,7 +30,7 @@ function ChapterIndicator({
   marker: ChapterMarker;
   show: boolean;
 }) {
-  const handleClick = (e: React.MouseEvent) => {
+  const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     const element = document.getElementById(marker.id);
     if (element) {
@@ -41,11 +42,15 @@ function ChapterIndicator({
     <a
       href={`#${marker.id}`}
       onClick={handleClick}
-      className={cn("progress-bookmark chaptermark", show && "show")}
+      className={cn(
+        styles.bookmark,
+        styles.chaptermark,
+        show && styles.bookmarkShow
+      )}
       style={{ top: `${marker.position}vh` }}
     >
-      <div className="dot" />
-      <div className="text">
+      <div className={styles.dot} />
+      <div className={styles.text}>
         <span>{marker.title}</span>
       </div>
     </a>
@@ -132,7 +137,7 @@ export const MarkersBlock = () => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
-      setShow(scrollTop > 120);
+      setShow(scrollTop > SCROLL_THRESHOLD);
 
       // Calculate progress like jQuery version: 100 * pixels / (docHeight - windowHeight)
       const docHeight = document.documentElement.scrollHeight;
@@ -189,7 +194,7 @@ export const MarkersBlock = () => {
       <ProgressBar show={show} progress={progress} />
 
       {/* Chapter Indicators */}
-      <div className="chapter-indicators">
+      <div className={styles.chapterIndicators}>
         {chapterMarkers.map((marker) => (
           <ChapterIndicator key={marker.id} marker={marker} show={show} />
         ))}
