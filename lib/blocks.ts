@@ -129,4 +129,9 @@ export const blocks: Record<
     description: "Sticky notes with animated page turning",
     hidden: true,
   },
+  markers: {
+    name: "Article markers",
+    description:
+      "Scroll progress bar with chapter indicators and highlight bookmarks",
+  },
 };

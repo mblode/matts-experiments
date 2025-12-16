@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@plugin "@tailwindcss/typography";
 
 @theme inline {
   --color-background: var(--background);
@@ -668,4 +669,21 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+/* Markers - Progress bar and chapter/highlight indicators */
+.progress {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 36px;
+  height: 100vh;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+}
+
+.progress.show {
+  opacity: 1;
 }
