@@ -15,4 +15,4 @@ Open [http://localhost:3000](http://localhost:3000) to view the experiments.
 
 ## License
 
-[MIT](MIT.md)
+[MIT](LICENSE.md)
