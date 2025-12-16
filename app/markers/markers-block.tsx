@@ -45,7 +45,7 @@ function ChapterIndicator({
       className={cn(
         styles.bookmark,
         styles.chaptermark,
-        show && styles.bookmarkShow
+        show && styles.bookmarkShow,
       )}
       style={{ top: `${marker.position}vh` }}
     >

@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useRef, useCallback, useState, forwardRef, useImperativeHandle } from "react";
+import React, {
+  useRef,
+  useCallback,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import { getStroke } from "perfect-freehand";
 import { getSvgPathFromStroke } from "@/lib/utils";
 import type { Point, PathData, StickyNote as StickyNoteType } from "../store";

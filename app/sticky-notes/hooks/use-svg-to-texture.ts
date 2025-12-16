@@ -47,7 +47,9 @@ export function useSvgToTexture(options: UseSvgToTextureOptions) {
         const svgString = serializer.serializeToString(svgClone);
 
         // Create blob and load as image
-        const blob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
+        const blob = new Blob([svgString], {
+          type: "image/svg+xml;charset=utf-8",
+        });
         const url = URL.createObjectURL(blob);
 
         const img = new Image();
@@ -73,7 +75,7 @@ export function useSvgToTexture(options: UseSvgToTextureOptions) {
         // Create Three.js texture
         const texture = new THREE.CanvasTexture(canvas);
         texture.needsUpdate = true;
-        texture.flipY = false;  // Shader handles Y inversion via 1 - clickPos.y
+        texture.flipY = false; // Shader handles Y inversion via 1 - clickPos.y
         texture.colorSpace = THREE.SRGBColorSpace;
 
         textureRef.current = texture;

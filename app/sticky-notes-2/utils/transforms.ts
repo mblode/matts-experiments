@@ -55,7 +55,7 @@ interface GradientStop {
 export function createGradient(
   p0: Point2D,
   p1: Point2D,
-  stops: GradientStop[]
+  stops: GradientStop[],
 ): string {
   // Calculate angle from points
   const dx = p1.x - p0.x;
@@ -78,7 +78,7 @@ export function createGradient(
 export function createFrontGradient(
   geometry: FoldGeometry,
   width: number,
-  height: number
+  height: number,
 ): CSSProperties {
   const { gradientOpacity, gradientSize, gradientStartV, alpha } = geometry;
   const A90 = Math.PI / 2;
@@ -117,7 +117,7 @@ export function createFrontGradient(
 export function createBackGradient(
   geometry: FoldGeometry,
   width: number,
-  height: number
+  height: number,
 ): CSSProperties {
   const { gradientOpacity, gradientSize, alpha } = geometry;
 
@@ -177,14 +177,14 @@ export function generatePageTransforms(
   width: number,
   height: number,
   wrapperHeight: number,
-  showGradients: boolean
+  showGradients: boolean,
 ): PageTransforms {
   const { angle, translate: tr, movement: mv, df } = geometry;
   const a = angle;
 
   // mvW, mvH - adjustment for wrapper size difference (turn.js line 1568-1569)
   // For BR corner: origin is [0, 100] meaning x=0%, y=100%
-  const mvW = ((width - wrapperHeight) * 0) / 100;   // x origin = 0%
+  const mvW = ((width - wrapperHeight) * 0) / 100; // x origin = 0%
   const mvH = ((height - wrapperHeight) * 100) / 100; // y origin = 100%
 
   // Anti-aliasing fix (turn.js line 1576)
@@ -261,7 +261,7 @@ export function generatePageTransforms(
     position: "absolute",
     top: 0,
     left: 0,
-    width: height,  // Note: swapped dimensions for rotation
+    width: height, // Note: swapped dimensions for rotation
     height: width,
     transform: rotate(90 - a * 2),
     transformOrigin: "0% 0%",

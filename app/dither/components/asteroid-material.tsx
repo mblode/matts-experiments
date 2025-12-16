@@ -13,7 +13,7 @@ function hash2D(x: number, y: number, seed: number): number {
   let h = seed + x * 374761393 + y * 668265263;
   h = (h ^ (h >>> 13)) * 1274126177;
   h = h ^ (h >>> 16);
-  return ((h >>> 0) / 4294967296); // Normalize to 0-1
+  return (h >>> 0) / 4294967296; // Normalize to 0-1
 }
 
 // Interpolate function for smooth noise

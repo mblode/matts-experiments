@@ -62,7 +62,12 @@ export class Store {
   dropPosition: DropPosition = null;
 
   // Drop animation state - position captured when drag ends
-  dropAnimationRect: { top: number; left: number; width: number; height: number } | null = null;
+  dropAnimationRect: {
+    top: number;
+    left: number;
+    width: number;
+    height: number;
+  } | null = null;
   dropAnimationRotation: number = 0;
 
   // Editor state
@@ -93,7 +98,7 @@ export class Store {
 
   toggleVisibility(blockId: string) {
     this.blocksData = this.blocksData.map((block) =>
-      block.id === blockId ? { ...block, visible: !block.visible } : block
+      block.id === blockId ? { ...block, visible: !block.visible } : block,
     );
   }
 
@@ -115,7 +120,7 @@ export class Store {
   // Called when drag ends - start the settling phase
   startSettling(
     rect: { top: number; left: number; width: number; height: number },
-    rotation: number
+    rotation: number,
   ) {
     this.settlingBlockId = this.activeBlockId;
     this.dropAnimationRect = rect;

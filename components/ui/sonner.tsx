@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { useTheme } from "next-themes"
-import { Toaster as Sonner, ToasterProps } from "sonner"
+import { useTheme } from "next-themes";
+import { Toaster as Sonner, ToasterProps } from "sonner";
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = "system" } = useTheme()
+  const { theme = "system" } = useTheme();
 
   return (
     <Sonner
@@ -19,7 +19,8 @@ const Toaster = ({ ...props }: ToasterProps) => {
       }
       toastOptions={{
         classNames: {
-          toast: "!shadow-none !border-none !rounded-full !text-base !font-semibold [&[data-type='error']]:!bg-[#FFE4E3] [&[data-type='error']]:!text-[#FF403F] [&[data-type='success']]:!bg-[#DBF4DE] [&[data-type='success']]:!text-[#35C759] [&[data-type='loading']]:!bg-[#E5F3FF] [&[data-type='loading']]:!text-[#4EAFFF]",
+          toast:
+            "!shadow-none !border-none !rounded-full !text-base !font-semibold [&[data-type='error']]:!bg-[#FFE4E3] [&[data-type='error']]:!text-[#FF403F] [&[data-type='success']]:!bg-[#DBF4DE] [&[data-type='success']]:!text-[#35C759] [&[data-type='loading']]:!bg-[#E5F3FF] [&[data-type='loading']]:!text-[#4EAFFF]",
           icon: "!mt-0 !self-center [&[data-type='error']_svg]:!text-[#FF403F] [&[data-type='success']_svg]:!text-[#35C759] [&[data-type='loading']_svg]:!text-[#4EAFFF]",
         },
       }}
@@ -93,7 +94,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
       }}
       {...props}
     />
-  )
-}
+  );
+};
 
-export { Toaster }
+export { Toaster };

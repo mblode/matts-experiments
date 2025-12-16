@@ -175,8 +175,9 @@ const useColorState = () => {
  */
 const useLayoutState = () => {
   const [gapPresetIndex, setGapPresetIndex] = useState(1);
-  const [cornerRadius, setCornerRadius] =
-    useState<(typeof CORNER_RADIUS_VALUES)[number]>(CORNER_RADIUS_VALUES[2]);
+  const [cornerRadius, setCornerRadius] = useState<
+    (typeof CORNER_RADIUS_VALUES)[number]
+  >(CORNER_RADIUS_VALUES[2]);
   const [isCornerHovered, setIsCornerHovered] = useState(false);
   const [isCenterHovered, setIsCenterHovered] = useState(false);
 
@@ -509,7 +510,8 @@ export const ControlsBlock = () => {
                             // Selected column gets 2 fractions, others get 1 fraction each
                             const widthFraction = isSelectedCol ? 2 : 1;
                             const totalFractions = 5;
-                            const widthPercent = (widthFraction / totalFractions) * 100;
+                            const widthPercent =
+                              (widthFraction / totalFractions) * 100;
 
                             return (
                               <motion.button
@@ -521,7 +523,8 @@ export const ControlsBlock = () => {
                                   border: "none",
                                   height: "100%",
                                   width: `${widthPercent}%`,
-                                  transition: "width 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                                  transition:
+                                    "width 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                                 }}
                                 whileTap={{ scale: 0.95 }}
                                 onClick={() =>
@@ -530,9 +533,7 @@ export const ControlsBlock = () => {
                                 aria-label={`Hue ${color.hue}`}
                               >
                                 {isSelected && (
-                                  <motion.div
-                                    className="absolute inset-0 flex items-center justify-center"
-                                  >
+                                  <motion.div className="absolute inset-0 flex items-center justify-center">
                                     <Check
                                       className="text-white relative z-10"
                                       style={{
@@ -597,10 +598,7 @@ export const ControlsBlock = () => {
             </motion.div>
 
             {/* Gap & Corners Control */}
-            <motion.div
-              layout
-              className="flex flex-col items-center gap-2"
-            >
+            <motion.div layout className="flex flex-col items-center gap-2">
               <div
                 className="bg-white shadow-lg p-fluid-4 w-full"
                 style={{ borderRadius: "var(--border-radius-fluid-34)" }}

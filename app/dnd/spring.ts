@@ -68,7 +68,7 @@ export function createSpring(config: SpringConfig): Spring {
 export function animateSpring(
   spring: Spring,
   onUpdate: (value: number) => void,
-  onComplete?: () => void
+  onComplete?: () => void,
 ): () => void {
   let animationId: number | null = null;
   let lastTime = performance.now();

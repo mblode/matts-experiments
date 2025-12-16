@@ -70,11 +70,12 @@ export function Flipbook({
   // Calculate wrapper height for fold element
   const wrapperHeight = useMemo(
     () => calculateWrapperHeight(width, height),
-    [width, height]
+    [width, height],
   );
 
   // Check if we can show the flip animation
-  const showFlipAnimation = flipState.isFlipping && foldGeometry && pageTransforms;
+  const showFlipAnimation =
+    flipState.isFlipping && foldGeometry && pageTransforms;
   const hasNextPage = currentPage < pages.length - 1;
 
   return (
@@ -167,15 +168,9 @@ export function Flipbook({
             style={pageTransforms.foldPageContainer}
           >
             {/* Fold page (fpage - double rotation) */}
-            <div
-              className="flipbook-fold-page"
-              style={pageTransforms.foldPage}
-            >
+            <div className="flipbook-fold-page" style={pageTransforms.foldPage}>
               {/* Folding content (90° rotated next page) */}
-              <div
-                className="flipbook-folding"
-                style={pageTransforms.folding}
-              >
+              <div className="flipbook-folding" style={pageTransforms.folding}>
                 {pages[currentPage + 1]}
               </div>
 

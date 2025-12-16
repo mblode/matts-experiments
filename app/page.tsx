@@ -40,6 +40,14 @@ export default function Page() {
             >
               Matthew Blode
             </a>
+            {" · "}
+            <a
+              target="_blank"
+              href="https://github.com/mblode/matts-experiments"
+              className="hover:underline underline-offset-2 text-foreground"
+            >
+              View Source
+            </a>
           </div>
         </footer>
       </div>

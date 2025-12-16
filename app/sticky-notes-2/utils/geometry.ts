@@ -51,7 +51,7 @@ export function bezier(
   p2: Point2D,
   p3: Point2D,
   p4: Point2D,
-  t: number
+  t: number,
 ): Point2D {
   const mum1 = 1 - t;
   const mum13 = mum1 * mum1 * mum1;
@@ -62,14 +62,14 @@ export function bezier(
       mum13 * p1.x +
         3 * t * mum1 * mum1 * p2.x +
         3 * t * t * mum1 * p3.x +
-        mu3 * p4.x
+        mu3 * p4.x,
     ),
     Math.round(
       mum13 * p1.y +
         3 * t * mum1 * mum1 * p2.y +
         3 * t * t * mum1 * p3.y +
-        mu3 * p4.y
-    )
+        mu3 * p4.y,
+    ),
   );
 }
 
@@ -111,7 +111,7 @@ export function calculateFold(
   point: Point2D,
   width: number,
   height: number,
-  wrapperHeight?: number
+  wrapperHeight?: number,
 ): FoldGeometry {
   const h = wrapperHeight ?? Math.sqrt(width * width + height * height);
 
@@ -129,7 +129,7 @@ export function calculateFold(
   // Calculate relative position from corner
   const rel = point2D(
     o.x ? o.x - clampedPoint.x : clampedPoint.x,
-    o.y ? o.y - clampedPoint.y : clampedPoint.y
+    o.y ? o.y - clampedPoint.y : clampedPoint.y,
   );
 
   // Calculate angle
@@ -141,14 +141,14 @@ export function calculateFold(
   // IMPORTANT: Uses original point.x, NOT clamped point
   const middle = point2D(
     left ? width - rel.x / 2 : point.x + rel.x / 2,
-    rel.y / 2
+    rel.y / 2,
   );
 
   // Calculate gamma and distance
   const gamma = alpha - Math.atan2(middle.y, middle.x);
   const distance = Math.max(
     0,
-    Math.sin(gamma) * Math.sqrt(middle.x * middle.x + middle.y * middle.y)
+    Math.sin(gamma) * Math.sqrt(middle.x * middle.x + middle.y * middle.y),
   );
 
   // Calculate translation
@@ -174,7 +174,7 @@ export function calculateFold(
     const dd = h - height / Math.sin(beta);
     mv = point2D(
       Math.round(dd * Math.cos(beta)) * (left ? -1 : 1),
-      Math.round(dd * Math.sin(beta)) * (top ? -1 : 1)
+      Math.round(dd * Math.sin(beta)) * (top ? -1 : 1),
     );
   }
 
@@ -187,7 +187,7 @@ export function calculateFold(
   const sideY = side * Math.sin(alpha * 2);
   const df = point2D(
     Math.round(left ? side - sideX : px + sideX),
-    Math.round(top ? sideY : height - sideY)
+    Math.round(top ? sideY : height - sideY),
   );
 
   // Gradient calculations
@@ -195,8 +195,7 @@ export function calculateFold(
   const endPoint = getFlipEndPosition(width, height);
   // Use unclamped point for distance calculation (turn.js lines 1531-1535)
   const far = Math.sqrt(
-    Math.pow(endPoint.x - point.x, 2) +
-      Math.pow(endPoint.y - point.y, 2)
+    Math.pow(endPoint.x - point.x, 2) + Math.pow(endPoint.y - point.y, 2),
   );
   const gradientOpacity = far < width ? far / width : 1;
   const gradientStartV =

@@ -63,7 +63,7 @@ export function useFlipbook({
   // Calculated wrapper height (diagonal for rotation clipping)
   const wrapperHeight = useMemo(
     () => calculateWrapperHeight(width, height),
-    [width, height]
+    [width, height],
   );
 
   // Animation hook
@@ -89,7 +89,7 @@ export function useFlipbook({
       width,
       height,
       wrapperHeight,
-      gradients
+      gradients,
     );
   }, [foldGeometry, width, height, wrapperHeight, gradients]);
 
@@ -203,7 +203,7 @@ export function useFlipbook({
       }));
       onPageChange?.(page);
     },
-    [totalPages, currentPage, onPageChange]
+    [totalPages, currentPage, onPageChange],
   );
 
   // ============================================================================
@@ -225,7 +225,7 @@ export function useFlipbook({
         foldPoint: point,
       }));
     },
-    [currentPage, totalPages, isAnimating]
+    [currentPage, totalPages, isAnimating],
   );
 
   /**
@@ -240,7 +240,7 @@ export function useFlipbook({
         foldPoint: point,
       }));
     },
-    [flipState.isDragging]
+    [flipState.isDragging],
   );
 
   /**
@@ -303,7 +303,7 @@ export function useFlipbook({
       animate,
       completePageTurn,
       cancelPageTurn,
-    ]
+    ],
   );
 
   /**

@@ -16,7 +16,9 @@ export function StickyNotes2Block() {
       <div className="flex h-full w-full items-center justify-center bg-yellow-200 p-4">
         <div className="text-center">
           <h2 className="mb-2 text-xl font-bold text-yellow-800">Page 1</h2>
-          <p className="text-yellow-700">Drag the bottom-right corner to flip</p>
+          <p className="text-yellow-700">
+            Drag the bottom-right corner to flip
+          </p>
         </div>
       </div>
 

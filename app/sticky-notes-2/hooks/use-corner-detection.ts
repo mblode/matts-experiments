@@ -46,7 +46,7 @@ export function useCornerDetection({
 
       return point2D(x, y);
     },
-    [containerRef]
+    [containerRef],
   );
 
   /**
@@ -70,7 +70,7 @@ export function useCornerDetection({
       // BR corner: must be in both bottom AND right zones
       return inBottomZone && inRightZone;
     },
-    [width, height, cornerSize]
+    [width, height, cornerSize],
   );
 
   /**
@@ -99,7 +99,7 @@ export function useCornerDetection({
         e.preventDefault();
       }
     },
-    [enabled, getPointerPosition, isInCornerZone, onCornerActivated]
+    [enabled, getPointerPosition, isInCornerZone, onCornerActivated],
   );
 
   /**
@@ -128,7 +128,7 @@ export function useCornerDetection({
             // Show corner fold preview at corner origin
             const origin = point2D(
               width - cornerSize / 2,
-              height - cornerSize / 2
+              height - cornerSize / 2,
             );
             setPointerPosition(origin);
             onCornerActivated?.(origin);
@@ -151,7 +151,7 @@ export function useCornerDetection({
       onPointerMove,
       onCornerActivated,
       onPointerLeave,
-    ]
+    ],
   );
 
   /**
@@ -171,7 +171,8 @@ export function useCornerDetection({
 
       // Quick flip detection (from turn.js lines 1059-1061)
       // If press duration < 200ms OR pointer moved past either edge (left or right)
-      const wasQuickFlip = pressDuration < QUICK_FLIP_THRESHOLD ||
+      const wasQuickFlip =
+        pressDuration < QUICK_FLIP_THRESHOLD ||
         Boolean(pos && (pos.x < 0 || pos.x > width));
 
       setIsPressed(false);
@@ -182,7 +183,7 @@ export function useCornerDetection({
         onPointerRelease?.(pos, wasQuickFlip);
       }
     },
-    [enabled, isPressed, getPointerPosition, onPointerRelease]
+    [enabled, isPressed, getPointerPosition, onPointerRelease],
   );
 
   /**
@@ -199,7 +200,7 @@ export function useCornerDetection({
         onPointerLeave?.();
       }
     },
-    [enabled, isPressed, onPointerLeave]
+    [enabled, isPressed, onPointerLeave],
   );
 
   return {

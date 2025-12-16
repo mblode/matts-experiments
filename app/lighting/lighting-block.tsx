@@ -62,11 +62,11 @@ export const LightingBlock = () => {
         const offsetX = offsetY * 0.25; // X moves at 25% of Y for natural motion
         bumpContainerRef.current.style.setProperty(
           "--bump-offset-y",
-          `${offsetY}px`
+          `${offsetY}px`,
         );
         bumpContainerRef.current.style.setProperty(
           "--bump-offset-x",
-          `${offsetX}px`
+          `${offsetX}px`,
         );
       }
     }, 800);
@@ -103,17 +103,17 @@ export const LightingBlock = () => {
       console.log("Setting perspective to:", perspective);
       lightingContainerRef.current.style.setProperty(
         "--perspective",
-        `${perspective}px`
+        `${perspective}px`,
       );
 
       // Update parallax translation (inverse of mouse position)
       touchContainerRef.current.style.setProperty(
         "--translate-x",
-        `${-1 * mouseX}px`
+        `${-1 * mouseX}px`,
       );
       touchContainerRef.current.style.setProperty(
         "--translate-y",
-        `${-1 * mouseY}px`
+        `${-1 * mouseY}px`,
       );
 
       // Update shadow effects based on mouse position
@@ -122,17 +122,17 @@ export const LightingBlock = () => {
 
       windowFrameRef.current.style.setProperty(
         "--shadow-offset",
-        `${shadowOffset}px`
+        `${shadowOffset}px`,
       );
       windowFrameRef.current.style.setProperty(
         "--shadow-strength",
-        `${shadowStrength}px`
+        `${shadowStrength}px`,
       );
 
       // Update highlight shadow (50% of main shadow)
       windowFrameHighlightRef.current.style.setProperty(
         "--shadow-strength",
-        `${shadowStrength * 0.5}px`
+        `${shadowStrength * 0.5}px`,
       );
     };
 

@@ -1,7 +1,11 @@
 "use client";
 
 import { useRef, useCallback, useState } from "react";
-import type { Point2D, AnimationConfig, UseFlipAnimationReturn } from "../types";
+import type {
+  Point2D,
+  AnimationConfig,
+  UseFlipAnimationReturn,
+} from "../types";
 import { bezier, point2D, lerp } from "../utils/geometry";
 
 // ============================================================================
@@ -120,7 +124,7 @@ export function useFlipAnimation(): UseFlipAnimationReturn {
       // Start animation loop
       animationRef.current = requestAnimationFrame(tick);
     },
-    [stop]
+    [stop],
   );
 
   return {
@@ -140,7 +144,7 @@ export function useFlipAnimation(): UseFlipAnimationReturn {
  */
 export function animateAsync(
   animateFn: (config: AnimationConfig) => void,
-  config: Omit<AnimationConfig, "onComplete">
+  config: Omit<AnimationConfig, "onComplete">,
 ): Promise<void> {
   return new Promise((resolve) => {
     animateFn({
