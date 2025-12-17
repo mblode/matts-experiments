@@ -16,11 +16,13 @@ npm run format   # Format code with Biome
 This is a Next.js 16 app with each experiment as a standalone route under `/app/[experiment-name]/`.
 
 **Key files:**
+
 - `lib/blocks.ts` - Registry of all experiments (name, description, hidden flag)
 - `components/ui/` - Reusable UI components (Radix UI + Tailwind)
 - `ANIMATION.md` - Animation guidelines and easing curves
 
 **Experiment structure:**
+
 ```
 app/[name]/
 ├── page.tsx           # Route component
@@ -40,6 +42,7 @@ app/[name]/
 ## Code Standards
 
 ### Code Quality
+
 - Delete all `console.log`, `console.error`, `console.warn` statements
 - Remove `debugger` statements
 - Delete commented-out code blocks
@@ -47,6 +50,7 @@ app/[name]/
 - Generate unique IDs with `useId()` instead of hardcoded values
 
 ### TypeScript
+
 - Replace all `any` with proper types
 - Remove `// @ts-ignore` and `// @ts-expect-error` by fixing types
 - Prefer `type` over `interface`
@@ -56,28 +60,32 @@ app/[name]/
 - Components: PascalCase (`MyComponent`)
 
 ### Imports
+
 - Order: React/Next → third-party → internal (`@/*`) → relative
 - Use absolute imports (`@/lib/utils`, `@/components/ui/`)
 - Use `import type { ... }` for type-only imports
 
 ### State Management
+
 - `useState` for local UI state only
-- Zustand for shared state across components
 - Single source of truth - never duplicate state
 - Never sync state with useEffect between sources
 
 ### Images (Next.js)
+
 - Use `next/image` for all images
 - Always provide `alt` (use `alt=""` for decorative)
 - Provide explicit `width` and `height`, or use `fill` with relative parent
 
 ### Accessibility
+
 - Inputs have labels; icon buttons have `aria-label`
 - Keyboard navigation works; visible focus rings
 - Use `<button>` not `<div onClick>`
 - Support `prefers-reduced-motion`
 
 ### Performance
+
 - Stick to `opacity` and `transform` for animations
 - Use `will-change` sparingly: only for `transform`, `opacity`, `clipPath`, `filter`
 - Lists use stable unique keys (avoid index as key)
