@@ -120,13 +120,10 @@ export const blocks: Record<
     description:
       "Customisable QR code generator with OKLCH colour picker and downloadable SVG/PNG output",
   },
-  dnd: {
-    name: "Drag and drop",
-    description: "Sortable list with spring physics drag animations",
-  },
   "dnd-grid": {
     name: "Dnd grid",
-    description: "Resizable drag-and-drop grid layout powered by @dnd-grid/react",
+    description:
+      "Resizable drag-and-drop grid layout powered by @dnd-grid/react",
   },
   "sticky-notes": {
     name: "Sticky notes",
@@ -137,5 +134,9 @@ export const blocks: Record<
     name: "Article markers",
     description:
       "Scroll progress bar with chapter indicators and highlight bookmarks",
+  },
+  dnd: {
+    name: "Drag and drop",
+    description: "Sortable list with spring physics drag animations",
   },
 };
