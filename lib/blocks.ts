@@ -124,6 +124,10 @@ export const blocks: Record<
     name: "Drag and drop",
     description: "Sortable list with spring physics drag animations",
   },
+  "dnd-grid": {
+    name: "Dnd grid",
+    description: "Resizable drag-and-drop grid layout powered by @dnd-grid/react",
+  },
   "sticky-notes": {
     name: "Sticky notes",
     description: "Sticky notes with animated page turning",

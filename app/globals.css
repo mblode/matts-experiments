@@ -638,6 +638,10 @@
     pointer-events: none;
     z-index: 100;
   }
+
+  .link {
+    @apply inline-flex items-center text-sm text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground;
+  }
 }
 
 .animation-album-spin {

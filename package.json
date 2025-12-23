@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "npx @react-grab/claude-code@latest && next dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "biome check",
@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@beautiful-qr-code/react": "^1.0.6",
+    "@dnd-grid/react": "^1.0.7",
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import localFont from "next/font/local";
 import "./globals.css";
+import "@dnd-grid/react/styles.css";
 import { Toaster } from "@/components/ui/sonner";
 
 const apercu = localFont({
@@ -46,20 +46,6 @@ export default function RootLayout({
       className={`${apercu.variable} h-full font-sans font-normal text-foreground antialiased`}
       suppressHydrationWarning
     >
-      <head>
-        {process.env.NODE_ENV === "development" && (
-          <>
-            <Script
-              src="//unpkg.com/react-grab/dist/index.global.js"
-              strategy="beforeInteractive"
-            />
-            <Script
-              src="//unpkg.com/@react-grab/claude-code/dist/client.global.js"
-              strategy="lazyOnload"
-            />
-          </>
-        )}
-      </head>
       <body className="h-full bg-page-background">
         <div className="h-full">{children}</div>
       </body>
