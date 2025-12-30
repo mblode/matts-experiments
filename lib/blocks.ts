@@ -136,7 +136,6 @@ export const blocks: Record<
   },
   "dnd-grid": {
     name: "Dnd grid",
-    description:
-      "Resizable drag-and-drop grid layout powered by @dnd-grid/react",
+    description: "Resizable drag-and-drop grid layout using dnd-grid",
   },
 };

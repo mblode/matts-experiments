@@ -51,7 +51,8 @@ export function useDragSwing(config: DragSwingConfig = {}): UseDragSwingReturn {
   const springRef = useRef<Spring | null>(null);
 
   // Position tracking for velocity calculation
-  const lastXRef = useRef<number>(0);
+  const pointerXRef = useRef<number>(0);
+  const lastFrameXRef = useRef<number>(0);
   const smoothedVelocityRef = useRef<number>(0);
   const lastFrameTimeRef = useRef<number>(0);
 
@@ -85,6 +86,34 @@ export function useDragSwing(config: DragSwingConfig = {}): UseDragSwingReturn {
     const dt = Math.min((now - lastFrameTimeRef.current) / 1000, 0.064);
     lastFrameTimeRef.current = now;
 
+    // Calculate velocity from pointer delta every frame (so idle motion decays)
+    const currentX = pointerXRef.current;
+    const instantVelocity = currentX - lastFrameXRef.current;
+    lastFrameXRef.current = currentX;
+
+    // Smooth the velocity
+    smoothedVelocityRef.current = lerp(
+      smoothedVelocityRef.current,
+      instantVelocity,
+      smoothing
+    );
+
+    // Dead zone - ignore tiny velocity to prevent jitter during slow movement
+    const effectiveVelocity =
+      Math.abs(smoothedVelocityRef.current) < 0.3
+        ? 0
+        : smoothedVelocityRef.current;
+
+    // Map velocity directly to rotation angle
+    const targetRotation = clamp(
+      -effectiveVelocity * sensitivity,
+      -maxAngle,
+      maxAngle
+    );
+
+    // Just set the target - physics loop handles animation with momentum
+    springRef.current.setTarget(targetRotation);
+
     // Advance spring physics (momentum preserved!)
     springRef.current.tick(dt);
 
@@ -93,7 +122,7 @@ export function useDragSwing(config: DragSwingConfig = {}): UseDragSwingReturn {
 
     // Continue loop
     dragLoopRef.current = requestAnimationFrame(runDragLoop);
-  }, [updateRotation]);
+  }, [maxAngle, sensitivity, smoothing, updateRotation]);
 
   // Apply initial scale/shadow and start physics loop on mount
   // (component mounts after drag starts, so handleDragStart won't fire)
@@ -101,6 +130,9 @@ export function useDragSwing(config: DragSwingConfig = {}): UseDragSwingReturn {
     // Initialize drag state and timing
     isDraggingRef.current = true;
     lastFrameTimeRef.current = performance.now();
+    pointerXRef.current = 0;
+    lastFrameXRef.current = 0;
+    smoothedVelocityRef.current = 0;
 
     const cardElement = overlayRef.current?.querySelector(
       "[data-overlay-card]"
@@ -143,7 +175,8 @@ export function useDragSwing(config: DragSwingConfig = {}): UseDragSwingReturn {
   const handleDragStart = useCallback(
     (_event: DragStartEvent) => {
       // Reset tracking state
-      lastXRef.current = 0;
+      pointerXRef.current = 0;
+      lastFrameXRef.current = 0;
       smoothedVelocityRef.current = 0;
       isDraggingRef.current = true;
 
@@ -154,43 +187,13 @@ export function useDragSwing(config: DragSwingConfig = {}): UseDragSwingReturn {
     [runDragLoop]
   );
 
-  const handleDragMove = useCallback(
-    (event: DragMoveEvent) => {
-      if (!springRef.current) {
-        return;
-      }
+  const handleDragMove = useCallback((event: DragMoveEvent) => {
+    if (!springRef.current) {
+      return;
+    }
 
-      const currentX = event.delta.x;
-
-      // Instantaneous velocity = position change since last frame
-      const instantVelocity = currentX - lastXRef.current;
-      lastXRef.current = currentX;
-
-      // Smooth the velocity
-      smoothedVelocityRef.current = lerp(
-        smoothedVelocityRef.current,
-        instantVelocity,
-        smoothing
-      );
-
-      // Dead zone - ignore tiny velocity to prevent jitter during slow movement
-      const effectiveVelocity =
-        Math.abs(smoothedVelocityRef.current) < 0.3
-          ? 0
-          : smoothedVelocityRef.current;
-
-      // Map velocity directly to rotation angle
-      const targetRotation = clamp(
-        -effectiveVelocity * sensitivity,
-        -maxAngle,
-        maxAngle
-      );
-
-      // Just set the target - physics loop handles animation with momentum
-      springRef.current.setTarget(targetRotation);
-    },
-    [sensitivity, maxAngle, smoothing]
-  );
+    pointerXRef.current = event.delta.x;
+  }, []);
 
   const handleDragEnd = useCallback(
     (_event: DragEndEvent) => {
@@ -228,6 +231,8 @@ export function useDragSwing(config: DragSwingConfig = {}): UseDragSwingReturn {
       }
 
       // Reset tracking state
+      pointerXRef.current = 0;
+      lastFrameXRef.current = 0;
       smoothedVelocityRef.current = 0;
     },
     [store]
