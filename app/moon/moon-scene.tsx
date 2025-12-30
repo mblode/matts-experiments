@@ -1,10 +1,10 @@
+import { OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { OrbitControls, Stats } from "@react-three/drei";
-import React, { Suspense, useMemo, useRef, useEffect } from "react";
+import { Suspense, useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
-import { solveMoon, Inputs } from "./astro";
+import { type Inputs, solveMoon } from "./astro";
 
-type Props = {
+interface Props {
   inputs: Inputs;
   // optional speed multiplier for auto-scrub playback (days per second)
   speed?: number;
@@ -14,7 +14,7 @@ type Props = {
     roughness: string;
     displacement: string;
   };
-};
+}
 
 function MoonMesh(props: Props) {
   const { inputs, textures, speed = 0 } = props;
@@ -25,26 +25,26 @@ function MoonMesh(props: Props) {
 
   const colorMap = useMemo(
     () => new THREE.TextureLoader().load(textures.color),
-    [textures.color],
+    [textures.color]
   );
   const normalMap = useMemo(
     () => new THREE.TextureLoader().load(textures.normal),
-    [textures.normal],
+    [textures.normal]
   );
   const roughnessMap = useMemo(
     () => new THREE.TextureLoader().load(textures.roughness),
-    [textures.roughness],
+    [textures.roughness]
   );
   const displacementMap = useMemo(
     () => new THREE.TextureLoader().load(textures.displacement),
-    [textures.displacement],
+    [textures.displacement]
   );
 
   // Configure NASA LRO textures for optimal lunar surface rendering
   useMemo(() => {
     const configureLunarTexture = (
       texture: THREE.Texture,
-      isNormalMap = false,
+      isNormalMap = false
     ) => {
       // NASA LRO textures are in equirectangular projection
       texture.wrapS = THREE.RepeatWrapping;
@@ -73,7 +73,13 @@ function MoonMesh(props: Props) {
     configureLunarTexture(normalMap, true);
     configureLunarTexture(roughnessMap);
     configureLunarTexture(displacementMap);
-  }, [colorMap, normalMap, roughnessMap, displacementMap]);
+  }, [
+    colorMap,
+    normalMap,
+    roughnessMap,
+    displacementMap,
+    gl.capabilities.getMaxAnisotropy,
+  ]);
 
   // Recompute astronomy solution when inputs change
   const sol = useMemo(() => solveMoon(inputs), [inputs]);
@@ -82,7 +88,9 @@ function MoonMesh(props: Props) {
 
   // TIDAL LOCKING: Moon orientation stays COMPLETELY FIXED
   useEffect(() => {
-    if (!group.current) return;
+    if (!group.current) {
+      return;
+    }
 
     // FUNDAMENTAL PHYSICS: The Moon is tidally locked to Earth
     // - Same side always faces Earth (synchronous rotation = orbital period)
@@ -100,17 +108,19 @@ function MoonMesh(props: Props) {
   }, []); // Empty dependency array - this only runs once
 
   // PHASE CREATION: Change sun direction to simulate orbital motion
-  useFrame((state, delta) => {
+  useFrame((_state, delta) => {
     let currentSol = sol;
 
     // Time progression for animation
     if (speed) {
-      timeRef.current += delta * speed * 86400000; // advance time by speed days per second
+      timeRef.current += delta * speed * 86_400_000; // advance time by speed days per second
       const animDate = new Date(timeRef.current);
       currentSol = solveMoon({ ...inputs, date: animDate });
     }
 
-    if (!light.current) return;
+    if (!light.current) {
+      return;
+    }
 
     // MOON PHASE PHYSICS: Phases result from changing Sun-Moon-Earth geometry
     // As the Moon orbits Earth, the Sun appears to move relative to the Moon-Earth system
@@ -130,10 +140,10 @@ function MoonMesh(props: Props) {
       const angle = (Math.atan2(z, x) * 180) / Math.PI; // Angle in XZ plane
       console.log("🌙 Moon Phase Debug:", {
         sunDir: `[${x.toFixed(2)}, ${y.toFixed(2)}, ${z.toFixed(2)}]`,
-        sunAngle: angle.toFixed(1) + "°",
+        sunAngle: `${angle.toFixed(1)}°`,
         phase: currentSol.phaseName,
-        illum: (currentSol.illumFraction * 100).toFixed(1) + "%",
-        phaseAngle: currentSol.phaseAngleDeg.toFixed(1) + "°",
+        illum: `${(currentSol.illumFraction * 100).toFixed(1)}%`,
+        phaseAngle: `${currentSol.phaseAngleDeg.toFixed(1)}°`,
       });
     }
 
@@ -142,7 +152,7 @@ function MoonMesh(props: Props) {
     light.current.position.set(
       x * lightDistance,
       y * lightDistance,
-      z * lightDistance,
+      z * lightDistance
     );
 
     // Ensure light targets moon center for accurate directional illumination
@@ -155,27 +165,27 @@ function MoonMesh(props: Props) {
 
   return (
     <group ref={group}>
-      <mesh ref={moon} receiveShadow>
+      <mesh receiveShadow ref={moon}>
         <sphereGeometry args={[1, 256, 256]} />
         <meshPhysicalMaterial
           // NASA LRO Surface Textures
-          map={colorMap} // Anorthositic crust albedo
-          normalMap={normalMap} // Surface normal details
-          normalScale={new THREE.Vector2(1.2, 1.2)} // Enhanced normal mapping for better surface detail
-          roughnessMap={roughnessMap} // Surface roughness variation
+          clearcoat={0.0} // Anorthositic crust albedo
+          displacementBias={0.0} // Surface normal details
+          displacementMap={displacementMap} // Enhanced normal mapping for better surface detail
+          displacementScale={0.012} // Surface roughness variation
           // Lunar Surface Material Properties
-          roughness={0.9} // Moon surface is very rough/dusty
+          map={colorMap} // Moon surface is very rough/dusty
           metalness={0.0} // Lunar regolith is non-metallic
-          clearcoat={0.0} // No clear coating
+          normalMap={normalMap} // No clear coating
           // Displacement for surface height variation
-          displacementMap={displacementMap} // LRO LOLA elevation data
-          displacementScale={0.012} // More pronounced height variation
-          displacementBias={0.0}
+          normalScale={new THREE.Vector2(1.2, 1.2)} // LRO LOLA elevation data
+          reflectivity={0.12} // More pronounced height variation
+          roughness={0.9}
           // Enhanced lunar surface reflectance for better visibility
-          reflectivity={0.12}
-          specularIntensity={0.02} // Very low - lunar regolith is matte/dusty
+          roughnessMap={roughnessMap}
+          side={THREE.FrontSide} // Very low - lunar regolith is matte/dusty
+          specularIntensity={0.02}
           transparent={false}
-          side={THREE.FrontSide}
         />
       </mesh>
 
@@ -185,20 +195,20 @@ function MoonMesh(props: Props) {
 
       {/* Sun light - creates harsh, well-defined shadows like on the Moon */}
       <directionalLight
-        ref={light}
-        intensity={3} // Extreme sun intensity for maximum contrast
         castShadow={true}
-        shadow-mapSize-width={8192} // Ultra high resolution for razor-sharp shadows
-        shadow-mapSize-height={8192}
-        shadow-camera-near={0.01}
+        intensity={3} // Extreme sun intensity for maximum contrast
+        ref={light}
+        shadow-bias={0} // Ultra high resolution for razor-sharp shadows
+        shadow-camera-bottom={-1.5}
         shadow-camera-far={200}
         shadow-camera-left={-1.5}
+        shadow-camera-near={0.01}
         shadow-camera-right={1.5}
         shadow-camera-top={1.5}
-        shadow-camera-bottom={-1.5}
-        shadow-radius={0} // No shadow softening - harsh edges
-        shadow-bias={0} // No bias - raw, unfiltered shadows
-        shadow-normalBias={0}
+        shadow-mapSize-height={8192}
+        shadow-mapSize-width={8192} // No shadow softening - harsh edges
+        shadow-normalBias={0} // No bias - raw, unfiltered shadows
+        shadow-radius={0}
       />
     </group>
   );
@@ -211,21 +221,21 @@ export const MoonScene = (props: Props) => {
       gl={{
         antialias: true,
       }}
-      shadows // Enable shadow rendering
       onCreated={({ gl }) => {
         gl.shadowMap.enabled = true;
         gl.shadowMap.type = THREE.BasicShadowMap; // Raw pixelated shadows - zero filtering
         gl.shadowMap.autoUpdate = true;
         // Disable any WebGL shadow filtering
         gl.shadowMap.needsUpdate = true;
-      }}
+      }} // Enable shadow rendering
+      shadows
       style={{ width: "100%", height: "100vh" }}
     >
-      <color attach="background" args={["#05060a"]} />
+      <color args={["#05060a"]} attach="background" />
       <Suspense fallback={null}>
         <MoonMesh {...props} />
       </Suspense>
-      <OrbitControls enablePan={false} enableZoom={true} enableRotate={true} />
+      <OrbitControls enablePan={false} enableRotate={true} enableZoom={true} />
     </Canvas>
   );
 };

@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { motion, AnimatePresence } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export const TableBlock = () => {
   const [activeTable, setActiveTable] = useState("scale-ups");
@@ -269,7 +269,7 @@ export const TableBlock = () => {
               <div className="flex items-center gap-x-[6px]">
                 <div className="relative flex">
                   {cell.content}
-                  <div className="-left-[0.5px] absolute bottom-0 h-px w-[calc(100%+1px)] rounded-full bg-[#EEEFF1]" />
+                  <div className="absolute bottom-0 -left-[0.5px] h-px w-[calc(100%+1px)] rounded-full bg-[#EEEFF1]" />
                 </div>
               </div>
             </motion.div>
@@ -290,7 +290,7 @@ export const TableBlock = () => {
           <div className="grid overflow-hidden *:col-start-1 *:row-start-1">
             <motion.div {...animation(rowIndex, colIndex)}>
               <div
-                className={`inline-flex items-center border font-medium tracking-normal text-[8px] leading-[8px] gap-x-[1.5px] rounded-md px-[3px] py-[2.5px] lg:gap-x-1 lg:rounded-lg lg:px-[5px] lg:py-px lg:text-[12px] lg:leading-4 ${getBadgeStyles(cell.variant)}`}
+                className={`inline-flex items-center gap-x-[1.5px] rounded-md border px-[3px] py-[2.5px] font-medium text-[8px] leading-[8px] tracking-normal lg:gap-x-1 lg:rounded-lg lg:px-[5px] lg:py-px lg:text-[12px] lg:leading-4 ${getBadgeStyles(cell.variant)}`}
               >
                 {cell.content}
               </div>
@@ -303,7 +303,7 @@ export const TableBlock = () => {
     }
   };
 
-  const getCellClasses = (cell: any, rowIndex: number, colIndex: number) => {
+  const getCellClasses = (cell: any, _rowIndex: number, colIndex: number) => {
     const baseClasses =
       "h-full w-full flex items-center truncate border-[#EEEFF1] border-r border-b font-medium text-secondary-foreground gap-x-1 pt-[7px] pb-1.5 text-[10px] leading-[14px] tracking-[-0.2px] lg:gap-x-1.5 lg:pt-[10px] lg:pb-[9px] lg:text-[14px] lg:leading-5 lg:tracking-[-0.28px]";
 
@@ -328,7 +328,7 @@ export const TableBlock = () => {
   return (
     <div className="space-y-6">
       {/* Toggle Buttons */}
-      <div className="flex gap-2 flex-wrap">
+      <div className="flex flex-wrap gap-2">
         {buttons.map((button) => (
           <Button
             key={button.id}
@@ -341,17 +341,17 @@ export const TableBlock = () => {
       </div>
 
       {/* Table */}
-      <div className="grid border-[#EEEFF1] border-t border-l transition-[grid-template-columns] duration-700 [transition-timing-function:cubic-bezier(0.65,0,0.35,1)] auto-rows-[28px] lg:auto-rows-[40px] pointer-events-none select-none grid-cols-[118px_1fr_1fr] md:grid-cols-[118px_1fr_1fr_1fr] lg:grid-cols-[173px_1fr_1fr_1fr]">
+      <div className="pointer-events-none grid select-none auto-rows-[28px] grid-cols-[118px_1fr_1fr] border-[#EEEFF1] border-t border-l transition-[grid-template-columns] duration-700 [transition-timing-function:cubic-bezier(0.65,0,0.35,1)] md:grid-cols-[118px_1fr_1fr_1fr] lg:auto-rows-[40px] lg:grid-cols-[173px_1fr_1fr_1fr]">
         <AnimatePresence mode="popLayout">
           {tableData.map((row, rowIndex) =>
             row.map((cell, colIndex) => (
               <div
-                key={`${activeTable}-${rowIndex}-${colIndex}`}
                 className={getCellClasses(cell, rowIndex, colIndex)}
+                key={`${activeTable}-${rowIndex}-${colIndex}`}
               >
                 {renderCellContent(cell, rowIndex, colIndex)}
               </div>
-            )),
+            ))
           )}
         </AnimatePresence>
       </div>

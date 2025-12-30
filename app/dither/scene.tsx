@@ -1,10 +1,10 @@
-import { useEffect, useRef, useMemo } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
-import * as THREE from "three";
-import { useGame } from "./game";
-import type { Asteroid as AsteroidType } from "./game";
-import { Explosions } from "./components/explosion";
+import { useEffect, useMemo, useRef } from "react";
+import type * as THREE from "three";
 import { Asteroid } from "./components/asteroid";
+import { Explosions } from "./components/explosion";
+import type { Asteroid as AsteroidType } from "./game";
+import { useGame } from "./game";
 
 const MAX_ASTEROIDS = 30;
 const SPAWN_INTERVAL_START = 1.2; // Starting spawn interval (seconds)
@@ -21,7 +21,7 @@ const VELOCITY_SCALE = 500; // Score points to increase asteroid velocity
 // Helper function to create asteroid properties (avoids code duplication)
 function createAsteroidProperties(
   id: number,
-  score: number = 0,
+  score = 0
 ): Omit<AsteroidType, "position"> {
   // Random linear velocity with scaling based on score
   const dirX = (Math.random() - 0.5) * 2;
@@ -65,7 +65,7 @@ function createAsteroidProperties(
       (Math.random() - 0.5) * 0.5,
       (Math.random() - 0.5) * 0.5,
     ],
-    shapeSeed: Math.random() * 10000,
+    shapeSeed: Math.random() * 10_000,
   };
 }
 
@@ -112,7 +112,9 @@ export default function Scene() {
       return;
     }
 
-    if (!isPlaying || isGameOver || initializedRef.current) return;
+    if (!isPlaying || isGameOver || initializedRef.current) {
+      return;
+    }
 
     // Reset for new game
     nextIdRef.current = 0;
@@ -168,14 +170,16 @@ export default function Scene() {
     const removed = Array.from(refIds).filter((id) => !stateIds.has(id));
     if (removed.length > 0) {
       asteroidsRef.current = asteroidsRef.current.filter((a) =>
-        stateIds.has(a.id),
+        stateIds.has(a.id)
       );
     }
   }, [asteroids]);
 
   // Update asteroid positions and spawn new ones
   useFrame((_, delta) => {
-    if (!isPlaying || !initializedRef.current) return;
+    if (!(isPlaying && initializedRef.current)) {
+      return;
+    }
 
     let needsStateUpdate = false;
     const currentCameraPos = camera.position;
@@ -213,7 +217,7 @@ export default function Scene() {
     // Formula: spawnInterval = max(0.3, 1.2 - score/2000)
     const currentSpawnInterval = Math.max(
       SPAWN_INTERVAL_MIN,
-      SPAWN_INTERVAL_START - Math.max(0, score) / SPAWN_RATE_SCALE,
+      SPAWN_INTERVAL_START - Math.max(0, score) / SPAWN_RATE_SCALE
     );
 
     // Spawn new asteroids using accumulated time
@@ -228,7 +232,7 @@ export default function Scene() {
 
       const numToSpawn = Math.min(
         Math.floor(Math.random() * 2) + 1,
-        MAX_ASTEROIDS - asteroidsRef.current.length,
+        MAX_ASTEROIDS - asteroidsRef.current.length
       );
 
       for (let i = 0; i < numToSpawn; i++) {
@@ -278,12 +282,12 @@ export default function Scene() {
       <points ref={starsRef}>
         <bufferGeometry>
           <bufferAttribute
-            attach="attributes-position"
             args={[starGeometry.positions, 3]}
+            attach="attributes-position"
           />
           <bufferAttribute
-            attach="attributes-size"
             args={[starGeometry.sizes, 1]}
+            attach="attributes-size"
           />
         </bufferGeometry>
         <pointsMaterial
@@ -296,7 +300,7 @@ export default function Scene() {
 
       {/* Dynamic asteroids - render from ref for real-time position updates */}
       {asteroidsRef.current.map((asteroid) => (
-        <Asteroid key={asteroid.id} asteroid={asteroid} />
+        <Asteroid asteroid={asteroid} key={asteroid.id} />
       ))}
 
       {/* Explosion effects */}

@@ -1,16 +1,15 @@
-import type { VenueThemeSchema } from "@/lib/types";
 import type { CSSProperties } from "react";
 import { MediaImage } from "@/components/ui/media-image";
+import type { VenueThemeSchema } from "@/lib/types";
 
-type Props = {
+interface Props {
   content: Partial<VenueThemeSchema> | undefined;
   style?: CSSProperties;
-};
+}
 
 export const ThemeBackground = ({ content, style }: Props) => {
   return (
     <MediaImage
-      width={1000}
       height={1000}
       media={content?.media}
       style={{
@@ -22,6 +21,7 @@ export const ThemeBackground = ({ content, style }: Props) => {
         zIndex: -1,
         ...style,
       }}
+      width={1000}
     />
   );
 };

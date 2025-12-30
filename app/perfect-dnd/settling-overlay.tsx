@@ -1,10 +1,10 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
 import { observer } from "mobx-react-lite";
-import { useStore } from "./stores/store";
+import { useLayoutEffect, useRef } from "react";
 import type { BlockData } from "./block";
 import { CardInner } from "./card-inner";
+import { useStore } from "./stores/store";
 
 interface SettlingOverlayProps {
   block: BlockData;
@@ -23,16 +23,14 @@ export const SettlingOverlay = observer(
 
     useLayoutEffect(() => {
       if (
-        !rect ||
-        !containerRef.current ||
-        !wrapperRef.current ||
-        !cardRef.current
-      )
+        !(rect && containerRef.current && wrapperRef.current && cardRef.current)
+      ) {
         return;
+      }
 
       // Find the target content-card position
       const targetElement = document.querySelector(
-        `[data-settling-target="${block.id}"]`,
+        `[data-settling-target="${block.id}"]`
       ) as HTMLElement | null;
 
       if (!targetElement) {
@@ -52,7 +50,7 @@ export const SettlingOverlay = observer(
       const generateSpringKeyframes = (
         from: number,
         to: number,
-        steps: number,
+        steps: number
       ): number[] => {
         const keyframes: number[] = [];
         const w0 = Math.sqrt(stiffness / mass);
@@ -78,12 +76,12 @@ export const SettlingOverlay = observer(
       const xKeyframes = generateSpringKeyframes(
         rect.left,
         targetRect.left,
-        steps,
+        steps
       );
       const yKeyframes = generateSpringKeyframes(
         rect.top,
         targetRect.top,
-        steps,
+        steps
       );
       const positionFrames = xKeyframes.map((x, i) => ({
         transform: `translate(${x}px, ${yKeyframes[i]}px)`,
@@ -120,7 +118,7 @@ export const SettlingOverlay = observer(
           duration: 300,
           easing: "ease-out",
           fill: "forwards",
-        },
+        }
       );
 
       positionAnimation.onfinish = () => {
@@ -135,7 +133,9 @@ export const SettlingOverlay = observer(
       };
     }, [rect, rotation, block.id, onAnimationComplete]);
 
-    if (!rect) return null;
+    if (!rect) {
+      return null;
+    }
 
     return (
       <div
@@ -161,15 +161,15 @@ export const SettlingOverlay = observer(
           }}
         >
           <div
-            ref={cardRef}
             className="rounded-xl border border-border bg-white p-4 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15),0_12px_24px_-8px_rgba(0,0,0,0.1)]"
+            ref={cardRef}
           >
             <CardInner block={block} />
           </div>
         </div>
       </div>
     );
-  },
+  }
 );
 
 SettlingOverlay.displayName = "SettlingOverlay";

@@ -16,28 +16,22 @@ class SeededRandom {
   }
 
   next(): number {
-    let t = (this.state += 0x6d2b79f5);
+    let t = (this.state += 0x6d_2b_79_f5);
     t = Math.imul(t ^ (t >>> 15), t | 1);
     t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    return ((t ^ (t >>> 14)) >>> 0) / 4_294_967_296;
   }
 }
 
 // Simple 3D Perlin-like noise using interpolated random values
 class Noise3D {
-  private rng: SeededRandom;
-
-  constructor(seed: number) {
-    this.rng = new SeededRandom(seed);
-  }
-
   // Hash function for 3D coordinates
   private hash(x: number, y: number, z: number): number {
     const n =
-      Math.floor(x) * 374761393 +
-      Math.floor(y) * 668265263 +
-      Math.floor(z) * 2147483647;
-    return Math.abs(n) % 1000000;
+      Math.floor(x) * 374_761_393 +
+      Math.floor(y) * 668_265_263 +
+      Math.floor(z) * 2_147_483_647;
+    return Math.abs(n) % 1_000_000;
   }
 
   // Interpolation function (smoothstep)
@@ -63,14 +57,14 @@ class Noise3D {
     const sz = this.smoothstep(fz);
 
     // Sample 8 corners of the cube
-    const n000 = this.hash(x0, y0, z0) / 1000000;
-    const n001 = this.hash(x0, y0, z1) / 1000000;
-    const n010 = this.hash(x0, y1, z0) / 1000000;
-    const n011 = this.hash(x0, y1, z1) / 1000000;
-    const n100 = this.hash(x1, y0, z0) / 1000000;
-    const n101 = this.hash(x1, y0, z1) / 1000000;
-    const n110 = this.hash(x1, y1, z0) / 1000000;
-    const n111 = this.hash(x1, y1, z1) / 1000000;
+    const n000 = this.hash(x0, y0, z0) / 1_000_000;
+    const n001 = this.hash(x0, y0, z1) / 1_000_000;
+    const n010 = this.hash(x0, y1, z0) / 1_000_000;
+    const n011 = this.hash(x0, y1, z1) / 1_000_000;
+    const n100 = this.hash(x1, y0, z0) / 1_000_000;
+    const n101 = this.hash(x1, y0, z1) / 1_000_000;
+    const n110 = this.hash(x1, y1, z0) / 1_000_000;
+    const n111 = this.hash(x1, y1, z1) / 1_000_000;
 
     // Trilinear interpolation
     const nx00 = n000 * (1 - sx) + n100 * sx;
@@ -109,7 +103,7 @@ export const AsteroidGeometry = ({
 }: AsteroidGeometryProps) => {
   const geometry = useMemo(() => {
     const rng = new SeededRandom(shapeSeed);
-    const noise = new Noise3D(shapeSeed);
+    const noise = new Noise3D();
 
     // Use seed to pick base geometry type (weighted toward icosahedron)
     const typeRand = rng.next();
@@ -201,7 +195,7 @@ export const AsteroidGeometry = ({
         (x / radius) * noiseScale,
         (y / radius) * noiseScale,
         (z / radius) * noiseScale,
-        5,
+        5
       );
 
       // Add high-frequency detail noise for spotty, bumpy texture
@@ -209,7 +203,7 @@ export const AsteroidGeometry = ({
       const detailNoise = noise.noise(
         (x / radius) * detailScale,
         (y / radius) * detailScale,
-        (z / radius) * detailScale,
+        (z / radius) * detailScale
       );
 
       // Combine base noise and detail noise
@@ -242,7 +236,7 @@ export const AsteroidGeometry = ({
         i,
         x + nx * totalDisplacement,
         y + ny * totalDisplacement,
-        z + nz * totalDisplacement,
+        z + nz * totalDisplacement
       );
     }
 
@@ -255,7 +249,7 @@ export const AsteroidGeometry = ({
     return baseGeometry;
   }, [radius, shapeSeed]);
 
-  return <primitive object={geometry} attach="geometry" />;
+  return <primitive attach="geometry" object={geometry} />;
 };
 
 export default AsteroidGeometry;

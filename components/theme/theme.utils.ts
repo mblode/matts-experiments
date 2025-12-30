@@ -1,4 +1,4 @@
-import { VenueThemeSchema, Media } from "@/lib/types";
+import type { Media, VenueThemeSchema } from "@/lib/types";
 
 const FALLBACK_PAGE_THEME: Partial<VenueThemeSchema> = {
   css: "",
@@ -66,7 +66,7 @@ const FALLBACK_PAGE_THEME: Partial<VenueThemeSchema> = {
 };
 
 export const getDefaultPageTheme = (
-  content?: Partial<VenueThemeSchema>,
+  content?: Partial<VenueThemeSchema>
 ): Partial<VenueThemeSchema> => {
   const defaultTheme = FALLBACK_PAGE_THEME;
 
@@ -78,8 +78,8 @@ export const getDefaultPageTheme = (
     ...defaultTheme,
     ...Object.fromEntries(
       Object.entries(content).filter(
-        ([, value]) => value !== null && value !== undefined && value !== "",
-      ),
+        ([, value]) => value !== null && value !== undefined && value !== ""
+      )
     ),
   };
 
@@ -87,7 +87,7 @@ export const getDefaultPageTheme = (
 };
 
 export const convertToOverlayNumber = (
-  rgbaString: string | undefined | null,
+  rgbaString: string | undefined | null
 ): number => {
   if (!rgbaString) {
     return 0;
@@ -104,7 +104,8 @@ export const convertToOverlayNumber = (
   if (r === 255 && g === 255 && b === 255) {
     // White, scale alpha to -100 to 0
     return a * 100 * -1;
-  } else if (r === 0 && g === 0 && b === 0) {
+  }
+  if (r === 0 && g === 0 && b === 0) {
     // Black, scale alpha to 0 to 100
     return a * 100;
   }

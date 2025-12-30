@@ -3,8 +3,8 @@ import { DitherBlock } from "./dither-block";
 
 export default function Page() {
   return (
-    <div className="min-h-screen bg-[#333319] text-white relative overflow-hidden">
-      <div className="relative mx-auto max-w-4xl z-10 pt-8 px-8">
+    <div className="relative min-h-screen overflow-hidden bg-[#333319] text-white">
+      <div className="relative z-10 mx-auto max-w-4xl px-8 pt-8">
         <Header id="dither" />
       </div>
 

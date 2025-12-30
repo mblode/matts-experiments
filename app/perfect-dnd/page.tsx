@@ -1,19 +1,19 @@
 "use client";
 
+import { Header } from "@/components/ui/header";
 import { EditorPage } from "./dnd-kit-page";
 import { StoreProvider } from "./stores/store";
-import { Header } from "@/components/ui/header";
 
 export default function Page() {
   return (
-    <div className="min-h-screen p-8 bg-background">
+    <div className="min-h-screen bg-background p-8">
       <div className="mx-auto max-w-4xl">
-        <Header id="perfect-dnd" className="mb-4" />
+        <Header className="mb-4" id="perfect-dnd" />
         <a
-          href="https://github.com/mblode/perfect-dnd"
-          target="_blank"
-          rel="noreferrer"
           className="link"
+          href="https://github.com/mblode/perfect-dnd"
+          rel="noreferrer"
+          target="_blank"
         >
           Perfect DnD on GitHub
         </a>

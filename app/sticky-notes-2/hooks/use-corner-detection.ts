@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
+import { useCallback, useRef, useState } from "react";
 import type {
   Point2D,
   UseCornerDetectionOptions,
@@ -38,7 +38,9 @@ export function useCornerDetection({
    */
   const getPointerPosition = useCallback(
     (e: React.PointerEvent): Point2D | null => {
-      if (!containerRef.current) return null;
+      if (!containerRef.current) {
+        return null;
+      }
 
       const rect = containerRef.current.getBoundingClientRect();
       const x = Math.max(0, e.clientX - rect.left);
@@ -46,7 +48,7 @@ export function useCornerDetection({
 
       return point2D(x, y);
     },
-    [containerRef],
+    [containerRef]
   );
 
   /**
@@ -70,7 +72,7 @@ export function useCornerDetection({
       // BR corner: must be in both bottom AND right zones
       return inBottomZone && inRightZone;
     },
-    [width, height, cornerSize],
+    [width, height, cornerSize]
   );
 
   /**
@@ -79,10 +81,14 @@ export function useCornerDetection({
    */
   const onPointerDown = useCallback(
     (e: React.PointerEvent) => {
-      if (!enabled) return;
+      if (!enabled) {
+        return;
+      }
 
       const pos = getPointerPosition(e);
-      if (!pos) return;
+      if (!pos) {
+        return;
+      }
 
       if (isInCornerZone(pos)) {
         // Capture pointer for tracking outside container
@@ -99,7 +105,7 @@ export function useCornerDetection({
         e.preventDefault();
       }
     },
-    [enabled, getPointerPosition, isInCornerZone, onCornerActivated],
+    [enabled, getPointerPosition, isInCornerZone, onCornerActivated]
   );
 
   /**
@@ -108,10 +114,14 @@ export function useCornerDetection({
    */
   const onPointerMoveHandler = useCallback(
     (e: React.PointerEvent) => {
-      if (!enabled) return;
+      if (!enabled) {
+        return;
+      }
 
       const pos = getPointerPosition(e);
-      if (!pos) return;
+      if (!pos) {
+        return;
+      }
 
       if (isPressed) {
         // Dragging - update position
@@ -128,7 +138,7 @@ export function useCornerDetection({
             // Show corner fold preview at corner origin
             const origin = point2D(
               width - cornerSize / 2,
-              height - cornerSize / 2,
+              height - cornerSize / 2
             );
             setPointerPosition(origin);
             onCornerActivated?.(origin);
@@ -151,7 +161,7 @@ export function useCornerDetection({
       onPointerMove,
       onCornerActivated,
       onPointerLeave,
-    ],
+    ]
   );
 
   /**
@@ -160,7 +170,9 @@ export function useCornerDetection({
    */
   const onPointerUp = useCallback(
     (e: React.PointerEvent) => {
-      if (!enabled || !isPressed) return;
+      if (!(enabled && isPressed)) {
+        return;
+      }
 
       // Release pointer capture
       (e.target as HTMLElement).releasePointerCapture?.(e.pointerId);
@@ -183,15 +195,17 @@ export function useCornerDetection({
         onPointerRelease?.(pos, wasQuickFlip);
       }
     },
-    [enabled, isPressed, getPointerPosition, onPointerRelease],
+    [enabled, isPressed, getPointerPosition, onPointerRelease, width]
   );
 
   /**
    * Handle pointer leave event
    */
   const onPointerLeaveHandler = useCallback(
-    (e: React.PointerEvent) => {
-      if (!enabled) return;
+    (_e: React.PointerEvent) => {
+      if (!enabled) {
+        return;
+      }
 
       // Only handle hover leave, not drag leave
       if (!isPressed) {
@@ -200,7 +214,7 @@ export function useCornerDetection({
         onPointerLeave?.();
       }
     },
-    [enabled, isPressed, onPointerLeave],
+    [enabled, isPressed, onPointerLeave]
   );
 
   return {

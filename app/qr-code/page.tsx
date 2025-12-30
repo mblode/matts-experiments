@@ -1,18 +1,18 @@
 "use client";
-import { QRCodeBlock } from "./qr-code-block";
 import { Header } from "@/components/ui/header";
+import { QRCodeBlock } from "./qr-code-block";
 
 export default function Page() {
   return (
     <>
-      <div className="p-8 bg-background">
+      <div className="bg-background p-8">
         <div className="mx-auto max-w-4xl">
-          <Header id="qr-code" className="mb-4" />
+          <Header className="mb-4" id="qr-code" />
           <a
-            href="https://github.com/mblode/beautiful-qr-code"
-            target="_blank"
-            rel="noreferrer"
             className="link"
+            href="https://github.com/mblode/beautiful-qr-code"
+            rel="noreferrer"
+            target="_blank"
           >
             Beautiful QR Code on GitHub
           </a>

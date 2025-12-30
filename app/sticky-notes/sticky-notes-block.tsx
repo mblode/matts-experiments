@@ -1,7 +1,7 @@
 "use client";
 
-import { StickyNoteStack } from "./components/sticky-note-stack";
 import { ColorPicker } from "./components/color-picker";
+import { StickyNoteStack } from "./components/sticky-note-stack";
 
 export const StickyNotesBlock = () => {
   return (

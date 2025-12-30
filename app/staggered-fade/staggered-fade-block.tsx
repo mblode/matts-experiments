@@ -1,11 +1,11 @@
 "use client";
 
-import * as React from "react";
-import { useEffect, useState, useRef } from "react";
-import useMeasure from "react-use-measure";
-import { AnimatePresence, motion, useInView } from "motion/react";
 import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
 import mergeRefs from "merge-refs";
+import { AnimatePresence, motion, useInView } from "motion/react";
+import type * as React from "react";
+import { useEffect, useRef, useState } from "react";
+import useMeasure from "react-use-measure";
 
 const texts = [
   "Line graph",
@@ -23,7 +23,9 @@ function useTextLoop(): [string, React.RefObject<HTMLElement | null>] {
   const isInView = useInView(ref);
 
   useEffect(() => {
-    if (!isInView) return;
+    if (!isInView) {
+      return;
+    }
     const interval = setInterval(() => {
       setActive((currentActive) => {
         const index = texts.indexOf(currentActive);
@@ -52,11 +54,11 @@ export const StaggeredFadeBlock = () => {
 
   return (
     <div className="relative">
-      <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white shadow-lg border border-gray-200 relative overflow-hidden">
+      <div className="relative inline-flex items-center gap-3 overflow-hidden rounded-full border border-gray-200 bg-white px-4 py-2 shadow-lg">
         {/* Container with dynamic width */}
         <motion.div
-          className="flex items-center gap-3"
           animate={{ width: bounds.width > 0 ? bounds.width : "auto" }}
+          className="flex items-center gap-3"
           transition={{
             type: "spring",
             stiffness: 350,
@@ -65,25 +67,20 @@ export const StaggeredFadeBlock = () => {
         >
           {/* Content that gets measured */}
           <div
+            className="flex w-fit items-center gap-3"
             ref={mergeRefs(measureRef, loopRef) as React.Ref<HTMLDivElement>}
-            className="flex items-center gap-3 w-fit"
           >
             {/* Static checkmark */}
-            <div className="rounded-full size-6 bg-green-500 text-white flex items-center justify-center flex-shrink-0">
+            <div className="flex size-6 flex-shrink-0 items-center justify-center rounded-full bg-green-500 text-white">
               <CheckIcon className="size-4" />
             </div>
 
             {/* Animated text */}
-            <div className="text-sm font-medium text-gray-900">
-              <AnimatePresence mode="popLayout" initial={false}>
-                <span key={activeText} className="inline-flex">
+            <div className="font-medium text-gray-900 text-sm">
+              <AnimatePresence initial={false} mode="popLayout">
+                <span className="inline-flex" key={activeText}>
                   {activeText.split("").map((letter, index) => (
                     <motion.span
-                      key={index + letter + activeText}
-                      initial={{
-                        opacity: 0,
-                        filter: "blur(2px)",
-                      }}
                       animate={{
                         opacity: isExpanded ? 1 : 0.7,
                         filter: isExpanded ? "blur(0px)" : "blur(0.5px)",
@@ -94,6 +91,7 @@ export const StaggeredFadeBlock = () => {
                           delay: index * 0.015,
                         },
                       }}
+                      className="inline-block"
                       exit={{
                         opacity: 0,
                         filter: "blur(2px)",
@@ -103,7 +101,11 @@ export const StaggeredFadeBlock = () => {
                           damping: 55,
                         },
                       }}
-                      className="inline-block"
+                      initial={{
+                        opacity: 0,
+                        filter: "blur(2px)",
+                      }}
+                      key={index + letter + activeText}
                     >
                       {letter === " " ? "\u00A0" : letter}
                     </motion.span>
@@ -115,11 +117,11 @@ export const StaggeredFadeBlock = () => {
         </motion.div>
 
         {/* Email section */}
-        <div className="flex items-center gap-1 text-sm text-gray-600 flex-shrink-0 z-10">
+        <div className="z-10 flex flex-shrink-0 items-center gap-1 text-gray-600 text-sm">
           <span className="select-none">yo@rauno.me</span>
           {isExpanded && (
             <button
-              className="p-0.5 hover:bg-gray-100 rounded transition-colors"
+              className="rounded p-0.5 transition-colors hover:bg-gray-100"
               onClick={handleCollapse}
             >
               <ChevronsUpDownIcon className="size-3 text-gray-400" />

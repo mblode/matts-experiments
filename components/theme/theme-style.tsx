@@ -1,9 +1,9 @@
 import { getDefaultPageTheme } from "@/components/theme/theme.utils";
-import { VenueThemeSchema } from "@/lib/types";
+import type { VenueThemeSchema } from "@/lib/types";
 
-type Props = {
+interface Props {
   content: Partial<VenueThemeSchema> | undefined;
-};
+}
 
 const getFontData = (content?: Partial<VenueThemeSchema>) => {
   const getFontVariable = (fontFamily: string | undefined) => {

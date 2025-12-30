@@ -1,15 +1,14 @@
+import { motion, useInView } from "motion/react";
+import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { FormControl } from "@/components/ui/form-control";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import { motion, useInView } from "motion/react";
-import { useEffect, useRef } from "react";
-
-type Props = {
+interface Props {
   item: { id: number };
   index?: number;
-};
+}
 
 export const CardBlock = ({ item, index = 0 }: Props) => {
   const ref = useRef(null);
@@ -24,13 +23,6 @@ export const CardBlock = ({ item, index = 0 }: Props) => {
 
   return (
     <motion.div
-      className="ft-widget-wrapper size-full rounded-page-widget text-neutral-900"
-      ref={ref}
-      initial={{
-        y: 30,
-        scale: 0.95,
-        opacity: 0.3,
-      }}
       animate={
         isInView
           ? {
@@ -44,13 +36,20 @@ export const CardBlock = ({ item, index = 0 }: Props) => {
               opacity: 0.3,
             }
       }
+      className="ft-widget-wrapper size-full rounded-page-widget text-neutral-900"
+      initial={{
+        y: 30,
+        scale: 0.95,
+        opacity: 0.3,
+      }}
+      ref={ref}
       transition={{
         duration: 0.45,
         ease: [0.16, 1, 0.3, 1],
         delay: index * 0.05,
       }}
     >
-      <div className="bg-page-widget-background shadow-page-widget border-page-widget size-full rounded-page-widget text-page-body-text backdrop-blur-page-widget p-4">
+      <div className="size-full rounded-page-widget border-page-widget bg-page-widget-background p-4 text-page-body-text shadow-page-widget backdrop-blur-page-widget">
         <div className="mb-1 shrink-0">
           <div className="page-heading line-clamp-2 grow text-left text-lg">
             This is the title {item.id}
@@ -63,17 +62,17 @@ export const CardBlock = ({ item, index = 0 }: Props) => {
 
         <div className="mb-4">
           <div className="mb-2">
-            <Label htmlFor="email" className="cursor-pointer">
+            <Label className="cursor-pointer" htmlFor="email">
               Email
             </Label>
           </div>
 
           <FormControl name="email">
             <Input
-              type="email"
+              className={inputClassName}
               name="email"
               placeholder="Email"
-              className={inputClassName}
+              type="email"
             />
           </FormControl>
 

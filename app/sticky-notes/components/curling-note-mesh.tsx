@@ -1,20 +1,20 @@
 "use client";
 
-import { useMemo, useRef, useCallback } from "react";
 import { useFrame } from "@react-three/fiber";
+import { useCallback, useMemo, useRef } from "react";
 import * as THREE from "three";
-import { vertexShader } from "../shaders/page-curl.vert";
-import { fragmentShader } from "../shaders/page-curl.frag";
-import type { Vec2, AnimationState } from "../store";
 import {
-  CURL_MIN_RADIUS,
   CURL_MAX_RADIUS,
+  CURL_MIN_RADIUS,
   PEEL_DISTANCE_FACTOR,
-  SPRING_STIFFNESS,
   SPRING_DAMPING,
   SPRING_MASS,
+  SPRING_STIFFNESS,
 } from "../constants";
-import { springStep, type SpringState } from "../hooks/use-spring";
+import { type SpringState, springStep } from "../hooks/use-spring";
+import { fragmentShader } from "../shaders/page-curl.frag";
+import { vertexShader } from "../shaders/page-curl.vert";
+import type { AnimationState, Vec2 } from "../store";
 import { paperEase } from "../utils/easing";
 
 interface CurlingNoteMeshProps {
@@ -90,12 +90,14 @@ export function CurlingNoteMesh({
 
   // Update uniforms on each frame with spring physics
   useFrame((_, delta) => {
-    if (!materialRef.current) return;
+    if (!materialRef.current) {
+      return;
+    }
 
     // Update positions
     materialRef.current.uniforms.uClickPos.value.set(
       clickPos.x,
-      1 - clickPos.y,
+      1 - clickPos.y
     );
     materialRef.current.uniforms.uDragPos.value.set(dragPos.x, 1 - dragPos.y);
 
@@ -131,7 +133,7 @@ export function CurlingNoteMesh({
         currentTarget,
         springRef.current.velocity,
         springConfig,
-        Math.min(delta, 0.064), // Clamp delta for stability
+        Math.min(delta, 0.064) // Clamp delta for stability
       );
 
       springRef.current = nextState;
@@ -164,7 +166,7 @@ export function CurlingNoteMesh({
 
   return (
     <mesh geometry={geometry}>
-      <primitive object={material} ref={materialRef} attach="material" />
+      <primitive attach="material" object={material} ref={materialRef} />
     </mesh>
   );
 }

@@ -1,13 +1,13 @@
 import * as AE from "astronomy-engine";
 
-export type Inputs = {
+export interface Inputs {
   date: Date;
   lat: number;
   lon: number;
   elev?: number;
-};
+}
 
-export type MoonSolution = {
+export interface MoonSolution {
   // Direction to place the directional light in THREE coordinates (unit vector)
   sunDir: [number, number, number];
 
@@ -41,10 +41,10 @@ export type MoonSolution = {
   // selenographic libration for orientation
   mlat: number; // degrees
   mlon: number; // degrees
-};
+}
 
 /* --- Helpers --- */
-function norm([x, y, z]: [number, number, number]): [number, number, number] {
+function _norm([x, y, z]: [number, number, number]): [number, number, number] {
   const m = Math.hypot(x, y, z) || 1;
   return [x / m, y / m, z / m];
 }
@@ -68,7 +68,7 @@ function normalizeVec(a: [number, number, number]) {
 
 function equatorialToVector(
   ra_hours: number,
-  dec_deg: number,
+  dec_deg: number
 ): [number, number, number] {
   const ra_rad = (ra_hours * Math.PI) / 12;
   const dec_rad = (dec_deg * Math.PI) / 180;
@@ -108,7 +108,7 @@ export function solveMoon(i: Inputs): MoonSolution {
 
   // Validate and sanitize the date input
   let validDate = i.date;
-  if (!validDate || isNaN(validDate.getTime())) {
+  if (!validDate || Number.isNaN(validDate.getTime())) {
     validDate = new Date();
   }
 
@@ -129,7 +129,7 @@ export function solveMoon(i: Inputs): MoonSolution {
   // These are in Astronomical Units (AU) in J2000 equatorial coordinates
   // This gives us the fundamental geometry: Earth-Moon-Sun triangle
   const rES = AE.GeoVector(AE.Body.Sun, time, true); // Earth → Sun
-  const rEM = AE.GeoVector(AE.Body.Moon, time, true); // Earth → Moon
+  const _rEM = AE.GeoVector(AE.Body.Moon, time, true); // Earth → Moon
 
   // STEP 3: OBSERVER'S VIEW OF THE MOON
   // ==================================
@@ -140,7 +140,7 @@ export function solveMoon(i: Inputs): MoonSolution {
   const dec = moonEquatorial.dec; // Declination in degrees (-90 to +90)
 
   // Convert distance from AU to kilometers for practical use
-  const AU_KM = 149597870.7;
+  const AU_KM = 149_597_870.7;
   const distanceKm = (moonEquatorial.dist ?? 0) * AU_KM;
 
   // STEP 4: LIBRATION EFFECTS (TIDAL LOCKING WOBBLES)
@@ -267,16 +267,16 @@ export function solveMoon(i: Inputs): MoonSolution {
     elongationDeg = ((elongationDeg % 360) + 360) % 360; // Normalize to 0-360°
 
     // Convert to "moon age" in days since new moon
-    const synodicMonth = 29.530588853; // Average length of lunar phase cycle
+    const synodicMonth = 29.530_588_853; // Average length of lunar phase cycle
     const moonAgeDays = (elongationDeg / 360) * synodicMonth;
 
     // Waxing: 0-14.77 days (growing), Waning: 14.77-29.53 days (shrinking)
     isWaxing = moonAgeDays <= synodicMonth / 2;
-  } catch (error) {
+  } catch (_error) {
     // Fallback: Use a more sophisticated approach based on time progression
     // Calculate days since a known new moon to determine waxing/waning
     const knownNewMoon = new Date("2000-01-06T18:14:00.000Z"); // J2000 reference new moon
-    const synodicMonth = 29.530588853; // days
+    const synodicMonth = 29.530_588_853; // days
     const daysSinceRef =
       (validDate.getTime() - knownNewMoon.getTime()) / (1000 * 60 * 60 * 24);
     const cyclePosition =
@@ -301,7 +301,7 @@ export function solveMoon(i: Inputs): MoonSolution {
 
   // Calculate cycle position directly from date for smooth transitions
   const knownNewMoon = new Date("2000-01-06T18:14:00.000Z"); // J2000 reference new moon
-  const synodicMonth = 29.530588853; // days
+  const synodicMonth = 29.530_588_853; // days
   const daysSinceRef =
     (validDate.getTime() - knownNewMoon.getTime()) / (1000 * 60 * 60 * 24);
   const cyclePosition =
@@ -398,20 +398,26 @@ export function solveMoon(i: Inputs): MoonSolution {
  */
 export async function getLocationName(
   lat: number,
-  lon: number,
+  lon: number
 ): Promise<string> {
   try {
     const response = await fetch(
-      `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&addressdetails=1`,
+      `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&addressdetails=1`
     );
     const data = await response.json();
     if (data.address) {
       const { city, town, village, county, state, country } = data.address;
       const place = city || town || village || county;
       const region = state || country;
-      if (place && region) return `${place}, ${region}`;
-      if (place) return place;
-      if (region) return region;
+      if (place && region) {
+        return `${place}, ${region}`;
+      }
+      if (place) {
+        return place;
+      }
+      if (region) {
+        return region;
+      }
     }
     return `${lat.toFixed(4)}°, ${lon.toFixed(4)}°`;
   } catch (err) {

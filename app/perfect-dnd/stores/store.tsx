@@ -1,8 +1,8 @@
 "use client";
 
-import { createContext, useContext } from "react";
 import { makeAutoObservable } from "mobx";
-import { makePersistable, isHydrated } from "mobx-persist-store";
+import { isHydrated, makePersistable } from "mobx-persist-store";
+import { createContext, useContext } from "react";
 import type { BlockData, DropPosition } from "../block";
 
 // Mock data for demo
@@ -68,10 +68,10 @@ export class Store {
     width: number;
     height: number;
   } | null = null;
-  dropAnimationRotation: number = 0;
+  dropAnimationRotation = 0;
 
   // Editor state
-  pageId: string = "page-1";
+  pageId = "page-1";
 
   constructor() {
     makeAutoObservable(this, undefined, { autoBind: true });
@@ -89,16 +89,20 @@ export class Store {
 
   reorderBlocks(pageId: string, newOrder: string[]) {
     this.blocksData = this.blocksData.map((block) => {
-      if (block.pageId !== pageId) return block;
+      if (block.pageId !== pageId) {
+        return block;
+      }
       const newIndex = newOrder.indexOf(block.id);
-      if (newIndex === -1) return block;
+      if (newIndex === -1) {
+        return block;
+      }
       return { ...block, order: newIndex };
     });
   }
 
   toggleVisibility(blockId: string) {
     this.blocksData = this.blocksData.map((block) =>
-      block.id === blockId ? { ...block, visible: !block.visible } : block,
+      block.id === blockId ? { ...block, visible: !block.visible } : block
     );
   }
 
@@ -120,7 +124,7 @@ export class Store {
   // Called when drag ends - start the settling phase
   startSettling(
     rect: { top: number; left: number; width: number; height: number },
-    rotation: number,
+    rotation: number
   ) {
     this.settlingBlockId = this.activeBlockId;
     this.dropAnimationRect = rect;

@@ -7,10 +7,10 @@ import {
 
 export const FaqBlock = () => {
   return (
-    <Accordion type="single" collapsible>
+    <Accordion collapsible type="single">
       <AccordionItem value="item-1">
         <AccordionTrigger>
-          <span className="text-lg font-bold">Is it accessible?</span>
+          <span className="font-bold text-lg">Is it accessible?</span>
         </AccordionTrigger>
         <AccordionContent>
           Aave is a decentralised non-custodial liquidity protocol where users
@@ -22,7 +22,7 @@ export const FaqBlock = () => {
 
       <AccordionItem value="item-2">
         <AccordionTrigger>
-          <span className="text-lg font-bold">Is it fun?</span>
+          <span className="font-bold text-lg">Is it fun?</span>
         </AccordionTrigger>
         <AccordionContent>
           Aave is a decentralised non-custodial liquidity protocol where users
@@ -34,7 +34,7 @@ export const FaqBlock = () => {
 
       <AccordionItem value="item-3">
         <AccordionTrigger>
-          <span className="text-lg font-bold">Is it cool?</span>
+          <span className="font-bold text-lg">Is it cool?</span>
         </AccordionTrigger>
         <AccordionContent>
           Aave is a decentralised non-custodial liquidity protocol where users

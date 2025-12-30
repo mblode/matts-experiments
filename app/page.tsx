@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   Card,
   CardDescription,
@@ -5,20 +6,19 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { blocks } from "@/lib/blocks";
-import Link from "next/link";
 
 export default function Page() {
   return (
-    <div className="min-h-screen p-8 bg-background">
+    <div className="min-h-screen bg-background p-8">
       <div className="mx-auto max-w-4xl">
-        <h1 className="mb-8 text-4xl font-bold">Matt's experiments</h1>
+        <h1 className="mb-8 font-bold text-4xl">Matt's experiments</h1>
 
         <div className="grid gap-4 md:grid-cols-2">
           {Object.entries(blocks)
             .filter(([, block]) => !block.hidden)
             .reverse()
             .map(([key, block]) => (
-              <Link key={key} href={`/${key}`} className="flex w-full">
+              <Link className="flex w-full" href={`/${key}`} key={key}>
                 <Card className="flex-1">
                   <CardHeader>
                     <CardTitle>{block.name}</CardTitle>
@@ -30,21 +30,23 @@ export default function Page() {
             ))}
         </div>
 
-        <footer className="mt-8 py-8 px-4 border-t border-border text-center">
+        <footer className="mt-8 border-border border-t px-4 py-8 text-center">
           <div className="text-sm">
             © 2025{" "}
             <a
-              target="_blank"
+              className="text-foreground underline-offset-2 hover:underline"
               href="https://matthewblode.com"
-              className="hover:underline underline-offset-2 text-foreground"
+              rel="noopener"
+              target="_blank"
             >
               Matthew Blode
             </a>
             {" · "}
             <a
-              target="_blank"
+              className="text-foreground underline-offset-2 hover:underline"
               href="https://github.com/mblode/matts-experiments"
-              className="hover:underline underline-offset-2 text-foreground"
+              rel="noopener"
+              target="_blank"
             >
               View Source
             </a>

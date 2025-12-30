@@ -1,5 +1,5 @@
-import { CheckIcon, TriangleAlertIcon } from "lucide-react";
 import { cva, type VariantProps } from "class-variance-authority";
+import { CheckIcon, TriangleAlertIcon } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
@@ -19,7 +19,7 @@ export const validationVariants = cva(
     defaultVariants: {
       variant: "error",
     },
-  },
+  }
 );
 
 type Props = {
@@ -31,11 +31,11 @@ export const Validation = ({ children, className, variant }: Props) => {
   return (
     <div className={cn(validationVariants({ variant, className }))}>
       {children}
-      {variant === "error" && <TriangleAlertIcon className="size-4 ml-1" />}
-      {variant === "success" && <CheckIcon className="size-4 ml-1" />}
-      {variant === "warning" && <TriangleAlertIcon className="size-4 ml-1" />}
+      {variant === "error" && <TriangleAlertIcon className="ml-1 size-4" />}
+      {variant === "success" && <CheckIcon className="ml-1 size-4" />}
+      {variant === "warning" && <TriangleAlertIcon className="ml-1 size-4" />}
       {variant === "loading" && (
-        <span className="ml-1 ">
+        <span className="ml-1">
           <Spinner size={16} />
         </span>
       )}

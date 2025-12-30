@@ -2,16 +2,16 @@
 
 import {
   closestCenter,
-  defaultDropAnimationSideEffects,
   DndContext,
   type DragEndEvent,
   type DragOverEvent,
   DragOverlay,
   type DragStartEvent,
   type DropAnimation,
+  defaultDropAnimationSideEffects,
+  KeyboardSensor,
   MouseSensor,
   TouchSensor,
-  KeyboardSensor,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
@@ -21,10 +21,10 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { observer } from "mobx-react-lite";
-import { useStore } from "./stores/store";
-import { DragSwingOverlay } from "./drag-swing-overlay";
 import { ContentCard } from "./content-card";
+import { DragSwingOverlay } from "./drag-swing-overlay";
 import { SettlingOverlay } from "./settling-overlay";
+import { useStore } from "./stores/store";
 
 export const EditorPage = observer(() => {
   const store = useStore();
@@ -45,10 +45,10 @@ export const EditorPage = observer(() => {
         tolerance: 5,
       },
     }),
-    useSensor(KeyboardSensor),
+    useSensor(KeyboardSensor)
   );
 
-  const dropAnimation: DropAnimation = {
+  const _dropAnimation: DropAnimation = {
     duration: 350,
     easing: "cubic-bezier(0.22, 1.5, 0.36, 1)",
     sideEffects: defaultDropAnimationSideEffects({
@@ -88,7 +88,7 @@ export const EditorPage = observer(() => {
       const newOrder = arrayMove(
         sortedBlocks.map((b) => b.id),
         oldIndex,
-        newIndex,
+        newIndex
       );
       store.reorderBlocks(pageId, newOrder);
     }
@@ -113,18 +113,18 @@ export const EditorPage = observer(() => {
 
   return (
     <DndContext
-      sensors={sensors}
       collisionDetection={closestCenter}
-      onDragStart={handleDragStart}
-      onDragMove={handleDragOver}
-      onDragEnd={handleDragEnd}
       onDragCancel={handleDragCancel}
+      onDragEnd={handleDragEnd}
+      onDragMove={handleDragOver}
+      onDragStart={handleDragStart}
+      sensors={sensors}
     >
       <div className="flex min-h-screen w-full flex-col">
         <main className="flex-1">
           <div className="mx-auto">
             <div className="flex gap-4 p-4">
-              <div className="flex-1 min-w-0 overflow-auto">
+              <div className="min-w-0 flex-1 overflow-auto">
                 <div className="mx-auto max-w-lg py-2">
                   <SortableContext
                     items={sortedBlocks.map((b) => b.id)}

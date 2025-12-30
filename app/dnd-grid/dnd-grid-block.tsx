@@ -42,7 +42,9 @@ export const DndGridBlock = () => {
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    if (!container) {
+      return;
+    }
 
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
@@ -58,7 +60,9 @@ export const DndGridBlock = () => {
         }
         resizeRafRef.current = requestAnimationFrame(() => {
           resizeRafRef.current = null;
-          if (pendingWidthRef.current === null) return;
+          if (pendingWidthRef.current === null) {
+            return;
+          }
           commitContainerWidth(pendingWidthRef.current);
         });
       }
@@ -85,7 +89,7 @@ export const DndGridBlock = () => {
       isResizingRef.current = true;
       handlers.handleResizeStart(...args);
     },
-    [handlers],
+    [handlers]
   );
   const handleResizeStop: typeof handlers.handleResizeStop = useCallback(
     (...args) => {
@@ -95,42 +99,42 @@ export const DndGridBlock = () => {
         commitContainerWidth(pendingWidthRef.current);
       }
     },
-    [handlers, commitContainerWidth],
+    [handlers, commitContainerWidth]
   );
 
   return (
     <div
-      ref={containerRef}
       className="mx-auto w-full"
+      ref={containerRef}
       style={{ maxWidth: MAX_WIDTH }}
     >
       {containerWidth !== null && containerWidth > 0 ? (
         <DndGrid
-          layout={layout}
           cols={BLOCK_COLUMNS}
+          compactor={{ ...verticalCompactor }}
+          layout={layout}
+          margin={margin}
+          onDrag={handlers.handleDrag}
+          onDragStart={handlers.handleDragStart}
+          onDragStop={handlers.handleDragStop}
+          onLayoutChange={setLayout}
+          onResize={handlers.handleResize}
+          onResizeStart={handleResizeStart}
+          onResizeStop={handleResizeStop}
+          resizeHandles={["ne", "nw", "se", "sw"]}
           rowHeight={BLOCK_HEIGHT * scaleFactor}
           width={containerWidth}
-          margin={margin}
-          onLayoutChange={setLayout}
-          resizeHandles={["ne", "nw", "se", "sw"]}
-          onDragStart={handlers.handleDragStart}
-          onDrag={handlers.handleDrag}
-          onDragStop={handlers.handleDragStop}
-          onResizeStart={handleResizeStart}
-          onResize={handlers.handleResize}
-          onResizeStop={handleResizeStop}
-          compactor={{ ...verticalCompactor }}
         >
           {layout.map((item) => {
             return (
               <button
+                aria-label={`Block ${item.i}`}
+                className="select-none p-0 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 key={item.i}
+                onClick={() => handlers.handleSelect(item.i)}
                 onPointerEnter={() => handlers.handleHover(item.i)}
                 onPointerLeave={() => handlers.handleHover(null)}
-                onClick={() => handlers.handleSelect(item.i)}
                 type="button"
-                className="select-none p-0 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                aria-label={`Block ${item.i}`}
               >
                 {item.i}
               </button>

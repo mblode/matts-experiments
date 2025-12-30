@@ -12,9 +12,9 @@ export const DragOverlayCard = forwardRef<HTMLDivElement, DragOverlayCardProps>(
   ({ block }, ref) => {
     return (
       <div
-        ref={ref}
-        data-overlay-card
         className="rounded-xl border border-border bg-white p-4 transition-shadow"
+        data-overlay-card
+        ref={ref}
         style={{
           cursor: "grabbing",
         }}
@@ -22,7 +22,7 @@ export const DragOverlayCard = forwardRef<HTMLDivElement, DragOverlayCardProps>(
         <CardInner block={block} />
       </div>
     );
-  },
+  }
 );
 
 DragOverlayCard.displayName = "DragOverlayCard";

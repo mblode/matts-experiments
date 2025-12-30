@@ -7,10 +7,10 @@ export default function Page() {
       <div className="mx-auto max-w-5xl p-8">
         <Header id="dnd-grid" />
         <a
-          href="https://dnd-grid.com"
-          target="_blank"
-          rel="noreferrer"
           className="link mb-6"
+          href="https://dnd-grid.com"
+          rel="noreferrer"
+          target="_blank"
         >
           Visit dnd-grid.com
         </a>

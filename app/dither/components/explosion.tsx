@@ -1,7 +1,7 @@
-import { useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
-import { useGame } from "../game";
+import { useMemo } from "react";
 import type { Explosion as ExplosionType } from "../game";
+import { useGame } from "../game";
 
 // Explosion constants
 const EXPLOSION_DURATION_MS = 600; // Milliseconds before explosion fragments are removed
@@ -39,7 +39,7 @@ export const Explosions = () => {
   return (
     <>
       {explosions.map((explosion) => (
-        <ExplosionEffect key={explosion.id} explosion={explosion} />
+        <ExplosionEffect explosion={explosion} key={explosion.id} />
       ))}
     </>
   );
@@ -123,9 +123,9 @@ const ExplosionEffect = ({ explosion }: ExplosionEffectProps) => {
           <boxGeometry args={[1, 1, 1]} />
           <meshStandardMaterial
             color="#ffffff"
-            roughness={0.5}
             metalness={0.2}
             opacity={opacity}
+            roughness={0.5}
             transparent
           />
         </mesh>

@@ -1,11 +1,10 @@
 import type { ReactNode } from "react";
-
-import { Label } from "./label";
 import { cn } from "@/lib/utils";
+import { Label } from "./label";
 
 import { Validation } from "./validation";
 
-export type FormControlProps = {
+export interface FormControlProps {
   name: string;
   label?: ReactNode;
   labelRight?: ReactNode;
@@ -21,7 +20,7 @@ export type FormControlProps = {
   validationClassName?: string;
   captionClassName?: string;
   labelClassName?: string;
-};
+}
 
 export const FormControl = ({
   label,
@@ -43,12 +42,12 @@ export const FormControl = ({
   return (
     <div className={cn("mb-4 flex flex-col", className)}>
       {(label || labelRight) && (
-        <div className="mb-2 flex justify-between items-center gap-1">
+        <div className="mb-2 flex items-center justify-between gap-1">
           <div>
             {label && (
               <Label
-                htmlFor={name}
                 className={cn("cursor-pointer", labelClassName)}
+                htmlFor={name}
               >
                 {label}
               </Label>
@@ -63,7 +62,7 @@ export const FormControl = ({
 
       {caption && (
         <span
-          className={cn("mt-1 text-sm text-muted-foreground", captionClassName)}
+          className={cn("mt-1 text-muted-foreground text-sm", captionClassName)}
         >
           {caption}
         </span>
@@ -78,22 +77,22 @@ export const FormControl = ({
         })}
       >
         {success && (
-          <Validation variant="success" className={validationClassName}>
+          <Validation className={validationClassName} variant="success">
             {success}
           </Validation>
         )}
         {warning && (
-          <Validation variant="warning" className={validationClassName}>
+          <Validation className={validationClassName} variant="warning">
             {warning}
           </Validation>
         )}
         {error && (
-          <Validation variant="error" className={validationClassName}>
+          <Validation className={validationClassName} variant="error">
             {error}
           </Validation>
         )}
         {loading && (
-          <Validation variant="loading" className={validationClassName}>
+          <Validation className={validationClassName} variant="loading">
             {loading}
           </Validation>
         )}

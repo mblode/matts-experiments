@@ -14,7 +14,7 @@ export interface GridInteractionsHandlers {
     newItem: LayoutItem | null | undefined,
     placeholder: LayoutItem | null | undefined,
     event: Event,
-    node: HTMLElement | null | undefined,
+    node: HTMLElement | null | undefined
   ) => void;
   handleDrag: (
     layout: Layout,
@@ -22,7 +22,7 @@ export interface GridInteractionsHandlers {
     newItem: LayoutItem | null | undefined,
     placeholder: LayoutItem | null | undefined,
     event: Event,
-    node: HTMLElement | null | undefined,
+    node: HTMLElement | null | undefined
   ) => void;
   handleDragStop: (
     layout: Layout,
@@ -30,7 +30,7 @@ export interface GridInteractionsHandlers {
     newItem: LayoutItem | null | undefined,
     placeholder: LayoutItem | null | undefined,
     event: Event,
-    node: HTMLElement | null | undefined,
+    node: HTMLElement | null | undefined
   ) => void;
   handleResizeStart: (
     layout: Layout,
@@ -38,7 +38,7 @@ export interface GridInteractionsHandlers {
     newItem: LayoutItem | null | undefined,
     placeholder: LayoutItem | null | undefined,
     event: Event,
-    node: HTMLElement | null | undefined,
+    node: HTMLElement | null | undefined
   ) => void;
   handleResize: (
     layout: Layout,
@@ -46,7 +46,7 @@ export interface GridInteractionsHandlers {
     newItem: LayoutItem | null | undefined,
     placeholder: LayoutItem | null | undefined,
     event: Event,
-    node: HTMLElement | null | undefined,
+    node: HTMLElement | null | undefined
   ) => void;
   handleResizeStop: (
     layout: Layout,
@@ -54,7 +54,7 @@ export interface GridInteractionsHandlers {
     newItem: LayoutItem | null | undefined,
     placeholder: LayoutItem | null | undefined,
     event: Event,
-    node: HTMLElement | null | undefined,
+    node: HTMLElement | null | undefined
   ) => void;
   handleSelect: (id: string) => void;
   handleHover: (id: string | null) => void;
@@ -72,7 +72,7 @@ export interface UseGridInteractionsOptions {
 }
 
 export function useGridInteractions(
-  options: UseGridInteractionsOptions = {},
+  options: UseGridInteractionsOptions = {}
 ): GridInteractionsHandlers {
   const [, setHoveredId] = useState<string | null>(null);
   const [, setSelectedId] = useState<string | null>(null);
@@ -88,39 +88,39 @@ export function useGridInteractions(
         options.onDragStart?.(id);
       }
     },
-    [options],
+    [options]
   );
 
   const handleDrag = useCallback(
     (
       _layout: Layout,
       _oldItem: LayoutItem | null | undefined,
-      _newItem: LayoutItem | null | undefined,
+      _newItem: LayoutItem | null | undefined
     ) => {
       // Can be extended for edge scroll or other drag-time behaviors
     },
-    [],
+    []
   );
 
   const handleDragStop = useCallback(
     (
       _layout: Layout,
       _oldItem: LayoutItem | null | undefined,
-      newItem: LayoutItem | null | undefined,
+      newItem: LayoutItem | null | undefined
     ) => {
       setDragId(null);
       if (newItem?.i) {
         options.onDragStop?.(newItem.i);
       }
     },
-    [options],
+    [options]
   );
 
   const handleResizeStart = useCallback(
     (
       _layout: Layout,
       _oldItem: LayoutItem | null | undefined,
-      newItem: LayoutItem | null | undefined,
+      newItem: LayoutItem | null | undefined
     ) => {
       const id = newItem?.i ?? null;
       setHoveredId(id);
@@ -130,34 +130,34 @@ export function useGridInteractions(
         options.onResizeStart?.(newItem.i);
       }
     },
-    [options],
+    [options]
   );
 
   const handleResize = useCallback(
     (
       _layout: Layout,
       _oldItem: LayoutItem | null | undefined,
-      newItem: LayoutItem | null | undefined,
+      newItem: LayoutItem | null | undefined
     ) => {
       if (newItem) {
         setResizeState({ id: newItem.i, w: newItem.w, h: newItem.h });
       }
     },
-    [],
+    []
   );
 
   const handleResizeStop = useCallback(
     (
       _layout: Layout,
       _oldItem: LayoutItem | null | undefined,
-      newItem: LayoutItem | null | undefined,
+      newItem: LayoutItem | null | undefined
     ) => {
       setResizeState(null);
       if (newItem?.i) {
         options.onResizeStop?.(newItem.i);
       }
     },
-    [options],
+    [options]
   );
 
   const handleSelect = useCallback(
@@ -165,24 +165,26 @@ export function useGridInteractions(
       setSelectedId(id);
       options.onSelect?.(id);
     },
-    [options],
+    [options]
   );
 
   const handleHover = useCallback(
     (id: string | null) => {
       // Don't update hover during drag or resize operations
-      if (!resizeState && !dragId) {
+      if (!(resizeState || dragId)) {
         setHoveredId(id);
         options.onHover?.(id);
       }
     },
-    [resizeState, dragId, options],
+    [resizeState, dragId, options]
   );
 
   return {
-    handleDragStart: handleDragStart as GridInteractionsHandlers["handleDragStart"],
+    handleDragStart:
+      handleDragStart as GridInteractionsHandlers["handleDragStart"],
     handleDrag: handleDrag as GridInteractionsHandlers["handleDrag"],
-    handleDragStop: handleDragStop as GridInteractionsHandlers["handleDragStop"],
+    handleDragStop:
+      handleDragStop as GridInteractionsHandlers["handleDragStop"],
     handleResizeStart:
       handleResizeStart as GridInteractionsHandlers["handleResizeStart"],
     handleResize: handleResize as GridInteractionsHandlers["handleResize"],

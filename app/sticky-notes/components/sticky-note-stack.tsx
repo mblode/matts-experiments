@@ -1,19 +1,19 @@
 "use client";
 
-import { useRef, useState, useCallback, useEffect } from "react";
-import * as THREE from "three";
-import { useStickyNotesStore, type Vec2 } from "../store";
-import { StickyNoteComponent, type StickyNoteRef } from "./sticky-note";
-import { PageCurlCanvas } from "./page-curl-canvas";
-import { useSvgToTexture } from "../hooks/use-svg-to-texture";
+import { useCallback, useEffect, useRef, useState } from "react";
+import type * as THREE from "three";
 import {
-  NOTE_SIZE,
   EDGE_ZONE_PERCENT,
-  PEEL_THRESHOLD,
-  PEEL_DISTANCE_FACTOR,
-  MOMENTUM_THRESHOLD,
   MOMENTUM_PROGRESS_MIN,
+  MOMENTUM_THRESHOLD,
+  NOTE_SIZE,
+  PEEL_DISTANCE_FACTOR,
+  PEEL_THRESHOLD,
 } from "../constants";
+import { useSvgToTexture } from "../hooks/use-svg-to-texture";
+import { useStickyNotesStore, type Vec2 } from "../store";
+import { PageCurlCanvas } from "./page-curl-canvas";
+import { StickyNoteComponent, type StickyNoteRef } from "./sticky-note";
 
 export const StickyNoteStack = () => {
   const {
@@ -54,34 +54,43 @@ export const StickyNoteStack = () => {
   const clientToNoteSpace = useCallback(
     (clientX: number, clientY: number): Vec2 | null => {
       const rect = containerRef.current?.getBoundingClientRect();
-      if (!rect) return null;
+      if (!rect) {
+        return null;
+      }
 
       return {
         x: Math.max(0, Math.min(1, (clientX - rect.left) / rect.width)),
         y: Math.max(0, Math.min(1, (clientY - rect.top) / rect.height)),
       };
     },
-    [],
+    []
   );
 
   // Detect which edge the pointer is on and return position
   const detectEdgeAndPos = useCallback(
     (
       clientX: number,
-      clientY: number,
+      clientY: number
     ): { edge: "top" | "right" | "bottom" | "left"; pos: Vec2 } | null => {
       const pos = clientToNoteSpace(clientX, clientY);
-      if (!pos) return null;
+      if (!pos) {
+        return null;
+      }
 
       let edge: "top" | "right" | "bottom" | "left" | null = null;
-      if (pos.y < EDGE_ZONE_PERCENT) edge = "top";
-      else if (pos.x > 1 - EDGE_ZONE_PERCENT) edge = "right";
-      else if (pos.y > 1 - EDGE_ZONE_PERCENT) edge = "bottom";
-      else if (pos.x < EDGE_ZONE_PERCENT) edge = "left";
+      if (pos.y < EDGE_ZONE_PERCENT) {
+        edge = "top";
+      } else if (pos.x > 1 - EDGE_ZONE_PERCENT) {
+        edge = "right";
+      } else if (pos.y > 1 - EDGE_ZONE_PERCENT) {
+        edge = "bottom";
+      } else if (pos.x < EDGE_ZONE_PERCENT) {
+        edge = "left";
+      }
 
       return edge ? { edge, pos } : null;
     },
-    [clientToNoteSpace],
+    [clientToNoteSpace]
   );
 
   // Calculate progress from clickPos and dragPos using edge-aware directional distance
@@ -127,13 +136,15 @@ export const StickyNoteStack = () => {
 
       startPeel(edge, pos);
     },
-    [captureToTexture, startPeel],
+    [captureToTexture, startPeel]
   );
 
   // Handle pointer events on container
   const handlePointerDown = useCallback(
     (e: React.PointerEvent) => {
-      if (isPeeling) return;
+      if (isPeeling) {
+        return;
+      }
 
       const detection = detectEdgeAndPos(e.clientX, e.clientY);
       if (detection) {
@@ -146,12 +157,14 @@ export const StickyNoteStack = () => {
         handlePeelStart(detection.edge, detection.pos);
       }
     },
-    [isPeeling, detectEdgeAndPos, handlePeelStart],
+    [isPeeling, detectEdgeAndPos, handlePeelStart]
   );
 
   const handlePointerMove = useCallback(
     (e: React.PointerEvent) => {
-      if (!isDraggingRef.current || !isPeeling) return;
+      if (!(isDraggingRef.current && isPeeling)) {
+        return;
+      }
 
       const pos = clientToNoteSpace(e.clientX, e.clientY);
       if (pos) {
@@ -172,7 +185,7 @@ export const StickyNoteStack = () => {
         updatePeel(pos);
       }
     },
-    [isPeeling, clientToNoteSpace, updatePeel],
+    [isPeeling, clientToNoteSpace, updatePeel]
   );
 
   // Calculate edge-specific velocity magnitude
@@ -195,7 +208,9 @@ export const StickyNoteStack = () => {
 
   const handlePointerUp = useCallback(
     (e?: React.PointerEvent) => {
-      if (!isDraggingRef.current) return;
+      if (!isDraggingRef.current) {
+        return;
+      }
 
       // Release pointer capture
       if (pointerIdRef.current !== null && e?.target) {
@@ -229,7 +244,7 @@ export const StickyNoteStack = () => {
         setAnimationState("cancelling", 0);
       }
     },
-    [computeProgress, getEdgeVelocity, setAnimationState],
+    [computeProgress, getEdgeVelocity, setAnimationState]
   );
 
   // Handle animation completion from spring physics
@@ -254,16 +269,16 @@ export const StickyNoteStack = () => {
 
   return (
     <div
-      ref={containerRef}
       className="relative flex items-center justify-center"
+      onPointerDown={handlePointerDown}
+      onPointerLeave={() => handlePointerUp()}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      ref={containerRef}
       style={{
         width: NOTE_SIZE,
         height: NOTE_SIZE + 40,
       }}
-      onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUp}
-      onPointerLeave={() => handlePointerUp()}
     >
       {/* Render notes from bottom to top */}
       {[...notes].reverse().map((note, reversedIndex) => {
@@ -272,28 +287,28 @@ export const StickyNoteStack = () => {
 
         return (
           <StickyNoteComponent
-            key={note.id}
-            ref={isTop ? topNoteRef : undefined}
-            note={note}
             index={actualIndex}
-            isTopNote={isTop}
-            onAddPath={addPathToTopNote}
             isPeeling={isTop && isPeeling && noteTexture !== null}
+            isTopNote={isTop}
+            key={note.id}
+            note={note}
+            onAddPath={addPathToTopNote}
+            ref={isTop ? topNoteRef : undefined}
           />
         );
       })}
 
       {/* WebGL page curl overlay */}
       <PageCurlCanvas
-        isActive={isPeeling}
-        texture={noteTexture}
+        animationState={animationState}
+        baseColor={topNote?.color || "#fef08a"}
         clickPos={clickPos}
         dragPos={dragPos}
-        baseColor={topNote?.color || "#fef08a"}
+        isActive={isPeeling}
         noteSize={NOTE_SIZE}
-        animationState={animationState}
-        targetProgress={targetProgress}
         onAnimationComplete={handleAnimationComplete}
+        targetProgress={targetProgress}
+        texture={noteTexture}
       />
     </div>
   );

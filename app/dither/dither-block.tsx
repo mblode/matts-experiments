@@ -1,12 +1,12 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import Scene from "./scene";
-import Effects from "./components/effects";
-import { GameProvider, INITIAL_CAMERA_POSITION } from "./game";
-import { GameControls } from "./components/game-controls";
 import { CameraControls } from "./components/camera-controls";
+import Effects from "./components/effects";
+import { GameControls } from "./components/game-controls";
 import { UI } from "./components/ui";
+import { GameProvider, INITIAL_CAMERA_POSITION } from "./game";
+import Scene from "./scene";
 
 export function DitherBlock() {
   return (
@@ -26,16 +26,16 @@ export function DitherBlock() {
 
         {/* Main sun - from upper back */}
         <directionalLight
-          position={[100, 200, -300]}
-          intensity={1.5}
           castShadow
+          intensity={1.5}
+          position={[100, 200, -300]}
         />
 
         {/* Fill lights from multiple angles */}
-        <directionalLight position={[-100, 100, 200]} intensity={1.2} />
-        <directionalLight position={[100, -100, 100]} intensity={1.0} />
-        <directionalLight position={[0, 100, 300]} intensity={1.0} />
-        <directionalLight position={[-150, 0, -100]} intensity={0.8} />
+        <directionalLight intensity={1.2} position={[-100, 100, 200]} />
+        <directionalLight intensity={1.0} position={[100, -100, 100]} />
+        <directionalLight intensity={1.0} position={[0, 100, 300]} />
+        <directionalLight intensity={0.8} position={[-150, 0, -100]} />
 
         {/* Scene with dynamic asteroids */}
         <Scene />

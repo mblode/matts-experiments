@@ -1,9 +1,9 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import * as THREE from "three";
+import type * as THREE from "three";
+import type { AnimationState, Vec2 } from "../store";
 import { CurlingNoteMesh } from "./curling-note-mesh";
-import type { Vec2, AnimationState } from "../store";
 
 interface PageCurlCanvasProps {
   isActive: boolean;
@@ -29,11 +29,13 @@ export function PageCurlCanvas({
   onAnimationComplete,
 }: PageCurlCanvasProps) {
   // Don't render until we have both active state AND texture with the drawing
-  if (!isActive || !texture) return null;
+  if (!(isActive && texture)) {
+    return null;
+  }
 
   return (
     <div
-      className="absolute pointer-events-none"
+      className="pointer-events-none absolute"
       style={{
         width: noteSize,
         height: noteSize,
@@ -41,7 +43,6 @@ export function PageCurlCanvas({
       }}
     >
       <Canvas
-        orthographic
         camera={{
           zoom: noteSize,
           position: [0, 0, 10],
@@ -53,6 +54,7 @@ export function PageCurlCanvas({
           antialias: true,
           preserveDrawingBuffer: true,
         }}
+        orthographic
         style={{
           width: "100%",
           height: "100%",
@@ -60,13 +62,13 @@ export function PageCurlCanvas({
         }}
       >
         <CurlingNoteMesh
-          texture={texture}
+          animationState={animationState}
+          baseColor={baseColor}
           clickPos={clickPos}
           dragPos={dragPos}
-          baseColor={baseColor}
-          animationState={animationState}
-          targetProgress={targetProgress}
           onAnimationComplete={onAnimationComplete}
+          targetProgress={targetProgress}
+          texture={texture}
         />
       </Canvas>
     </div>

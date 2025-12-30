@@ -1,4 +1,4 @@
-export type VenueThemeSchema = {
+export interface VenueThemeSchema {
   /**
    * @generated from field: bool is_dark = 2;
    */
@@ -316,9 +316,9 @@ export type VenueThemeSchema = {
    * @generated from field: string footer_slug = 78;
    */
   footerSlug: string;
-};
+}
 
-export type Media = {
+export interface Media {
   /**
    * 'UNSPLASH' | 'ASSET' | 'URL' | 'BRANDFETCH' | 'COLOR'
    *
@@ -445,4 +445,4 @@ export type Media = {
    * @generated from field: int32 size = 33;
    */
   size: number;
-};
+}

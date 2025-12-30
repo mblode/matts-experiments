@@ -1,7 +1,7 @@
 import { memo } from "react";
 import type { Asteroid as AsteroidType } from "../game";
-import { AsteroidGeometry } from "./asteroid-mesh";
 import { AsteroidMaterial } from "./asteroid-material";
+import { AsteroidGeometry } from "./asteroid-mesh";
 
 interface AsteroidProps {
   asteroid: AsteroidType;
@@ -12,10 +12,10 @@ interface AsteroidProps {
 const AsteroidComponent = ({ asteroid }: AsteroidProps) => {
   return (
     <mesh
+      castShadow
       position={asteroid.position}
       rotation={asteroid.rotation}
       userData={{ asteroidId: asteroid.id }}
-      castShadow
     >
       <AsteroidGeometry
         radius={asteroid.radius}

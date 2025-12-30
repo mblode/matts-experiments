@@ -1,7 +1,7 @@
+import clsx from "clsx";
+import { AnimatePresence, motion } from "framer-motion";
 import { Undo2 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import clsx from "clsx";
 
 const CountdownTimer = ({
   initialSeconds,
@@ -29,12 +29,15 @@ const CountdownTimer = ({
   const secondsString = `${seconds}`;
   const digits = secondsString.split("");
   return (
-    <div className="bg-red-500 text-white w-10 py-1 rounded-full">
-      <AnimatePresence mode="popLayout" initial={false}>
+    <div className="w-10 rounded-full bg-red-500 py-1 text-white">
+      <AnimatePresence initial={false} mode="popLayout">
         {digits.map((digit, index) => {
           return (
             <motion.span
+              animate={{ y: 0, scale: 1, filter: "blur(0px)", opacity: 1 }}
               className="inline-block"
+              exit={{ y: 10, scale: 0.8, filter: "blur(3px)", opacity: 0 }}
+              initial={{ y: -10, scale: 0.8, filter: "blur(3px)", opacity: 0 }}
               key={`${digit}-${index}`}
               transition={{
                 delay: index * 0.1,
@@ -43,9 +46,6 @@ const CountdownTimer = ({
                 stiffness: 180,
                 damping: 15,
               }}
-              initial={{ y: -10, scale: 0.8, filter: "blur(3px)", opacity: 0 }}
-              animate={{ y: 0, scale: 1, filter: "blur(0px)", opacity: 1 }}
-              exit={{ y: 10, scale: 0.8, filter: "blur(3px)", opacity: 0 }}
             >
               {digit}
             </motion.span>
@@ -75,21 +75,23 @@ const StaggeredText = ({
     // This position:relative is intentional. It prevents the text from layout shift
     // The layout prop here ensures that text doesn't stretch too much
     <motion.div layout style={{ position: "relative" }}>
-      <AnimatePresence mode="popLayout" initial={initialAnimationEnabled}>
+      <AnimatePresence initial={initialAnimationEnabled} mode="popLayout">
         {characters.map((char, index) => {
-          if (char === " ") return <span key={`nbsp-${index}`}>&nbsp;</span>;
+          if (char === " ") {
+            return <span key={`nbsp-${index}`}>&nbsp;</span>;
+          }
           return (
             <motion.span
+              animate={{ y: 0, filter: "blur(0px)", opacity: 1, scale: 1 }}
               className="inline-block"
-              key={`${char}-${index}`}
+              exit={{ y: -12, filter: "blur(4px)", opacity: 0, scale: 0.8 }}
               initial={{
                 y: 12,
                 filter: "blur(4px)",
                 opacity: 0,
                 scale: 0.8,
               }}
-              animate={{ y: 0, filter: "blur(0px)", opacity: 1, scale: 1 }}
-              exit={{ y: -12, filter: "blur(4px)", opacity: 0, scale: 0.8 }}
+              key={`${char}-${index}`}
               transition={{
                 delay: index * 0.01,
               }}
@@ -124,81 +126,80 @@ export const TimedUndoBlock = () => {
         setTimeout(() => setStatus(DELETE_STATUS.INITIAL), 200)
       }
     >
-      {!isDeleted ? (
+      {isDeleted ? null : (
         <motion.button
-          disabled={isDeleted}
-          exit={{ opacity: 0, filter: "blur(4px)" }}
-          whileTap={{ scale: 0.8 }}
-          layout
-          transition={{
-            type: "spring",
-            bounce: 0.4,
-            duration: 1,
-          }}
-          style={{
-            // needed to make sure the layout transition doesn't skew border radius
-            borderRadius: "9999px",
-          }}
-          initial={{
-            color: "#fff",
-          }}
           animate={{
             backgroundColor: isDeleting ? "#fef2f2" : "#ef4444",
             color: isDeleting ? "#ef4444" : "#fff",
           }}
+          className={clsx(
+            "flex h-14 cursor-pointer items-center gap-2 rounded-full py-2",
+            isDeleting ? "px-3" : "px-6"
+          )}
+          disabled={isDeleted}
+          exit={{ opacity: 0, filter: "blur(4px)" }}
+          initial={{
+            color: "#fff",
+          }}
+          layout
           onClick={() => {
             setStatus((prevStatus) => {
               if (
                 prevStatus === DELETE_STATUS.INITIAL ||
                 prevStatus === DELETE_STATUS.CANCELLED
-              )
+              ) {
                 return DELETE_STATUS.IN_PROGRESS;
+              }
               return DELETE_STATUS.CANCELLED;
             });
           }}
-          className={clsx(
-            "cursor-pointer flex items-center gap-2 h-14 py-2 rounded-full",
-            isDeleting ? "px-3" : "px-6",
-          )}
+          style={{
+            // needed to make sure the layout transition doesn't skew border radius
+            borderRadius: "9999px",
+          }}
+          transition={{
+            type: "spring",
+            bounce: 0.4,
+            duration: 1,
+          }}
+          whileTap={{ scale: 0.8 }}
         >
-          <>
-            {isDeleting && (
-              <motion.span
-                aria-label="Undo delete account"
-                transition={{ duration: 0.5 }}
-                initial={{ opacity: 0, filter: "blur(4px)" }}
-                exit={{
-                  opacity: 0,
-                  filter: "blur(4px)",
-                }}
-                animate={{ opacity: 1, filter: "blur(0px)" }}
-                className="bg-red-500 text-white p-1.5 rounded-full"
-              >
-                <Undo2 className="w-5 h-5 stroke-[2.5px]" />
-              </motion.span>
-            )}
-            <motion.div>
-              <StaggeredText
-                initialAnimationEnabled={hasStatusChanged}
-                text={isDeleting ? "Cancel Deletion" : "Delete Account"}
-              />
+          {isDeleting && (
+            <motion.span
+              animate={{ opacity: 1, filter: "blur(0px)" }}
+              aria-label="Undo delete account"
+              className="rounded-full bg-red-500 p-1.5 text-white"
+              exit={{
+                opacity: 0,
+                filter: "blur(4px)",
+              }}
+              initial={{ opacity: 0, filter: "blur(4px)" }}
+              transition={{ duration: 0.5 }}
+            >
+              <Undo2 className="h-5 w-5 stroke-[2.5px]" />
+            </motion.span>
+          )}
+          <motion.div>
+            <StaggeredText
+              initialAnimationEnabled={hasStatusChanged}
+              text={isDeleting ? "Cancel Deletion" : "Delete Account"}
+            />
+          </motion.div>
+          {isDeleting && (
+            <motion.div
+              animate={{ opacity: 1, filter: "blur(0px)" }}
+              exit={{
+                opacity: 0,
+                filter: "blur(4px)",
+              }}
+              initial={{ opacity: 0, filter: "blur(4px)" }}
+              transition={{ duration: 0.5 }}
+            >
+              <CountdownTimer initialSeconds={10} onFinish={onTimerEnd} />
             </motion.div>
-            {isDeleting && (
-              <motion.div
-                transition={{ duration: 0.5 }}
-                initial={{ opacity: 0, filter: "blur(4px)" }}
-                exit={{
-                  opacity: 0,
-                  filter: "blur(4px)",
-                }}
-                animate={{ opacity: 1, filter: "blur(0px)" }}
-              >
-                <CountdownTimer initialSeconds={10} onFinish={onTimerEnd} />
-              </motion.div>
-            )}
-          </>
+          )}
         </motion.button>
-      ) : null}
+      )}
     </AnimatePresence>
   );
 };

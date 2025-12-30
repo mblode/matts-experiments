@@ -1,8 +1,8 @@
 "use client";
 
-import React, { Children, useMemo } from "react";
-import type { FlipbookProps } from "./types";
+import { Children, useMemo } from "react";
 import { useFlipbook } from "./hooks/use-flipbook";
+import type { FlipbookProps } from "./types";
 import { calculateWrapperHeight } from "./utils/geometry";
 
 // ============================================================================
@@ -53,9 +53,9 @@ export function Flipbook({
     flipState,
     foldGeometry,
     pageTransforms,
-    nextPage,
-    previousPage,
-    goToPage,
+    nextPage: _nextPage,
+    previousPage: _previousPage,
+    goToPage: _goToPage,
     _handlers,
   } = useFlipbook({
     totalPages: pages.length,
@@ -68,9 +68,9 @@ export function Flipbook({
   }) as ReturnType<typeof useFlipbook> & { _handlers: any };
 
   // Calculate wrapper height for fold element
-  const wrapperHeight = useMemo(
+  const _wrapperHeight = useMemo(
     () => calculateWrapperHeight(width, height),
-    [width, height],
+    [width, height]
   );
 
   // Check if we can show the flip animation
@@ -80,8 +80,8 @@ export function Flipbook({
 
   return (
     <div
-      ref={containerRef}
       className={className}
+      ref={containerRef}
       style={{
         position: "relative",
         width,
@@ -209,5 +209,5 @@ export function Flipbook({
 // Exports
 // ============================================================================
 
-export type { FlipbookProps } from "./types";
 export { useFlipbook } from "./hooks/use-flipbook";
+export type { FlipbookProps } from "./types";

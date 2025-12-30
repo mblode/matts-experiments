@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 
-type FontConfig = {
+interface FontConfig {
   family: string;
   weights?: string[];
   style?: string;
-};
+}
 
-type FontStatus = {
+interface FontStatus {
   loaded: boolean;
   error: boolean;
-};
+}
 
 export const useGoogleFonts = (fontConfigs: FontConfig[]): FontStatus => {
   const [status, setStatus] = useState<FontStatus>({
@@ -70,7 +70,7 @@ export const useGoogleFonts = (fontConfigs: FontConfig[]): FontStatus => {
       const variantsArray = [...variants];
       const hasItalic = variantsArray.some((v) => v.includes("italic"));
       const hasWeight = variantsArray.some(
-        (v) => !v.includes("italic") || v.includes(","),
+        (v) => !v.includes("italic") || v.includes(",")
       );
 
       if (hasItalic && hasWeight) {
@@ -88,21 +88,21 @@ export const useGoogleFonts = (fontConfigs: FontConfig[]): FontStatus => {
         });
         // Sort axis params by weight (second part of each param)
         axisParams.sort((a, b) => {
-          const weightA = parseInt(a.split(",")[1]);
-          const weightB = parseInt(b.split(",")[1]);
-          const italicA = parseInt(a.split(",")[0]);
-          const italicB = parseInt(b.split(",")[0]);
+          const weightA = Number.parseInt(a.split(",")[1], 10);
+          const weightB = Number.parseInt(b.split(",")[1], 10);
+          const italicA = Number.parseInt(a.split(",")[0], 10);
+          const italicB = Number.parseInt(b.split(",")[0], 10);
           // Sort by weight first, then by italic flag
           return weightA - weightB || italicA - italicB;
         });
         paramString = `:ital,wght@${axisParams.join(";")}`;
       } else if (hasItalic) {
         // Only italic styles
-        paramString = `:ital@1`;
+        paramString = ":ital@1";
       } else {
         // Only weights - sort numerically
         const sortedWeights = variantsArray.sort(
-          (a, b) => parseInt(a) - parseInt(b),
+          (a, b) => Number.parseInt(a, 10) - Number.parseInt(b, 10)
         );
         paramString = `:wght@${sortedWeights.join(";")}`;
       }

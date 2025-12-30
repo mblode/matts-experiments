@@ -98,7 +98,9 @@ export const useStickyNotesStore = create<StickyNotesStore>((set, get) => ({
 
   addPathToTopNote: (path) => {
     const notes = get().notes;
-    if (notes.length === 0) return;
+    if (notes.length === 0) {
+      return;
+    }
 
     const updatedNotes = [...notes];
     updatedNotes[0] = {
@@ -132,7 +134,9 @@ export const useStickyNotesStore = create<StickyNotesStore>((set, get) => ({
 
   completePeel: () => {
     const { notes, peeledNotes, currentColor } = get();
-    if (notes.length === 0) return;
+    if (notes.length === 0) {
+      return;
+    }
 
     const [peeledNote, ...remainingNotes] = notes;
 

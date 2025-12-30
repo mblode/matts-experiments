@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useCallback } from "react";
 import { useFrame } from "@react-three/fiber";
-import { SPRING_STIFFNESS, SPRING_DAMPING, SPRING_MASS } from "../constants";
+import { useRef } from "react";
+import { SPRING_DAMPING, SPRING_MASS, SPRING_STIFFNESS } from "../constants";
 
 export interface SpringConfig {
   stiffness: number;
@@ -34,7 +34,7 @@ const VELOCITY_THRESHOLD = 0.001;
 export function useSpring(
   target: number,
   config: Partial<SpringConfig> = {},
-  onSettle?: () => void,
+  onSettle?: () => void
 ): SpringState {
   const { stiffness, damping, mass } = { ...DEFAULT_CONFIG, ...config };
 
@@ -59,7 +59,9 @@ export function useSpring(
     const currentTarget = targetRef.current;
 
     // Skip if already settled
-    if (state.isSettled) return;
+    if (state.isSettled) {
+      return;
+    }
 
     // Clamp delta to avoid instability with large time steps
     const dt = Math.min(delta, 0.064);
@@ -99,7 +101,7 @@ export function springStep(
   target: number,
   velocity: number,
   config: SpringConfig,
-  deltaTime: number,
+  deltaTime: number
 ): SpringState {
   const { stiffness, damping, mass } = config;
 

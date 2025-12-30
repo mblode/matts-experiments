@@ -1,11 +1,11 @@
 "use client";
-import React, { useMemo, useState, useEffect } from "react";
-import { MoonScene } from "./moon-scene";
-import { Inputs, solveMoon } from "./astro";
-import { getCachedLocationName } from "./actions";
+import { useEffect, useMemo, useState } from "react";
 import { create } from "zustand";
+import { getCachedLocationName } from "./actions";
+import { type Inputs, solveMoon } from "./astro";
+import { MoonScene } from "./moon-scene";
 
-type Store = {
+interface Store {
   lat: number;
   lon: number;
   datetimeLocal: string;
@@ -18,13 +18,13 @@ type Store = {
     | "unavailable";
   locationName: string;
   set: (p: Partial<Store>) => void;
-};
+}
 
 const nowLocalISO = () => {
   const d = new Date();
   // round to minute
   d.setSeconds(0, 0);
-  const tz = -d.getTimezoneOffset();
+  const _tz = -d.getTimezoneOffset();
   const pad = (n: number) => String(n).padStart(2, "0");
   const iso = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
   return iso;
@@ -41,13 +41,22 @@ const useStore = create<Store>((set) => ({
 }));
 
 export const MoonBlock = () => {
-  const { lat, lon, datetimeLocal, speed, locationStatus, locationName, set } =
-    useStore();
+  const {
+    lat,
+    lon,
+    datetimeLocal,
+    speed: _speed,
+    locationStatus,
+    locationName,
+    set,
+  } = useStore();
   const [scrubIncrement, setScrubIncrement] = useState(0); // In 2-hour increments
 
   // Request geolocation on component mount
   useEffect(() => {
-    if (locationStatus !== "unknown") return;
+    if (locationStatus !== "unknown") {
+      return;
+    }
 
     if (!navigator.geolocation) {
       set({ locationStatus: "unavailable" });
@@ -77,13 +86,13 @@ export const MoonBlock = () => {
       },
       {
         enableHighAccuracy: false,
-        timeout: 10000,
-        maximumAge: 300000, // 5 minutes
-      },
+        timeout: 10_000,
+        maximumAge: 300_000, // 5 minutes
+      }
     );
   }, [locationStatus, set]);
 
-  const requestLocation = () => {
+  const _requestLocation = () => {
     set({ locationStatus: "unknown" });
   };
 
@@ -111,7 +120,7 @@ export const MoonBlock = () => {
         sunDir: [1, 0, 0] as [number, number, number],
         illumFraction: 0.5,
         phaseAngleDeg: 90,
-        distanceKm: 384400,
+        distanceKm: 384_400,
         parallacticAngleRad: 0,
         ra: 0,
         dec: 0,
@@ -136,12 +145,12 @@ export const MoonBlock = () => {
             )
           </label>
           <input
-            type="range"
+            max={+360}
             min={-360} // -30 days in 2-hour increments
-            max={+360} // +30 days in 2-hour increments
-            value={scrubIncrement}
-            onChange={(e) => setScrubIncrement(Number(e.target.value))}
+            onChange={(e) => setScrubIncrement(Number(e.target.value))} // +30 days in 2-hour increments
             style={{ width: "100%" }}
+            type="range"
+            value={scrubIncrement}
           />
           <div
             style={{

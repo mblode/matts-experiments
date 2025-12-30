@@ -2,10 +2,10 @@
 "use client";
 import NextImage from "next/image";
 import { type CSSProperties, useMemo } from "react";
+import type { Media } from "@/lib/types";
 import { cn, imageLoader, unsplashLoader } from "@/lib/utils";
-import { Media } from "@/lib/types";
 
-type Props = {
+interface Props {
   media?: Partial<Media>;
   title?: string;
   width: number;
@@ -18,7 +18,7 @@ type Props = {
   disableCrop?: boolean;
   blurMultiplier?: number;
   objectFit?: "CONTAIN" | "COVER";
-};
+}
 
 export const MediaImage = ({
   media,
@@ -73,22 +73,19 @@ export const MediaImage = ({
     if (
       !disableGaussianBlur &&
       media?.gaussianBlur &&
-      !["COLOR", "UNSPLASH"].includes(media?.type || "")
+      !["COLOR", "UNSPLASH"].includes(media?.type || "") &&
+      (media?.type !== "ASSET" ||
+        (media?.type === "ASSET" && media?.assetFileName?.includes(".svg")))
     ) {
-      if (
-        media?.type !== "ASSET" ||
-        (media?.type === "ASSET" && media?.assetFileName?.includes(".svg"))
-      ) {
-        overlayStyle.backdropFilter =
-          !disableGaussianBlur && media?.gaussianBlur
-            ? `blur(${media?.gaussianBlur * blurMultiplier}px)`
-            : undefined;
+      overlayStyle.backdropFilter =
+        !disableGaussianBlur && media?.gaussianBlur
+          ? `blur(${media?.gaussianBlur * blurMultiplier}px)`
+          : undefined;
 
-        overlayStyle.WebkitBackdropFilter =
-          !disableGaussianBlur && media?.gaussianBlur
-            ? `blur(${media?.gaussianBlur * blurMultiplier}px)`
-            : undefined;
-      }
+      overlayStyle.WebkitBackdropFilter =
+        !disableGaussianBlur && media?.gaussianBlur
+          ? `blur(${media?.gaussianBlur * blurMultiplier}px)`
+          : undefined;
     }
 
     return (
@@ -104,45 +101,43 @@ export const MediaImage = ({
     return (
       <div className={cn("relative size-full", className)} style={{ ...style }}>
         <NextImage
-          src={`${media?.assetBucket}/${media?.assetSrc}`}
           alt={title || media?.altText || ""}
+          blurDataURL={media?.blurDataUrl || ""}
           className={cn("size-full", {
             "object-cover": objectFit === "COVER",
             "object-contain": objectFit === "CONTAIN",
           })}
-          style={{
-            objectPosition,
-          }}
-          width={width}
+          fetchPriority={priority ? "high" : "auto"}
           height={height}
           loader={(loader) =>
             imageLoader({
               ...loader,
             })
           }
-          priority={priority}
-          fetchPriority={priority ? "high" : "auto"}
           placeholder={media?.blurDataUrl ? "blur" : "empty"}
-          blurDataURL={media?.blurDataUrl || ""}
+          priority={priority}
+          src={`${media?.assetBucket}/${media?.assetSrc}`}
+          style={{
+            objectPosition,
+          }}
+          width={width}
         />
 
         {overlay}
       </div>
     );
-  } else if (media?.type === "UNSPLASH") {
+  }
+  if (media?.type === "UNSPLASH") {
     return (
       <div className={cn("relative size-full", className)} style={{ ...style }}>
         <NextImage
-          src={media?.unsplashUrl || ""}
           alt={title || media?.altText || ""}
+          blurDataURL={media?.blurDataUrl || ""}
           className={cn("size-full", {
             "object-cover": objectFit === "COVER",
             "object-contain": objectFit === "CONTAIN",
           })}
-          style={{
-            objectPosition,
-          }}
-          width={width}
+          fetchPriority={priority ? "high" : "auto"}
           height={height}
           loader={(loader) =>
             unsplashLoader({
@@ -157,85 +152,91 @@ export const MediaImage = ({
               cropH: !disableCrop && media?.cropH ? media?.cropH : undefined,
             })
           }
-          priority={priority}
-          fetchPriority={priority ? "high" : "auto"}
           placeholder={media?.blurDataUrl ? "blur" : "empty"}
-          blurDataURL={media?.blurDataUrl || ""}
+          priority={priority}
+          src={media?.unsplashUrl || ""}
+          style={{
+            objectPosition,
+          }}
+          width={width}
         />
 
         {overlay}
       </div>
     );
-  } else if (media?.type === "BRANDFETCH") {
+  }
+  if (media?.type === "BRANDFETCH") {
     return (
       <div
         className={cn(
-          "relative flex justify-center items-center size-full",
-          className,
+          "relative flex size-full items-center justify-center",
+          className
         )}
         style={{ ...style, background: media?.color }}
       >
         <NextImage
-          src={media?.customUrl || ""}
           alt={title || media?.altText || ""}
           className="size-full object-contain! p-1"
+          height={height}
+          priority={priority}
+          src={media?.customUrl || ""}
           style={{
             objectPosition,
           }}
           width={width}
-          height={height}
-          priority={priority}
         />
 
         {overlay}
       </div>
     );
-  } else if (media?.type === "ICONS8") {
+  }
+  if (media?.type === "ICONS8") {
     return (
       <div
         className={cn(
-          "relative flex justify-center items-center size-full",
-          className,
+          "relative flex size-full items-center justify-center",
+          className
         )}
         style={{ ...style, background: media?.color }}
       >
         <NextImage
-          src={media?.customUrl || ""}
           alt={title || media?.altText || ""}
           className="w-full object-contain! p-1"
+          height={height}
+          priority={priority}
+          src={media?.customUrl || ""}
           style={{
             objectPosition,
           }}
           width={width}
-          height={height}
-          priority={priority}
         />
 
         {overlay}
       </div>
     );
-  } else if (media?.type === "URL") {
+  }
+  if (media?.type === "URL") {
     return (
       <div className={cn("relative size-full", className)} style={{ ...style }}>
-        {/* biome-ignore lint/performance/noImgElement: Custom URLs may not work with Next.js Image due to domain restrictions */}
         <img
-          src={media?.customUrl}
           alt={title || media?.altText || ""}
           className={cn("size-full", {
             "object-cover": objectFit === "COVER",
             "object-contain": objectFit === "CONTAIN",
           })}
+          height={height}
+          src={media?.customUrl}
           style={{
             objectPosition,
           }}
           width={width}
-          height={height}
         />
 
         {overlay}
       </div>
     );
-  } else if (media?.type === "COLOR") {
+  }
+  if (media?.type === "COLOR") {
     return (
       <div
         className={cn("size-full", className)}

@@ -1,7 +1,7 @@
 "use client";
-import { useState, useMemo, useEffect } from "react";
-import { motion, type Transition } from "motion/react";
 import { Check } from "lucide-react";
+import { motion, type Transition } from "motion/react";
+import { useMemo, useState } from "react";
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -61,7 +61,7 @@ const SPRING_CONFIG: Transition = {
 
 // Control dimensions are now defined via CSS variables in globals.css
 // These constants are kept for reference and backward compatibility
-const CONTROL_DIMENSIONS: ControlDimensions = {
+const _CONTROL_DIMENSIONS: ControlDimensions = {
   outerSize: 205,
   padding: 16,
   markerSize: 24,
@@ -101,7 +101,7 @@ const generateSaturationLevels = (hue: number): SaturationLevel[] => [
 const createOklchColor = (
   lightness: number,
   saturation: number,
-  hue: number,
+  hue: number
 ): string => `oklch(${lightness} ${saturation} ${hue})`;
 
 // ============================================================================
@@ -124,33 +124,37 @@ const useColorState = () => {
   const selectedSaturation = saturationLevels[saturationIndex].sat;
   const colorPalette = useMemo(
     () => generateColorPalette(selectedSaturation),
-    [selectedSaturation],
+    [selectedSaturation]
   );
   const selectedColor = colorPalette[selectedColorIndex];
 
   const accentColor = createOklchColor(
     saturationLevels[saturationIndex].lightness,
     saturationLevels[saturationIndex].sat,
-    selectedColor.hue,
+    selectedColor.hue
   );
 
   const handleSaturationClick = () => {
-    if (isAnimating) return;
+    if (isAnimating) {
+      return;
+    }
 
     const maxIndex = saturationLevels.length - 1;
     if (saturationIndex === maxIndex) {
       setIsAnimating(true);
       const animationSteps = Array.from(
         { length: maxIndex },
-        (_, i) => maxIndex - 1 - i,
+        (_, i) => maxIndex - 1 - i
       );
       animationSteps.forEach((step, index) => {
         setTimeout(
           () => {
             setSaturationIndex(step);
-            if (step === 0) setIsAnimating(false);
+            if (step === 0) {
+              setIsAnimating(false);
+            }
           },
-          (index + 1) * ANIMATION_STEP_DURATION,
+          (index + 1) * ANIMATION_STEP_DURATION
         );
       });
     } else {
@@ -220,17 +224,17 @@ export const ControlsBlock = () => {
   const darkCardBg = createOklchColor(
     0.35,
     selectedColor.saturation,
-    selectedColor.hue,
+    selectedColor.hue
   );
   const lightCardBg = createOklchColor(
     0.85,
     selectedColor.saturation,
-    selectedColor.hue,
+    selectedColor.hue
   );
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-start p-4 sm:p-6 md:p-8 gap-8 md:gap-12 pb-32 md:pb-24"
+      className="flex min-h-screen flex-col items-center justify-start gap-8 p-4 pb-32 sm:p-6 md:gap-12 md:p-8 md:pb-24"
       style={{
         background:
           "linear-gradient(to bottom, rgb(220, 200, 200), rgb(240, 210, 210), rgb(200, 180, 190))",
@@ -239,7 +243,7 @@ export const ControlsBlock = () => {
     >
       {/* Vignette overlay */}
       <div
-        className="fixed inset-0 pointer-events-none"
+        className="pointer-events-none fixed inset-0"
         style={{
           background:
             "radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.15) 100%)",
@@ -249,38 +253,38 @@ export const ControlsBlock = () => {
 
       {/* Demo Preview Area - 2x2 Grid */}
       <div
-        className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 relative z-10"
+        className="relative z-10 grid w-full max-w-5xl grid-cols-1 lg:grid-cols-2"
         style={{ gap }}
       >
         {/* Profile Card */}
         <motion.div
-          layout
           className="bg-white p-6"
+          layout
           style={{
             borderRadius: cornerRadius,
           }}
           transition={SPRING_CONFIG}
         >
-          <div className="flex flex-col gap-6 h-full">
+          <div className="flex h-full flex-col gap-6">
             <div className="flex items-start justify-between">
               <motion.div
-                className="w-20 h-20 rounded-full overflow-hidden"
+                className="h-20 w-20 overflow-hidden rounded-full"
                 style={{ borderRadius: `calc(${cornerRadius} * 1.5)` }}
                 transition={SPRING_CONFIG}
               >
-                <div className="w-full h-full bg-gradient-to-br from-orange-400 to-pink-400" />
+                <div className="h-full w-full bg-gradient-to-br from-orange-400 to-pink-400" />
               </motion.div>
 
               <motion.div
-                whileHover={{ scale: 1.1, rotate: 5 }}
-                transition={SPRING_CONFIG}
                 style={{ color: accentColor }}
+                transition={SPRING_CONFIG}
+                whileHover={{ scale: 1.1, rotate: 5 }}
               >
                 <svg
-                  width="28"
+                  fill="currentColor"
                   height="28"
                   viewBox="0 0 24 24"
-                  fill="currentColor"
+                  width="28"
                 >
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                 </svg>
@@ -288,11 +292,11 @@ export const ControlsBlock = () => {
             </div>
 
             <div className="flex flex-col gap-2">
-              <h2 className="text-2xl font-bold text-gray-900">John Smith</h2>
+              <h2 className="font-bold text-2xl text-gray-900">John Smith</h2>
               <p className="text-gray-600">@johnsmith</p>
             </div>
 
-            <div className="flex-1"></div>
+            <div className="flex-1" />
 
             <motion.div
               className="flex gap-6 bg-gray-50 px-6 py-4"
@@ -303,11 +307,11 @@ export const ControlsBlock = () => {
             >
               <div>
                 <span className="font-semibold text-gray-900">1.3k</span>
-                <span className="text-gray-600 ml-1">Following</span>
+                <span className="ml-1 text-gray-600">Following</span>
               </div>
               <div>
                 <span className="font-semibold text-gray-900">12.7k</span>
-                <span className="text-gray-600 ml-1">Followers</span>
+                <span className="ml-1 text-gray-600">Followers</span>
               </div>
             </motion.div>
           </div>
@@ -315,16 +319,16 @@ export const ControlsBlock = () => {
 
         {/* Hero Section */}
         <motion.div
+          className="flex flex-col justify-between p-6 text-white"
           layout
-          className="flex flex-col justify-between text-white p-6"
           style={{
             backgroundColor: accentColor,
             borderRadius: cornerRadius,
           }}
           transition={SPRING_CONFIG}
         >
-          <div className="flex flex-col gap-6 h-full">
-            <h1 className="text-3xl sm:text-4xl font-bold leading-tight">
+          <div className="flex h-full flex-col gap-6">
+            <h1 className="font-bold text-3xl leading-tight sm:text-4xl">
               Hey, I'm John Smith.
               <br />
               I'm a design engineer based in Atlanta. Building something new.
@@ -332,15 +336,15 @@ export const ControlsBlock = () => {
           </div>
 
           <motion.button
-            whileHover={{ scale: 1.02, y: -2 }}
-            whileTap={{ scale: 0.98 }}
-            className="w-full py-4 text-lg font-semibold transition-colors"
+            className="w-full py-4 font-semibold text-lg transition-colors"
             style={{
               backgroundColor: "rgba(255, 255, 255, 0.2)",
               borderRadius: `max(calc(${cornerRadius} - var(--spacing-fluid-6)), 0px)`,
               backdropFilter: "blur(10px)",
             }}
             transition={SPRING_CONFIG}
+            whileHover={{ scale: 1.02, y: -2 }}
+            whileTap={{ scale: 0.98 }}
           >
             Say hello
           </motion.button>
@@ -348,29 +352,29 @@ export const ControlsBlock = () => {
 
         {/* Stats Card - Dark Background */}
         <motion.div
+          className="p-6 text-white"
           layout
-          className="text-white p-6"
           style={{
             backgroundColor: darkCardBg,
             borderRadius: cornerRadius,
           }}
           transition={SPRING_CONFIG}
         >
-          <div className="flex flex-col gap-6 h-full">
-            <h2 className="text-2xl font-bold">Activity & Stats</h2>
+          <div className="flex h-full flex-col gap-6">
+            <h2 className="font-bold text-2xl">Activity & Stats</h2>
 
-            <div className="flex flex-col gap-4 flex-1">
-              <div className="flex justify-between items-center">
+            <div className="flex flex-1 flex-col gap-4">
+              <div className="flex items-center justify-between">
                 <span className="text-white/80">Projects Completed</span>
-                <span className="text-3xl font-bold">47</span>
+                <span className="font-bold text-3xl">47</span>
               </div>
-              <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between">
                 <span className="text-white/80">Code Contributions</span>
-                <span className="text-3xl font-bold">2.4k</span>
+                <span className="font-bold text-3xl">2.4k</span>
               </div>
-              <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between">
                 <span className="text-white/80">Active Streak</span>
-                <span className="text-3xl font-bold">120d</span>
+                <span className="font-bold text-3xl">120d</span>
               </div>
             </div>
 
@@ -391,8 +395,8 @@ export const ControlsBlock = () => {
 
         {/* Featured Project Card - Light Background */}
         <motion.div
-          layout
           className="p-6"
+          layout
           style={{
             backgroundColor: lightCardBg,
             borderRadius: cornerRadius,
@@ -400,31 +404,31 @@ export const ControlsBlock = () => {
           }}
           transition={SPRING_CONFIG}
         >
-          <div className="flex flex-col gap-6 h-full">
+          <div className="flex h-full flex-col gap-6">
             <div className="flex items-start justify-between">
-              <h2 className="text-2xl font-bold">Featured Project</h2>
+              <h2 className="font-bold text-2xl">Featured Project</h2>
               <motion.div
-                whileHover={{ scale: 1.1 }}
-                className="w-10 h-10 rounded-full bg-black/10 flex items-center justify-center"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-black/10"
                 style={{ borderRadius: cornerRadius }}
+                whileHover={{ scale: 1.1 }}
               >
                 <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
                   fill="none"
+                  height="20"
                   stroke="currentColor"
                   strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  width="20"
                 >
                   <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
                   <polyline points="15 3 21 3 21 9" />
-                  <line x1="10" y1="14" x2="21" y2="3" />
+                  <line x1="10" x2="21" y1="14" y2="3" />
                 </svg>
               </motion.div>
             </div>
 
-            <div className="flex-1 flex flex-col gap-3">
-              <h3 className="text-xl font-semibold">Design System Pro</h3>
+            <div className="flex flex-1 flex-col gap-3">
+              <h3 className="font-semibold text-xl">Design System Pro</h3>
               <p className="text-black/70">
                 A comprehensive design system with 100+ components, built with
                 React and TypeScript. Features dynamic theming and full
@@ -433,13 +437,13 @@ export const ControlsBlock = () => {
             </div>
 
             <motion.div
-              className="flex gap-2 flex-wrap"
+              className="flex flex-wrap gap-2"
               style={{ fontSize: "14px" }}
             >
               {["React", "TypeScript", "Tailwind"].map((tech) => (
                 <span
+                  className="rounded-full bg-black/10 px-3 py-1 font-medium"
                   key={tech}
-                  className="px-3 py-1 bg-black/10 rounded-full font-medium"
                   style={{
                     borderRadius: `max(calc(${cornerRadius} - var(--spacing-fluid-4)), var(--spacing-fluid-2))`,
                   }}
@@ -453,7 +457,7 @@ export const ControlsBlock = () => {
       </div>
 
       <div
-        className="fixed left-1/2 -translate-x-1/2 w-full z-50"
+        className="fixed left-1/2 z-50 w-full -translate-x-1/2"
         style={{
           bottom: "var(--control-bottom-spacing)",
           paddingLeft: "var(--spacing-fluid-4)",
@@ -462,25 +466,25 @@ export const ControlsBlock = () => {
         }}
       >
         <div
-          className="backdrop-blur-xl border border-white bg-white/30 shadow-2xl p-fluid-4"
+          className="border border-white bg-white/30 p-fluid-4 shadow-2xl backdrop-blur-xl"
           style={{ borderRadius: "var(--border-radius-fluid-50)" }}
         >
           <div className="flex flex-row gap-fluid-6">
             {/* Hue & Saturation Control */}
             <motion.div
+              className="flex flex-1 flex-col items-center gap-2"
               layout
-              className="flex flex-col items-center gap-2 flex-1"
             >
               <div
-                className="bg-white shadow-lg p-fluid-4 w-full"
+                className="w-full bg-white p-fluid-4 shadow-lg"
                 style={{ borderRadius: "var(--border-radius-fluid-34)" }}
               >
                 <div className="flex h-full gap-fluid-4">
                   {/* Mixed-shape color grid */}
-                  <div className="flex flex-col flex-1 min-w-0 gap-fluid-2">
+                  <div className="flex min-w-0 flex-1 flex-col gap-fluid-2">
                     {[0, 1, 2, 3].map((row) => {
                       const selectedRow = Math.floor(
-                        colorState.selectedColorIndex / 4,
+                        colorState.selectedColorIndex / 4
                       );
                       const selectedCol = colorState.selectedColorIndex % 4;
                       const isSelectedRow = row === selectedRow;
@@ -490,12 +494,12 @@ export const ControlsBlock = () => {
 
                       return (
                         <motion.div
-                          key={row}
-                          className="flex gap-fluid-3"
-                          initial={false}
                           animate={{
                             height: rowHeight,
                           }}
+                          className="flex gap-fluid-3"
+                          initial={false}
+                          key={row}
                           transition={SPRING_CONFIG}
                         >
                           {[0, 1, 2, 3].map((col) => {
@@ -515,8 +519,12 @@ export const ControlsBlock = () => {
 
                             return (
                               <motion.button
+                                aria-label={`Hue ${color.hue}`}
+                                className="relative cursor-pointer touch-manipulation overflow-hidden"
                                 key={index}
-                                className="relative overflow-hidden cursor-pointer touch-manipulation"
+                                onClick={() =>
+                                  colorState.setSelectedColorIndex(index)
+                                }
                                 style={{
                                   backgroundColor: color.oklch,
                                   borderRadius: "var(--color-cell-radius)",
@@ -527,20 +535,16 @@ export const ControlsBlock = () => {
                                     "width 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                                 }}
                                 whileTap={{ scale: 0.95 }}
-                                onClick={() =>
-                                  colorState.setSelectedColorIndex(index)
-                                }
-                                aria-label={`Hue ${color.hue}`}
                               >
                                 {isSelected && (
                                   <motion.div className="absolute inset-0 flex items-center justify-center">
                                     <Check
-                                      className="text-white relative z-10"
+                                      className="relative z-10 text-white"
+                                      strokeWidth={3.5}
                                       style={{
                                         width: "var(--icon-size-fluid-8)",
                                         height: "var(--icon-size-fluid-8)",
                                       }}
-                                      strokeWidth={3.5}
                                     />
                                   </motion.div>
                                 )}
@@ -554,25 +558,27 @@ export const ControlsBlock = () => {
 
                   {/* Dynamic saturation selector */}
                   <motion.div
-                    className="border-2 border-gray-300 cursor-pointer touch-manipulation p-fluid-3"
+                    aria-label="Cycle saturation levels"
+                    className="cursor-pointer touch-manipulation border-2 border-gray-300 p-fluid-3"
+                    onClick={colorState.handleSaturationClick}
                     style={{
                       borderRadius: "var(--color-cell-radius)",
                       width: "var(--saturation-width)",
                     }}
-                    onClick={colorState.handleSaturationClick}
+                    transition={SPRING_CONFIG}
                     whileHover={{ backgroundColor: "rgba(0,0,0,0.05)" }}
                     whileTap={{ scale: 0.97 }}
-                    transition={SPRING_CONFIG}
-                    aria-label="Cycle saturation levels"
                   >
-                    <div className="flex flex-col justify-end h-full gap-fluid-2">
+                    <div className="flex h-full flex-col justify-end gap-fluid-2">
                       {colorState.saturationLevels.map((level, index) => {
-                        if (index < colorState.saturationIndex) return null;
+                        if (index < colorState.saturationIndex) {
+                          return null;
+                        }
 
                         return (
                           <motion.div
+                            className="pointer-events-none relative"
                             key={index}
-                            className="relative pointer-events-none"
                             style={{
                               backgroundColor: `oklch(${level.lightness} ${level.sat} ${level.hue})`,
                               borderRadius: "var(--saturation-radius)",
@@ -598,75 +604,79 @@ export const ControlsBlock = () => {
             </motion.div>
 
             {/* Gap & Corners Control */}
-            <motion.div layout className="flex flex-col items-center gap-2">
+            <motion.div className="flex flex-col items-center gap-2" layout>
               <div
-                className="bg-white shadow-lg p-fluid-4 w-full"
+                className="w-full bg-white p-fluid-4 shadow-lg"
                 style={{ borderRadius: "var(--border-radius-fluid-34)" }}
               >
                 <div
-                  className="relative bg-gray-50 border-2 border-gray-300"
+                  className="relative border-2 border-gray-300 bg-gray-50"
                   style={{
-                    width: `var(--control-outer-size)`,
-                    height: `var(--control-outer-size)`,
+                    width: "var(--control-outer-size)",
+                    height: "var(--control-outer-size)",
                     borderRadius: "var(--color-cell-radius)",
                     margin: "0 auto",
                   }}
                 >
                   <div
                     className="absolute inset-0"
-                    style={{ padding: `var(--control-padding)` }}
+                    style={{ padding: "var(--control-padding)" }}
                   >
                     {/* Corner shape outlines */}
                     <div
-                      className="absolute pointer-events-none border-4 border-gray-300"
+                      className="pointer-events-none absolute border-4 border-gray-300"
                       style={{
                         top: 0,
                         left: 0,
-                        borderLeft: `none`,
-                        borderTop: `none`,
+                        borderLeft: "none",
+                        borderTop: "none",
                         width: `calc(50% - ${layoutState.gap} / 2)`,
                         height: `calc(50% - ${layoutState.gap} / 2)`,
                         borderBottomRightRadius: layoutState.cornerRadius,
-                        transition: `width 0.4s cubic-bezier(0.4, 0, 0.2, 1), height 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-bottom-right-radius 0.4s cubic-bezier(0.4, 0, 0.2, 1)`,
+                        transition:
+                          "width 0.4s cubic-bezier(0.4, 0, 0.2, 1), height 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-bottom-right-radius 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
                       }}
                     />
                     <div
-                      className="absolute pointer-events-none border-4 border-gray-300"
+                      className="pointer-events-none absolute border-4 border-gray-300"
                       style={{
                         top: 0,
                         right: 0,
-                        borderRight: `none`,
-                        borderTop: `none`,
+                        borderRight: "none",
+                        borderTop: "none",
                         width: `calc(50% - ${layoutState.gap} / 2)`,
                         height: `calc(50% - ${layoutState.gap} / 2)`,
                         borderBottomLeftRadius: layoutState.cornerRadius,
-                        transition: `width 0.4s cubic-bezier(0.4, 0, 0.2, 1), height 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-bottom-left-radius 0.4s cubic-bezier(0.4, 0, 0.2, 1)`,
+                        transition:
+                          "width 0.4s cubic-bezier(0.4, 0, 0.2, 1), height 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-bottom-left-radius 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
                       }}
                     />
                     <div
-                      className="absolute pointer-events-none border-4 border-gray-300"
+                      className="pointer-events-none absolute border-4 border-gray-300"
                       style={{
                         bottom: 0,
                         left: 0,
-                        borderLeft: `none`,
-                        borderBottom: `none`,
+                        borderLeft: "none",
+                        borderBottom: "none",
                         width: `calc(50% - ${layoutState.gap} / 2)`,
                         height: `calc(50% - ${layoutState.gap} / 2)`,
                         borderTopRightRadius: layoutState.cornerRadius,
-                        transition: `width 0.4s cubic-bezier(0.4, 0, 0.2, 1), height 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-top-right-radius 0.4s cubic-bezier(0.4, 0, 0.2, 1)`,
+                        transition:
+                          "width 0.4s cubic-bezier(0.4, 0, 0.2, 1), height 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-top-right-radius 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
                       }}
                     />
                     <div
-                      className="absolute pointer-events-none border-4 border-gray-300"
+                      className="pointer-events-none absolute border-4 border-gray-300"
                       style={{
                         bottom: 0,
                         right: 0,
-                        borderRight: `none`,
-                        borderBottom: `none`,
+                        borderRight: "none",
+                        borderBottom: "none",
                         width: `calc(50% - ${layoutState.gap} / 2)`,
                         height: `calc(50% - ${layoutState.gap} / 2)`,
                         borderTopLeftRadius: layoutState.cornerRadius,
-                        transition: `width 0.4s cubic-bezier(0.4, 0, 0.2, 1), height 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-top-left-radius 0.4s cubic-bezier(0.4, 0, 0.2, 1)`,
+                        transition:
+                          "width 0.4s cubic-bezier(0.4, 0, 0.2, 1), height 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-top-left-radius 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
                       }}
                     />
 
@@ -694,39 +704,40 @@ export const ControlsBlock = () => {
                       },
                     ].map((position, idx) => (
                       <motion.button
-                        key={idx}
+                        aria-label="Corner radius control"
                         className="absolute cursor-pointer touch-manipulation"
-                        style={{
-                          ...position,
-                          width: `calc(var(--control-marker-size) * 2)`,
-                          height: `calc(var(--control-marker-size) * 2)`,
-                          transition: `top 0.4s cubic-bezier(0.4, 0, 0.2, 1), bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1), left 0.4s cubic-bezier(0.4, 0, 0.2, 1), right 0.4s cubic-bezier(0.4, 0, 0.2, 1)`,
-                        }}
+                        key={idx}
+                        onClick={layoutState.cycleCornerRadius}
+                        onHoverEnd={() => layoutState.setIsCornerHovered(false)}
                         onHoverStart={() =>
                           layoutState.setIsCornerHovered(true)
                         }
-                        onHoverEnd={() => layoutState.setIsCornerHovered(false)}
-                        onClick={layoutState.cycleCornerRadius}
-                        aria-label="Corner radius control"
+                        style={{
+                          ...position,
+                          width: "calc(var(--control-marker-size) * 2)",
+                          height: "calc(var(--control-marker-size) * 2)",
+                          transition:
+                            "top 0.4s cubic-bezier(0.4, 0, 0.2, 1), bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1), left 0.4s cubic-bezier(0.4, 0, 0.2, 1), right 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+                        }}
                       >
                         {layoutState.isCornerHovered && (
                           <motion.div
-                            className="absolute rounded-full -translate-1/2"
+                            animate={{ opacity: 1, scale: 1 }}
+                            className="-translate-1/2 absolute rounded-full"
+                            exit={{ opacity: 0, scale: 0.8 }}
+                            initial={{ opacity: 0, scale: 0.8 }}
                             style={{
                               border: `var(--control-marker-border-width) solid ${accentColor}`,
-                              width: `var(--control-marker-size)`,
-                              height: `var(--control-marker-size)`,
+                              width: "var(--control-marker-size)",
+                              height: "var(--control-marker-size)",
                               top: "50%",
                               left: "50%",
                             }}
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.8 }}
                             transition={SPRING_CONFIG}
                           />
                         )}
                         <div
-                          className="absolute rounded-full -translate-1/2"
+                          className="-translate-1/2 absolute rounded-full"
                           style={{
                             backgroundColor: accentColor,
                             width: "var(--control-marker-dot-size)",
@@ -740,38 +751,38 @@ export const ControlsBlock = () => {
 
                     {/* Center marker */}
                     <motion.button
-                      className="absolute z-10 -translate-1/2 cursor-pointer touch-manipulation"
+                      aria-label="Gap control"
+                      className="-translate-1/2 absolute z-10 cursor-pointer touch-manipulation"
+                      onClick={layoutState.cycleGap}
+                      onHoverEnd={() => layoutState.setIsCenterHovered(false)}
+                      onHoverStart={() => layoutState.setIsCenterHovered(true)}
                       style={{
                         top: "50%",
                         left: "50%",
-                        width: `calc(var(--control-marker-size) * 2)`,
-                        height: `calc(var(--control-marker-size) * 2)`,
+                        width: "calc(var(--control-marker-size) * 2)",
+                        height: "calc(var(--control-marker-size) * 2)",
                       }}
-                      onHoverStart={() => layoutState.setIsCenterHovered(true)}
-                      onHoverEnd={() => layoutState.setIsCenterHovered(false)}
-                      whileTap={{ scale: 0.9 }}
-                      onClick={layoutState.cycleGap}
                       transition={SPRING_CONFIG}
-                      aria-label="Gap control"
+                      whileTap={{ scale: 0.9 }}
                     >
                       {layoutState.isCenterHovered && (
                         <motion.div
-                          className="absolute rounded-full -translate-1/2"
+                          animate={{ opacity: 1, scale: 1 }}
+                          className="-translate-1/2 absolute rounded-full"
+                          exit={{ opacity: 0, scale: 0.8 }}
+                          initial={{ opacity: 0, scale: 0.8 }}
                           style={{
                             border: `var(--control-marker-border-width) solid ${accentColor}`,
-                            width: `var(--control-marker-size)`,
-                            height: `var(--control-marker-size)`,
+                            width: "var(--control-marker-size)",
+                            height: "var(--control-marker-size)",
                             top: "50%",
                             left: "50%",
                           }}
-                          initial={{ opacity: 0, scale: 0.8 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          exit={{ opacity: 0, scale: 0.8 }}
                           transition={SPRING_CONFIG}
                         />
                       )}
                       <div
-                        className="absolute rounded-full -translate-1/2"
+                        className="-translate-1/2 absolute rounded-full"
                         style={{
                           backgroundColor: accentColor,
                           width: "var(--control-marker-dot-size)",

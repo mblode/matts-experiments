@@ -1,7 +1,6 @@
-import * as React from "react";
-
-import { cn } from "@/lib/utils";
 import { CircleXIcon } from "lucide-react";
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -29,7 +28,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       rightControl,
       ...props
     },
-    ref,
+    ref
   ) => {
     return (
       <label
@@ -42,7 +41,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
 
         {leftControl && (
-          <div className="absolute left-0 top-0 flex h-full flex-row place-items-center items-center justify-center">
+          <div className="absolute top-0 left-0 flex h-full flex-row place-items-center items-center justify-center">
             {leftControl}
           </div>
         )}
@@ -50,29 +49,29 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <div className="w-full">
           <input
             className={cn(
-              "input flex h-[48px] w-full rounded-[4px] border border-input transition-colors hover:border-input-hover bg-input px-3 py-[12px] font-sans font-normal text-sm leading-snug text-foreground placeholder:text-placeholder-foreground focus:bg-card focus:outline-hidden focus:border-ring disabled:cursor-not-allowed disabled:opacity-50",
+              "input flex h-[48px] w-full rounded-[4px] border border-input bg-input px-3 py-[12px] font-normal font-sans text-foreground text-sm leading-snug transition-colors placeholder:text-placeholder-foreground hover:border-input-hover focus:border-ring focus:bg-card focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
               {
                 "border-destructive-foreground": hasError,
                 "pr-9": clearable && !!props.value,
                 "hover:border-input! focus:border-input!": props.readOnly,
               },
-              className,
+              className
             )}
             ref={ref}
             {...props}
           />
 
           {clearable && !!props.value && (
-            <div className="absolute right-0 top-0 flex flex-row gap-1 pr-3">
+            <div className="absolute top-0 right-0 flex flex-row gap-1 pr-3">
               <button
-                tabIndex={-1}
-                className={cn(
-                  "flex h-[48px] items-center cursor-pointer justify-center p-0! text-muted-foreground",
-                  clearClassName,
-                )}
-                type="button"
-                onClick={() => onClear?.()}
                 aria-label="clear input"
+                className={cn(
+                  "flex h-[48px] cursor-pointer items-center justify-center p-0! text-muted-foreground",
+                  clearClassName
+                )}
+                onClick={() => onClear?.()}
+                tabIndex={-1}
+                type="button"
               >
                 <CircleXIcon className="size-5 text-muted-foreground/50" />
               </button>
@@ -81,7 +80,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         </div>
 
         {rightControl && (
-          <div className="absolute right-0 top-0 flex h-full flex-row place-items-center items-center justify-center">
+          <div className="absolute top-0 right-0 flex h-full flex-row place-items-center items-center justify-center">
             {rightControl}
           </div>
         )}
@@ -91,7 +90,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
       </label>
     );
-  },
+  }
 );
 Input.displayName = "Input";
 

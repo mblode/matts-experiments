@@ -1,43 +1,43 @@
 "use client";
-import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 export const AlbumBlock = () => {
   const [isPlaying, setIsPlaying] = useState(false);
 
   return (
     <div
-      className="relative w-full max-w-[400px] aspect-square overflow-hidden rounded-[40px] bg-gray-400 shadow-2xl"
+      className="relative aspect-square w-full max-w-[400px] overflow-hidden rounded-[40px] bg-gray-400 shadow-2xl"
       onClick={() => setIsPlaying(!isPlaying)}
     >
-      <div className="text-center flex flex-col w-full justify-center text-foreground absolute bottom-8">
-        <h1 className="text-base font-bold">Bridge Over Troubled Water</h1>
+      <div className="absolute bottom-8 flex w-full flex-col justify-center text-center text-foreground">
+        <h1 className="font-bold text-base">Bridge Over Troubled Water</h1>
         <h2 className="text-sm">Simon & Garfunkel</h2>
       </div>
 
       <div
         className={cn(
-          "relative z-[10] w-full overflow-hidden object-cover aspect-square shadow-xl transition-all duration-1000",
+          "relative z-[10] aspect-square w-full overflow-hidden object-cover shadow-xl transition-all duration-1000",
           {
-            "rounded-none translate-y-0": isPlaying,
-            "animation-album-spin rounded-[999px] -translate-y-1/2": !isPlaying,
-          },
+            "translate-y-0 rounded-none": isPlaying,
+            "animation-album-spin -translate-y-1/2 rounded-[999px]": !isPlaying,
+          }
         )}
       >
-        <img src="./album.png" alt="Album" className="size-full object-cover" />
+        <img alt="Album" className="size-full object-cover" src="./album.png" />
         <div
           className={cn(
-            "absolute rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-opacity flex items-center justify-center duration-1000",
+            "absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full transition-opacity duration-1000",
             {
               "opacity-0": isPlaying,
-            },
+            }
           )}
         >
-          <div className="absolute rounded-full size-12 bg-gray-400 z-[10]" />
-          <div className="absolute rounded-full size-14 bg-gray-100 z-[9]" />
-          <div className="absolute rounded-full size-20 bg-gray-400 z-[8]" />
-          <div className="absolute rounded-full size-[94px] bg-gray-500 z-[7]" />
-          <div className="absolute rounded-full size-24 bg-white z-[6]" />
+          <div className="absolute z-[10] size-12 rounded-full bg-gray-400" />
+          <div className="absolute z-[9] size-14 rounded-full bg-gray-100" />
+          <div className="absolute z-[8] size-20 rounded-full bg-gray-400" />
+          <div className="absolute z-[7] size-[94px] rounded-full bg-gray-500" />
+          <div className="absolute z-[6] size-24 rounded-full bg-white" />
         </div>
       </div>
     </div>

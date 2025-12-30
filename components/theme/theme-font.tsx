@@ -3,11 +3,11 @@
 import { memo, useMemo } from "react";
 import { getDefaultPageTheme } from "@/components/theme/theme.utils";
 import { useGoogleFonts } from "@/hooks/use-google-fonts";
-import { VenueThemeSchema } from "@/lib/types";
+import type { VenueThemeSchema } from "@/lib/types";
 
-type Props = {
+interface Props {
   content: Partial<VenueThemeSchema> | undefined;
-};
+}
 
 export const ThemeFont = memo(({ content: defaultContent }: Props): null => {
   const content = getDefaultPageTheme(defaultContent);
@@ -34,7 +34,7 @@ export const ThemeFont = memo(({ content: defaultContent }: Props): null => {
       content?.headingFontWeight,
       content?.primaryButtonFontWeight,
       content?.secondaryButtonFontWeight,
-    ],
+    ]
   );
 
   useGoogleFonts(fontConfigs);

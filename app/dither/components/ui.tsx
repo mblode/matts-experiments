@@ -52,7 +52,7 @@ export const UI = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const distanceMeters = Math.floor(distance);
+  const _distanceMeters = Math.floor(distance);
   const scoreRounded = Math.floor(score);
 
   // Calculate speed multiplier (same formula as GameControls)
@@ -63,7 +63,7 @@ export const UI = () => {
   const speedTier = Math.max(0, score) / SPEED_SCALE_POINTS;
   const scaledSpeed = Math.min(
     MAX_SPEED,
-    BASE_SPEED * Math.pow(SPEED_SCALE_MULTIPLIER, speedTier),
+    BASE_SPEED * SPEED_SCALE_MULTIPLIER ** speedTier
   );
   const speedMultiplier = (scaledSpeed / BASE_SPEED).toFixed(1);
 
@@ -222,6 +222,15 @@ export const UI = () => {
           </div>
           <button
             onClick={startGame}
+            onPointerDown={(e) => {
+              e.currentTarget.style.backgroundColor = "#cccccc";
+            }}
+            onPointerLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "#ffffff";
+            }}
+            onPointerUp={(e) => {
+              e.currentTarget.style.backgroundColor = "#ffffff";
+            }}
             style={{
               pointerEvents: "all",
               fontSize: isMobile ? "20px" : "24px",
@@ -233,15 +242,6 @@ export const UI = () => {
               fontFamily: '"VT323", monospace',
               fontWeight: "bold",
               touchAction: "manipulation",
-            }}
-            onPointerDown={(e) => {
-              e.currentTarget.style.backgroundColor = "#cccccc";
-            }}
-            onPointerUp={(e) => {
-              e.currentTarget.style.backgroundColor = "#ffffff";
-            }}
-            onPointerLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "#ffffff";
             }}
           >
             RESTART

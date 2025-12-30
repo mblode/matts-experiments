@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from "react";
 import { useThree } from "@react-three/fiber";
-import { PointerLockControls as PointerLockControlsImpl } from "three-stdlib";
+import { useEffect, useRef, useState } from "react";
 import { Euler, Vector2 } from "three";
+import { PointerLockControls as PointerLockControlsImpl } from "three-stdlib";
 import { useGame } from "../game";
 
 const TOUCH_SENSITIVITY = 0.002;
-const MOUSE_SENSITIVITY = 0.002;
+const _MOUSE_SENSITIVITY = 0.002;
 
 export const CameraControls = () => {
   const { camera, gl } = useThree();
@@ -33,7 +33,9 @@ export const CameraControls = () => {
 
   // Desktop: PointerLockControls
   useEffect(() => {
-    if (isMobile) return;
+    if (isMobile) {
+      return;
+    }
 
     const controls = new PointerLockControlsImpl(camera, gl.domElement);
     controlsRef.current = controls;
@@ -63,7 +65,9 @@ export const CameraControls = () => {
 
   // Mobile: Touch drag controls
   useEffect(() => {
-    if (!isMobile) return;
+    if (!isMobile) {
+      return;
+    }
 
     // Initialize rotation from camera
     rotationRef.current.setFromQuaternion(camera.quaternion);
@@ -74,18 +78,18 @@ export const CameraControls = () => {
         isTouchRotating.current = true;
         touchStartRef.current = new Vector2(
           e.touches[0].clientX,
-          e.touches[0].clientY,
+          e.touches[0].clientY
         );
       }
     };
 
     const handleTouchMove = (e: TouchEvent) => {
       if (
-        !isTouchRotating.current ||
-        !touchStartRef.current ||
+        !(isTouchRotating.current && touchStartRef.current) ||
         e.touches.length !== 1
-      )
+      ) {
         return;
+      }
 
       e.preventDefault();
 
@@ -101,7 +105,7 @@ export const CameraControls = () => {
       const PI_2 = Math.PI / 2;
       rotationRef.current.x = Math.max(
         -PI_2,
-        Math.min(PI_2, rotationRef.current.x),
+        Math.min(PI_2, rotationRef.current.x)
       );
 
       // Apply rotation to camera

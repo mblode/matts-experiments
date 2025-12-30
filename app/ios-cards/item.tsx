@@ -1,8 +1,8 @@
 "use client";
 
+import { X } from "lucide-react";
 import { motion } from "motion/react";
 import { items } from "./data";
-import { X } from "lucide-react";
 
 interface ItemProps {
   id: string;
@@ -11,68 +11,70 @@ interface ItemProps {
 
 export function Item({ id, setSelectedId }: ItemProps) {
   const item = items.find((item) => item.id === id);
-  if (!item) return null;
+  if (!item) {
+    return null;
+  }
 
   const { category, title } = item;
 
   return (
     <>
       <motion.div
-        initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
+        className="pointer-events-auto fixed top-0 bottom-0 left-1/2 z-[1] w-full -translate-x-1/2 bg-black/80"
         exit={{ opacity: 0 }}
-        transition={{ duration: 0.2, delay: 0.1 }}
-        className="fixed z-[1] bg-black/80 top-0 bottom-0 left-1/2 -translate-x-1/2 w-full pointer-events-auto"
+        initial={{ opacity: 0 }}
         onClick={() => setSelectedId(null)}
+        transition={{ duration: 0.2, delay: 0.1 }}
       />
 
-      <div className="fixed top-0 left-0 right-0 bottom-0 z-10 flex items-center justify-center p-4 sm:p-10 pointer-events-none">
+      <div className="pointer-events-none fixed top-0 right-0 bottom-0 left-0 z-10 flex items-center justify-center p-4 sm:p-10">
         <motion.div
-          className="relative h-auto w-full max-w-[700px] mx-auto bg-ios-card-bg rounded-[20px] overflow-hidden pointer-events-auto max-h-[90vh] overflow-y-auto"
+          className="pointer-events-auto relative mx-auto h-auto max-h-[90vh] w-full max-w-[700px] overflow-hidden overflow-y-auto rounded-[20px] bg-ios-card-bg"
           layoutId={`card-container-${id}`}
         >
           <motion.button
-            className="absolute top-4 right-4 z-20 w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition-colors"
-            onClick={() => setSelectedId(null)}
-            initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
+            className="absolute top-4 right-4 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm transition-colors hover:bg-white/30"
+            initial={{ opacity: 0 }}
+            onClick={() => setSelectedId(null)}
             transition={{ delay: 0.2 }}
           >
-            <X className="w-5 h-5 text-white" />
+            <X className="h-5 w-5 text-white" />
           </motion.button>
 
           <motion.div
-            className="relative h-[250px] sm:h-[420px] w-full overflow-hidden"
+            className="relative h-[250px] w-full overflow-hidden sm:h-[420px]"
             layoutId={`card-image-container-${id}`}
           >
             <img
-              src={item.imageUrl}
               alt={title}
-              width={800}
+              className="h-full w-full object-cover"
               height={600}
-              className="w-full h-full object-cover"
+              src={item.imageUrl}
+              width={800}
             />
           </motion.div>
 
           <motion.div
-            className="absolute top-4 sm:top-[30px] left-4 sm:left-[30px] max-w-[300px] z-10"
+            className="absolute top-4 left-4 z-10 max-w-[300px] sm:top-[30px] sm:left-[30px]"
             layoutId={`title-container-${id}`}
           >
-            <span className="text-white text-xs sm:text-sm uppercase">
+            <span className="text-white text-xs uppercase sm:text-sm">
               {category}
             </span>
-            <h2 className="text-white my-1 sm:my-2 text-xl sm:text-2xl font-semibold">
+            <h2 className="my-1 font-semibold text-white text-xl sm:my-2 sm:text-2xl">
               {title}
             </h2>
           </motion.div>
 
           <motion.div
-            className="pt-6 sm:pt-10 px-4 sm:px-9 pb-6 sm:pb-9"
-            initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
+            className="px-4 pt-6 pb-6 sm:px-9 sm:pt-10 sm:pb-9"
+            initial={{ opacity: 0 }}
             transition={{ delay: 0.15, duration: 0.5 }}
           >
-            <p className="text-[#9d9ca1] text-base sm:text-xl leading-6 sm:leading-7">
+            <p className="text-[#9d9ca1] text-base leading-6 sm:text-xl sm:leading-7">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
               enim ad minim veniam, quis nostrud exercitation ullamco laboris

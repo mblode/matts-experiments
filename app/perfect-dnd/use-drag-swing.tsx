@@ -76,7 +76,9 @@ export function useDragSwing(config: DragSwingConfig = {}): UseDragSwingReturn {
 
   // Continuous physics loop - runs spring simulation every frame
   const runDragLoop = useCallback(() => {
-    if (!isDraggingRef.current || !springRef.current) return;
+    if (!(isDraggingRef.current && springRef.current)) {
+      return;
+    }
 
     // Calculate delta time
     const now = performance.now();
@@ -101,7 +103,7 @@ export function useDragSwing(config: DragSwingConfig = {}): UseDragSwingReturn {
     lastFrameTimeRef.current = performance.now();
 
     const cardElement = overlayRef.current?.querySelector(
-      "[data-overlay-card]",
+      "[data-overlay-card]"
     ) as HTMLElement | null;
 
     // Animate scale on the scale wrapper
@@ -112,7 +114,7 @@ export function useDragSwing(config: DragSwingConfig = {}): UseDragSwingReturn {
           duration: 200,
           easing: "cubic-bezier(.2, 0, 0, 1)",
           fill: "forwards",
-        },
+        }
       );
     }
 
@@ -130,7 +132,7 @@ export function useDragSwing(config: DragSwingConfig = {}): UseDragSwingReturn {
           duration: 200,
           easing: "cubic-bezier(.2, 0, 0, 1)",
           fill: "forwards",
-        },
+        }
       );
     }
 
@@ -149,12 +151,14 @@ export function useDragSwing(config: DragSwingConfig = {}): UseDragSwingReturn {
       lastFrameTimeRef.current = performance.now();
       dragLoopRef.current = requestAnimationFrame(runDragLoop);
     },
-    [runDragLoop],
+    [runDragLoop]
   );
 
   const handleDragMove = useCallback(
     (event: DragMoveEvent) => {
-      if (!springRef.current) return;
+      if (!springRef.current) {
+        return;
+      }
 
       const currentX = event.delta.x;
 
@@ -166,7 +170,7 @@ export function useDragSwing(config: DragSwingConfig = {}): UseDragSwingReturn {
       smoothedVelocityRef.current = lerp(
         smoothedVelocityRef.current,
         instantVelocity,
-        smoothing,
+        smoothing
       );
 
       // Dead zone - ignore tiny velocity to prevent jitter during slow movement
@@ -179,13 +183,13 @@ export function useDragSwing(config: DragSwingConfig = {}): UseDragSwingReturn {
       const targetRotation = clamp(
         -effectiveVelocity * sensitivity,
         -maxAngle,
-        maxAngle,
+        maxAngle
       );
 
       // Just set the target - physics loop handles animation with momentum
       springRef.current.setTarget(targetRotation);
     },
-    [sensitivity, maxAngle, smoothing],
+    [sensitivity, maxAngle, smoothing]
   );
 
   const handleDragEnd = useCallback(
@@ -197,7 +201,9 @@ export function useDragSwing(config: DragSwingConfig = {}): UseDragSwingReturn {
         dragLoopRef.current = null;
       }
 
-      if (!springRef.current) return;
+      if (!springRef.current) {
+        return;
+      }
 
       // Get current rotation value from spring
       const currentRotation = springRef.current.getValue();
@@ -205,7 +211,7 @@ export function useDragSwing(config: DragSwingConfig = {}): UseDragSwingReturn {
       // Capture the overlay position for the settling animation
       // We need to find the actual card element inside the overlay
       const cardElement = overlayRef.current?.querySelector(
-        "[data-overlay-card]",
+        "[data-overlay-card]"
       ) as HTMLElement | null;
       if (cardElement) {
         const rect = cardElement.getBoundingClientRect();
@@ -224,7 +230,7 @@ export function useDragSwing(config: DragSwingConfig = {}): UseDragSwingReturn {
       // Reset tracking state
       smoothedVelocityRef.current = 0;
     },
-    [store],
+    [store]
   );
 
   // Cleanup on unmount

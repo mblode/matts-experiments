@@ -42,8 +42,8 @@ export default function RootLayout({
 }>) {
   return (
     <html
+      className={`${apercu.variable} h-full font-normal font-sans text-foreground antialiased`}
       lang="en"
-      className={`${apercu.variable} h-full font-sans font-normal text-foreground antialiased`}
       suppressHydrationWarning
     >
       <body className="h-full bg-page-background">

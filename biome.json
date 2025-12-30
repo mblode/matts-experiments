@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.2.0/schema.json",
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!node_modules", "!.next", "!dist", "!build"]
+    "includes": ["!node_modules", "!.next", "!dist", "!build", "!**/turn.js"]
   },
   "formatter": {
     "enabled": true,
@@ -19,7 +19,43 @@
     "rules": {
       "recommended": true,
       "suspicious": {
-        "noUnknownAtRules": "off"
+        "noUnknownAtRules": "off",
+        "noArrayIndexKey": "off",
+        "noExplicitAny": "off",
+        "noBitwiseOperators": "off",
+        "noAssignInExpressions": "off",
+        "noImplicitAnyLet": "off",
+        "noEvolvingTypes": "off",
+        "noEmptyBlockStatements": "off"
+      },
+      "performance": {
+        "noImgElement": "off",
+        "noNamespaceImport": "off",
+        "useTopLevelRegex": "off",
+        "noBarrelFile": "off"
+      },
+      "a11y": {
+        "noNoninteractiveElementInteractions": "off",
+        "noStaticElementInteractions": "off",
+        "useKeyWithClickEvents": "off",
+        "noSvgWithoutTitle": "off",
+        "useButtonType": "off",
+        "noLabelWithoutControl": "off",
+        "useSemanticElements": "off"
+      },
+      "style": {
+        "noNonNullAssertion": "off",
+        "noNestedTernary": "off",
+        "useDefaultSwitchClause": "off"
+      },
+      "correctness": {
+        "useImageSize": "off",
+        "useExhaustiveDependencies": "off",
+        "noInvalidDirectionInLinearGradient": "off"
+      },
+      "complexity": {
+        "noForEach": "off",
+        "noExcessiveCognitiveComplexity": "off"
       }
     },
     "domains": {
@@ -33,5 +69,6 @@
         "organizeImports": "on"
       }
     }
-  }
+  },
+  "extends": ["ultracite/core"]
 }

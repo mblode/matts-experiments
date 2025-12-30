@@ -16,8 +16,8 @@ export default function Effects({
     <EffectComposer>
       <DitherEffect
         patternScale={patternScale}
-        threshold={threshold}
         pixelSize={pixelSize}
+        threshold={threshold}
       />
     </EffectComposer>
   );

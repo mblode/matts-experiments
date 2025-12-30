@@ -1,20 +1,20 @@
 "use client";
 
-import * as React from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import {
-  motion,
   AnimatePresence,
-  Transition,
-  HTMLMotionProps,
+  type HTMLMotionProps,
+  motion,
+  type Transition,
 } from "motion/react";
+import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-type AccordionItemContextType = {
+interface AccordionItemContextType {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
-};
+}
 
 const AccordionItemContext = React.createContext<
   AccordionItemContextType | undefined
@@ -44,8 +44,8 @@ function AccordionItem({
   return (
     <AccordionItemContext.Provider value={{ isOpen, setIsOpen }}>
       <AccordionPrimitive.Item
-        data-slot="accordion-item"
         className={cn("border-b last:border-b-0", className)}
+        data-slot="accordion-item"
         {...props}
       >
         {children}
@@ -74,7 +74,9 @@ function AccordionTrigger({
 
   React.useEffect(() => {
     const node = triggerRef.current;
-    if (!node) return;
+    if (!node) {
+      return;
+    }
 
     const observer = new MutationObserver((mutationsList) => {
       mutationsList.forEach((mutation) => {
@@ -98,26 +100,26 @@ function AccordionTrigger({
   return (
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
-        ref={triggerRef}
-        data-slot="accordion-trigger"
         className={cn(
-          "cursor-pointer focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 items-start justify-between gap-4 rounded-md py-4 text-left text-sm font-medium transition-all outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50",
-          className,
+          "flex flex-1 cursor-pointer items-start justify-between gap-4 rounded-md py-4 text-left font-medium text-sm outline-none transition-all focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50",
+          className
         )}
+        data-slot="accordion-trigger"
+        ref={triggerRef}
         {...props}
       >
         {children}
-        <div className="relative flex items-center justify-center w-4 h-4 shrink-0">
+        <div className="relative flex h-4 w-4 shrink-0 items-center justify-center">
           <motion.div
             animate={{ rotate: isOpen ? 180 : 0 }}
+            className="pointer-events-none absolute h-0.5 w-4 rounded-full bg-foreground"
             transition={{ duration: 0.3, ease: [0.645, 0.045, 0.355, 1] }}
-            className="bg-foreground pointer-events-none w-4 h-0.5 rounded-full absolute"
           />
           <motion.div
             animate={{ scale: isOpen ? 0 : 1, rotateZ: isOpen ? 80 : 0 }}
-            transition={{ duration: 0.3, ease: [0.645, 0.045, 0.355, 1] }}
-            className="bg-foreground pointer-events-none h-4 w-0.5 rounded-full absolute"
+            className="pointer-events-none absolute h-4 w-0.5 rounded-full bg-foreground"
             style={{ transformOrigin: "center" }}
+            transition={{ duration: 0.3, ease: [0.645, 0.045, 0.355, 1] }}
           />
         </div>
       </AccordionPrimitive.Trigger>
@@ -145,22 +147,22 @@ function AccordionContent({
       {isOpen && (
         <AccordionPrimitive.Content forceMount {...props}>
           <motion.div
-            key="accordion-content"
-            data-slot="accordion-content"
-            initial={{ height: 0, opacity: 0, "--mask-stop": "0%" }}
             animate={{ height: "auto", opacity: 1, "--mask-stop": "100%" }}
+            className="overflow-hidden"
+            data-slot="accordion-content"
             exit={{ height: 0, opacity: 0, "--mask-stop": "0%" }}
-            transition={transition}
+            initial={{ height: 0, opacity: 0, "--mask-stop": "0%" }}
+            key="accordion-content"
             style={{
               maskImage:
                 "linear-gradient(black var(--mask-stop), transparent var(--mask-stop))",
               WebkitMaskImage:
                 "linear-gradient(black var(--mask-stop), transparent var(--mask-stop))",
             }}
-            className="overflow-hidden"
+            transition={transition}
             {...props}
           >
-            <div className={cn("pb-4 pt-0 text-sm leading-[1.5]", className)}>
+            <div className={cn("pt-0 pb-4 text-sm leading-[1.5]", className)}>
               {children}
             </div>
           </motion.div>

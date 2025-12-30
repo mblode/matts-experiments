@@ -1,14 +1,14 @@
-import { forwardRef, useMemo } from "react";
-import { Effect } from "postprocessing";
-import {
-  Uniform,
-  Texture,
-  TextureLoader,
-  RepeatWrapping,
-  Vector3,
-  Vector2,
-} from "three";
 import { useThree } from "@react-three/fiber";
+import { Effect } from "postprocessing";
+import { forwardRef, useMemo } from "react";
+import {
+  RepeatWrapping,
+  type Texture,
+  TextureLoader,
+  Uniform,
+  Vector2,
+  Vector3,
+} from "three";
 import { fragmentShader } from "../shaders/dither.frag";
 
 // Custom Dither Effect class
@@ -19,7 +19,7 @@ class DitherEffectImpl extends Effect {
     patternScale: number,
     threshold: number,
     pixelSize: number,
-    resolution: Vector2,
+    resolution: Vector2
   ) {
     // Set up texture wrapping for tiling
     blueNoiseTexture.wrapS = RepeatWrapping;
@@ -44,12 +44,12 @@ class DitherEffectImpl extends Effect {
     this.cameraRef = camera;
   }
 
-  private cameraRef: any;
+  private readonly cameraRef: any;
 
-  update(renderer: any, inputBuffer: any, deltaTime: number) {
+  update(_renderer: any, inputBuffer: any, _deltaTime: number) {
     // Update camera uniforms each frame
     if (this.cameraRef) {
-      this.uniforms.get("cameraPosition")!.value.copy(this.cameraRef.position);
+      this.uniforms.get("cameraPosition")?.value.copy(this.cameraRef.position);
       this.uniforms.get("cameraWorldMatrix")!.value =
         this.cameraRef.matrixWorld;
       this.uniforms.get("cameraProjectionMatrixInverse")!.value =
@@ -59,7 +59,7 @@ class DitherEffectImpl extends Effect {
     // Update resolution uniform
     const width = inputBuffer.width;
     const height = inputBuffer.height;
-    this.uniforms.get("resolution")!.value.set(width, height);
+    this.uniforms.get("resolution")?.value.set(width, height);
   }
 }
 
@@ -90,7 +90,7 @@ const DitherEffect = forwardRef<typeof DitherEffectImpl, DitherEffectProps>(
         patternScale,
         threshold,
         pixelSize,
-        resolution,
+        resolution
       );
     }, [blueNoiseTexture, camera, patternScale, threshold, pixelSize, size]);
 
@@ -103,8 +103,8 @@ const DitherEffect = forwardRef<typeof DitherEffectImpl, DitherEffectProps>(
       }
     }, [effect, patternScale, threshold, pixelSize]);
 
-    return <primitive ref={ref} object={effect} dispose={null} />;
-  },
+    return <primitive dispose={null} object={effect} ref={ref} />;
+  }
 );
 
 DitherEffect.displayName = "DitherEffect";

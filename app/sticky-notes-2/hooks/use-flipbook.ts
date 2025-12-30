@@ -1,20 +1,19 @@
 "use client";
 
-import { useRef, useState, useCallback, useMemo, useEffect } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import type {
-  Point2D,
   FlipState,
   FoldGeometry,
   PageTransforms,
+  Point2D,
   UseFlipbookOptions,
   UseFlipbookReturn,
 } from "../types";
 import {
   calculateFold,
   calculateWrapperHeight,
-  point2D,
-  getFlipEndPosition,
   getCornerPosition,
+  getFlipEndPosition,
 } from "../utils/geometry";
 import { generatePageTransforms } from "../utils/transforms";
 import { useCornerDetection } from "./use-corner-detection";
@@ -63,18 +62,20 @@ export function useFlipbook({
   // Calculated wrapper height (diagonal for rotation clipping)
   const wrapperHeight = useMemo(
     () => calculateWrapperHeight(width, height),
-    [width, height],
+    [width, height]
   );
 
   // Animation hook
-  const { animate, stop: stopAnimation, isAnimating } = useFlipAnimation();
+  const { animate, stop: _stopAnimation, isAnimating } = useFlipAnimation();
 
   // ============================================================================
   // Fold Geometry Calculation
   // ============================================================================
 
   const foldGeometry = useMemo<FoldGeometry | null>(() => {
-    if (!flipState.foldPoint) return null;
+    if (!flipState.foldPoint) {
+      return null;
+    }
     return calculateFold(flipState.foldPoint, width, height, wrapperHeight);
   }, [flipState.foldPoint, width, height, wrapperHeight]);
 
@@ -83,13 +84,15 @@ export function useFlipbook({
   // ============================================================================
 
   const pageTransforms = useMemo<PageTransforms | null>(() => {
-    if (!foldGeometry) return null;
+    if (!foldGeometry) {
+      return null;
+    }
     return generatePageTransforms(
       foldGeometry,
       width,
       height,
       wrapperHeight,
-      gradients,
+      gradients
     );
   }, [foldGeometry, width, height, wrapperHeight, gradients]);
 
@@ -102,7 +105,9 @@ export function useFlipbook({
    */
   const completePageTurn = useCallback(() => {
     const nextPage = currentPage + 1;
-    if (nextPage >= totalPages) return;
+    if (nextPage >= totalPages) {
+      return;
+    }
 
     setCurrentPage(nextPage);
     setFlipState((prev) => ({
@@ -134,8 +139,12 @@ export function useFlipbook({
    * Navigate to next page with animation
    */
   const nextPage = useCallback(() => {
-    if (currentPage >= totalPages - 1) return;
-    if (isAnimating) return;
+    if (currentPage >= totalPages - 1) {
+      return;
+    }
+    if (isAnimating) {
+      return;
+    }
 
     // Start from corner
     const cornerPos = getCornerPosition(width, height);
@@ -177,7 +186,9 @@ export function useFlipbook({
    * Navigate to previous page
    */
   const previousPage = useCallback(() => {
-    if (currentPage <= 0) return;
+    if (currentPage <= 0) {
+      return;
+    }
 
     const prevPage = currentPage - 1;
     setCurrentPage(prevPage);
@@ -193,8 +204,12 @@ export function useFlipbook({
    */
   const goToPage = useCallback(
     (page: number) => {
-      if (page < 0 || page >= totalPages) return;
-      if (page === currentPage) return;
+      if (page < 0 || page >= totalPages) {
+        return;
+      }
+      if (page === currentPage) {
+        return;
+      }
 
       setCurrentPage(page);
       setFlipState((prev) => ({
@@ -203,7 +218,7 @@ export function useFlipbook({
       }));
       onPageChange?.(page);
     },
-    [totalPages, currentPage, onPageChange],
+    [totalPages, currentPage, onPageChange]
   );
 
   // ============================================================================
@@ -215,8 +230,12 @@ export function useFlipbook({
    */
   const handleCornerActivated = useCallback(
     (point: Point2D) => {
-      if (currentPage >= totalPages - 1) return;
-      if (isAnimating) return;
+      if (currentPage >= totalPages - 1) {
+        return;
+      }
+      if (isAnimating) {
+        return;
+      }
 
       setFlipState((prev) => ({
         ...prev,
@@ -225,7 +244,7 @@ export function useFlipbook({
         foldPoint: point,
       }));
     },
-    [currentPage, totalPages, isAnimating],
+    [currentPage, totalPages, isAnimating]
   );
 
   /**
@@ -233,14 +252,16 @@ export function useFlipbook({
    */
   const handlePointerMove = useCallback(
     (point: Point2D) => {
-      if (!flipState.isDragging) return;
+      if (!flipState.isDragging) {
+        return;
+      }
 
       setFlipState((prev) => ({
         ...prev,
         foldPoint: point,
       }));
     },
-    [flipState.isDragging],
+    [flipState.isDragging]
   );
 
   /**
@@ -248,7 +269,9 @@ export function useFlipbook({
    */
   const handlePointerRelease = useCallback(
     (point: Point2D, wasQuickFlip: boolean) => {
-      if (!flipState.isFlipping) return;
+      if (!flipState.isFlipping) {
+        return;
+      }
 
       // Determine if we should complete or cancel the flip (turn.js lines 1052-1068)
       // Quick flip: always complete (handled by wasQuickFlip - includes time < 200ms and boundary checks)
@@ -303,14 +326,16 @@ export function useFlipbook({
       animate,
       completePageTurn,
       cancelPageTurn,
-    ],
+    ]
   );
 
   /**
    * Handle pointer leave (hover preview cancel)
    */
   const handlePointerLeave = useCallback(() => {
-    if (flipState.isDragging) return; // Don't cancel during drag
+    if (flipState.isDragging) {
+      return; // Don't cancel during drag
+    }
 
     if (flipState.isFlipping && !isAnimating) {
       // Cancel hover preview

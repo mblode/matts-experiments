@@ -1,9 +1,9 @@
 import {
   createContext,
+  type ReactNode,
+  useCallback,
   useContext,
   useState,
-  useCallback,
-  ReactNode,
 } from "react";
 
 // Game configuration constants
@@ -70,7 +70,7 @@ interface GameContextType extends GameState {
     asteroidId: number,
     explosionPos: [number, number, number],
     hitTime: number,
-    speedMultiplier: number,
+    speedMultiplier: number
   ) => void;
   setAsteroids: (asteroids: Asteroid[]) => void;
   setExplosions: (explosions: Explosion[]) => void;
@@ -144,7 +144,7 @@ export const GameProvider = ({ children }: GameProviderProps) => {
     }));
   }, []);
 
-  const incrementKills = useCallback((speedMultiplier: number = 1) => {
+  const incrementKills = useCallback((speedMultiplier = 1) => {
     const points = Math.floor(POINTS_PER_KILL * speedMultiplier);
     setGameState((prev) => ({
       ...prev,
@@ -199,7 +199,7 @@ export const GameProvider = ({ children }: GameProviderProps) => {
       asteroidId: number,
       explosionPos: [number, number, number],
       hitTime: number,
-      speedMultiplier: number,
+      speedMultiplier: number
     ) => {
       const points = Math.floor(POINTS_PER_KILL * speedMultiplier);
       const explosion: Explosion = {
@@ -211,7 +211,7 @@ export const GameProvider = ({ children }: GameProviderProps) => {
       setGameState((prev) => ({
         ...prev,
         asteroids: prev.asteroids.filter(
-          (asteroid) => asteroid.id !== asteroidId,
+          (asteroid) => asteroid.id !== asteroidId
         ),
         explosions: [...prev.explosions, explosion],
         lastHitTime: hitTime,
@@ -219,7 +219,7 @@ export const GameProvider = ({ children }: GameProviderProps) => {
         score: prev.score + points,
       }));
     },
-    [],
+    []
   );
 
   return (

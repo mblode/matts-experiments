@@ -1,12 +1,12 @@
 "use client";
+import { useCallback, useEffect, useState } from "react";
 import { ThemeBackground } from "@/components/theme/theme-background";
 import { ThemeFont } from "@/components/theme/theme-font";
 import { ThemeStyle } from "@/components/theme/theme-style";
 import { Button } from "@/components/ui/button";
-import { useCallback, useEffect, useState } from "react";
+import { Header } from "@/components/ui/header";
 import { themes } from "@/lib/themes";
 import { CardBlock } from "./card-block";
-import { Header } from "@/components/ui/header";
 
 export default function Page() {
   const [themeContent, setThemeContent] = useState<any>(null);
@@ -25,7 +25,7 @@ export default function Page() {
 
   return (
     <>
-      <div className="p-8 bg-background">
+      <div className="bg-background p-8">
         <div className="mx-auto max-w-4xl">
           <Header id="shuffle-theme" />
           <Button onClick={handleShuffleClick}>Shuffle theme</Button>
@@ -39,7 +39,7 @@ export default function Page() {
       <div className="relative flex h-full flex-col">
         <div className="relative z-1 w-full font-page-body font-page-body-weight text-page-text">
           <div className="relative z-30 mx-auto w-full max-w-[480px]">
-            <div className="p-4 gap-4 flex flex-col">
+            <div className="flex flex-col gap-4 p-4">
               {[
                 { id: 1 },
                 { id: 2 },
@@ -48,7 +48,7 @@ export default function Page() {
                 { id: 5 },
                 { id: 6 },
               ].map((item) => (
-                <CardBlock key={item.id} item={item} />
+                <CardBlock item={item} key={item.id} />
               ))}
             </div>
           </div>

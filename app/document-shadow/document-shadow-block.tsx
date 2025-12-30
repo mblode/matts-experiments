@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 interface ShadowShape {
   top?: string;
@@ -18,7 +18,7 @@ export const DocumentShadowBlock = () => {
   const [diceValue, setDiceValue] = useState(5);
   const [shadowNumber, setShadowNumber] = useState(1);
   const [degree, setDegree] = useState(0);
-  const [shadows, setShadows] = useState<ShadowShape[]>([
+  const [_shadows, setShadows] = useState<ShadowShape[]>([
     {
       top: "10%",
       left: "15%",
@@ -146,27 +146,27 @@ export const DocumentShadowBlock = () => {
 
       return (
         <div
+          className={`absolute h-2 w-2 rounded-full bg-gray-900 ${positionClasses}`}
           key={i}
-          className={`absolute w-2 h-2 bg-gray-900 rounded-full ${positionClasses}`}
         />
       );
     });
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-[#D1D7DC] flex items-center justify-center px-6 py-12">
+    <div className="relative flex min-h-screen w-full items-center justify-center bg-[#D1D7DC] px-6 py-12">
       {/* Shadow Image Overlay */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-50 flex items-center justify-center">
+      <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center overflow-hidden">
         <img
-          src={`/shadows/${String(shadowNumber).padStart(3, "0")}.png`}
           alt="Shadow overlay"
-          className="w-full h-full object-cover opacity-20 mix-blend-multiply transition-opacity duration-1000"
+          className="h-full w-full object-cover opacity-20 mix-blend-multiply transition-opacity duration-1000"
+          src={`/shadows/${String(shadowNumber).padStart(3, "0")}.png`}
         />
       </div>
 
       {/* Document Card */}
       <div
-        className="relative font-serif z-10 max-w-2xl w-full bg-[#E7EAED] p-8 sm:p-12 aspect-[1/1.414] after:content-[''] after:absolute after:inset-0 after:bg-repeat after:opacity-40 after:pointer-events-none after:mix-blend-multiply after:z-[-1]"
+        className="relative z-10 aspect-[1/1.414] w-full max-w-2xl bg-[#E7EAED] p-8 font-serif after:pointer-events-none after:absolute after:inset-0 after:z-[-1] after:bg-repeat after:opacity-40 after:mix-blend-multiply after:content-[''] sm:p-12"
         style={{
           boxShadow:
             "var(--shadow-elevation-medium), inset -2px 2px 4px rgba(255, 255, 255, 0.5)",
@@ -174,17 +174,17 @@ export const DocumentShadowBlock = () => {
       >
         {/* Dice Button */}
         <button
-          className="cursor-pointer absolute -top-4 -right-4 bg-gradient-to-br from-gray-800 to-gray-900 rounded-3xl z-[100] size-24 flex items-center justify-center"
-          onClick={rollDice}
           aria-label="Roll dice to randomize"
+          className="absolute -top-4 -right-4 z-[100] flex size-24 cursor-pointer items-center justify-center rounded-3xl bg-gradient-to-br from-gray-800 to-gray-900"
+          onClick={rollDice}
           style={{
             boxShadow: "var(--shadow-elevation-high)",
           }}
         >
-          <div className="relative group size-12">
+          <div className="group relative size-12">
             <motion.div
-              className="cursor-pointer relative z-10 bg-white size-12 rounded-xl"
               animate={{ rotate: degree }}
+              className="relative z-10 size-12 cursor-pointer rounded-xl bg-white"
               transition={{ type: "spring", stiffness: 260, damping: 20 }}
               whileTap={{
                 scale: 1.03,
@@ -193,24 +193,24 @@ export const DocumentShadowBlock = () => {
               {renderDots()}
             </motion.div>
 
-            <div className="absolute inset-0 opacity-0 bg-white blur-lg rounded-xl size-12 transition-all group-hover:opacity-30" />
+            <div className="absolute inset-0 size-12 rounded-xl bg-white opacity-0 blur-lg transition-all group-hover:opacity-30" />
           </div>
         </button>
 
         {/* Sphere with Shadow */}
         <div className="mb-8 flex items-center gap-4">
           <div className="relative size-16">
-            <div className="inset-0 absolute w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-700 rounded-full shadow-lg z-10" />
-            <div className="absolute bottom-[-2px] left-3 w-20 h-6 bg-gray-700 rounded-[50%]" />
+            <div className="absolute inset-0 z-10 h-16 w-16 rounded-full bg-gradient-to-br from-blue-500 to-indigo-700 shadow-lg" />
+            <div className="absolute bottom-[-2px] left-3 h-6 w-20 rounded-[50%] bg-gray-700" />
           </div>
         </div>
 
         {/* Content */}
-        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
+        <h1 className="mb-2 font-bold text-3xl text-gray-900 sm:text-4xl">
           The brightest flame casts the darkest shadow
         </h1>
 
-        <p className="text-gray-700 mt-6 leading-relaxed">
+        <p className="mt-6 text-gray-700 leading-relaxed">
           Shadows are a natural and often overlooked part of our daily
           experience. From the long silhouettes cast by trees during sunset to
           the fleeting forms that follow our footsteps, shadows are more than
@@ -220,7 +220,7 @@ export const DocumentShadowBlock = () => {
           and art.
         </p>
 
-        <p className="text-gray-700 mt-4 leading-relaxed">
+        <p className="mt-4 text-gray-700 leading-relaxed">
           A shadow is a dark area or shape produced by an object blocking the
           path of light. When a light source encounters an opaque object, the
           object prevents some of the light from passing through, casting a
@@ -228,7 +228,7 @@ export const DocumentShadowBlock = () => {
           depend on several factors:
         </p>
 
-        <p className="text-gray-700 mt-4 font-semibold">
+        <p className="mt-4 font-semibold text-gray-700">
           There are three main types of shadows:
         </p>
 

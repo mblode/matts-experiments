@@ -1,7 +1,7 @@
 "use client";
-import { cn } from "@/lib/utils";
 import type React from "react";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
 
 interface ShootingStar {
   id: number;
@@ -84,7 +84,9 @@ export const ShootingStars: React.FC<ShootingStarsProps> = ({
     const moveStar = () => {
       if (star) {
         setStar((prevStar) => {
-          if (!prevStar) return null;
+          if (!prevStar) {
+            return null;
+          }
           const newX =
             prevStar.x +
             prevStar.speed * Math.cos((prevStar.angle * Math.PI) / 180);
@@ -118,24 +120,24 @@ export const ShootingStars: React.FC<ShootingStarsProps> = ({
 
   return (
     <svg
+      className={cn("absolute inset-0 h-full w-full", className)}
       ref={svgRef}
-      className={cn("w-full h-full absolute inset-0", className)}
     >
       {star && (
         <rect
-          key={star.id}
-          x={star.x}
-          y={star.y}
-          width={starWidth * star.scale}
-          height={starHeight}
           fill="url(#gradient)"
+          height={starHeight}
+          key={star.id}
           transform={`rotate(${star.angle}, ${
             star.x + (starWidth * star.scale) / 2
           }, ${star.y + starHeight / 2})`}
+          width={starWidth * star.scale}
+          x={star.x}
+          y={star.y}
         />
       )}
       <defs>
-        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <linearGradient id="gradient" x1="0%" x2="100%" y1="0%" y2="100%">
           <stop offset="0%" style={{ stopColor: trailColor, stopOpacity: 0 }} />
           <stop
             offset="100%"

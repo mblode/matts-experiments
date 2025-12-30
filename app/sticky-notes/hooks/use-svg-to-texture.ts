@@ -29,7 +29,9 @@ export function useSvgToTexture(options: UseSvgToTextureOptions) {
         canvas.height = height * dpr;
 
         const ctx = canvas.getContext("2d");
-        if (!ctx) return null;
+        if (!ctx) {
+          return null;
+        }
 
         // Scale context for device pixel ratio
         ctx.scale(dpr, dpr);
@@ -85,7 +87,7 @@ export function useSvgToTexture(options: UseSvgToTextureOptions) {
         return null;
       }
     },
-    [width, height, backgroundColor],
+    [width, height, backgroundColor]
   );
 
   const disposeTexture = useCallback(() => {

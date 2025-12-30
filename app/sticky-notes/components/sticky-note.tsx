@@ -1,16 +1,17 @@
 "use client";
 
-import React, {
-  useRef,
-  useCallback,
-  useState,
-  forwardRef,
-  useImperativeHandle,
-} from "react";
 import { getStroke } from "perfect-freehand";
+import type React from "react";
+import {
+  forwardRef,
+  useCallback,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import { getSvgPathFromStroke } from "@/lib/utils";
-import type { Point, PathData, StickyNote as StickyNoteType } from "../store";
 import { NOTE_SIZE } from "../constants";
+import type { PathData, Point, StickyNote as StickyNoteType } from "../store";
 
 interface StickyNoteProps {
   note: StickyNoteType;
@@ -39,7 +40,9 @@ export const StickyNoteComponent = forwardRef<StickyNoteRef, StickyNoteProps>(
 
     const getPointFromEvent = useCallback((e: React.PointerEvent): Point => {
       const rect = svgRef.current?.getBoundingClientRect();
-      if (!rect) return { x: 0, y: 0 };
+      if (!rect) {
+        return { x: 0, y: 0 };
+      }
 
       return {
         x: e.clientX - rect.left,
@@ -50,7 +53,9 @@ export const StickyNoteComponent = forwardRef<StickyNoteRef, StickyNoteProps>(
 
     const handlePointerDown = useCallback(
       (e: React.PointerEvent) => {
-        if (!isTopNote || isPeeling) return;
+        if (!isTopNote || isPeeling) {
+          return;
+        }
 
         e.preventDefault();
         const target = e.target as Element;
@@ -60,17 +65,19 @@ export const StickyNoteComponent = forwardRef<StickyNoteRef, StickyNoteProps>(
         setCurrentPath([point]);
         setIsDrawing(true);
       },
-      [isTopNote, isPeeling, getPointFromEvent],
+      [isTopNote, isPeeling, getPointFromEvent]
     );
 
     const handlePointerMove = useCallback(
       (e: React.PointerEvent) => {
-        if (!isDrawing || !isTopNote || isPeeling) return;
+        if (!(isDrawing && isTopNote) || isPeeling) {
+          return;
+        }
 
         const point = getPointFromEvent(e);
         setCurrentPath((prev) => [...prev, point]);
       },
-      [isDrawing, isTopNote, isPeeling, getPointFromEvent],
+      [isDrawing, isTopNote, isPeeling, getPointFromEvent]
     );
 
     const handlePointerUp = useCallback(() => {
@@ -87,10 +94,12 @@ export const StickyNoteComponent = forwardRef<StickyNoteRef, StickyNoteProps>(
       });
       setCurrentPath([]);
       setIsDrawing(false);
-    }, [isDrawing, currentPath, currentBrushSize, onAddPath]);
+    }, [isDrawing, currentPath, onAddPath]);
 
     const renderPath = (pathData: PathData, pathIndex: number) => {
-      if (pathData.points.length < 2) return null;
+      if (pathData.points.length < 2) {
+        return null;
+      }
 
       const stroke = getStroke(
         pathData.points.map((p) => [p.x, p.y, p.pressure || 0.5]),
@@ -99,23 +108,25 @@ export const StickyNoteComponent = forwardRef<StickyNoteRef, StickyNoteProps>(
           thinning: 0.5,
           smoothing: 0.5,
           streamline: 0.5,
-        },
+        }
       );
 
       const pathD = getSvgPathFromStroke(stroke);
 
       return (
         <path
-          key={pathIndex}
           d={pathD}
           fill={pathData.color}
+          key={pathIndex}
           style={{ pointerEvents: "none" }}
         />
       );
     };
 
     const renderCurrentPath = () => {
-      if (currentPath.length < 2) return null;
+      if (currentPath.length < 2) {
+        return null;
+      }
 
       const stroke = getStroke(
         currentPath.map((p) => [p.x, p.y, p.pressure || 0.5]),
@@ -124,7 +135,7 @@ export const StickyNoteComponent = forwardRef<StickyNoteRef, StickyNoteProps>(
           thinning: 0.5,
           smoothing: 0.5,
           streamline: 0.5,
-        },
+        }
       );
 
       const pathD = getSvgPathFromStroke(stroke);
@@ -158,25 +169,25 @@ export const StickyNoteComponent = forwardRef<StickyNoteRef, StickyNoteProps>(
         }}
       >
         <svg
-          ref={svgRef}
-          width={NOTE_SIZE}
-          height={NOTE_SIZE}
-          viewBox={`0 0 ${NOTE_SIZE} ${NOTE_SIZE}`}
           className="touch-none"
+          height={NOTE_SIZE}
           onPointerDown={handlePointerDown}
+          onPointerLeave={handlePointerUp}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
-          onPointerLeave={handlePointerUp}
+          ref={svgRef}
           style={{ touchAction: "none" }}
+          viewBox={`0 0 ${NOTE_SIZE} ${NOTE_SIZE}`}
+          width={NOTE_SIZE}
         >
           {/* Background rect for texture capture */}
-          <rect width={NOTE_SIZE} height={NOTE_SIZE} fill={note.color} />
+          <rect fill={note.color} height={NOTE_SIZE} width={NOTE_SIZE} />
           {note.paths.map(renderPath)}
           {isTopNote && renderCurrentPath()}
         </svg>
       </div>
     );
-  },
+  }
 );
 
 StickyNoteComponent.displayName = "StickyNoteComponent";

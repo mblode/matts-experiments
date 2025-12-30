@@ -4,9 +4,9 @@ import { LightingBlock } from "./lighting-block";
 export default function Page() {
   return (
     <>
-      <div className="relative z-10 p-8 bg-background">
+      <div className="relative z-10 bg-background p-8">
         <div className="mx-auto max-w-4xl">
-          <Header id="lighting" className="mb-0!" />
+          <Header className="mb-0!" id="lighting" />
         </div>
       </div>
 

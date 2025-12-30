@@ -1,24 +1,23 @@
 "use client";
 
-import * as React from "react";
-import { Wallet, BarChart3, Users, Receipt } from "lucide-react";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { BarChart3, Receipt, Users, Wallet } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export const TabsBlock = () => {
   return (
-    <div className="w-full mx-auto">
-      <Tabs defaultValue="payments" className="w-full">
+    <div className="mx-auto w-full">
+      <Tabs className="w-full" defaultValue="payments">
         <div className="w-full overflow-x-auto">
           <TabsList
-            variant="clip-path"
-            floatingBgClassName="bg-blue-500"
             className="w-full"
+            floatingBgClassName="bg-blue-500"
+            variant="clip-path"
           >
             {TABS.map((tab) => (
               <TabsTrigger
+                className="flex flex-shrink-0 items-center gap-2 rounded-full px-4"
                 key={tab.value}
                 value={tab.value}
-                className="flex items-center gap-2 rounded-full px-4 flex-shrink-0"
               >
                 {tab.icon}
                 <span>{tab.name}</span>
@@ -29,9 +28,9 @@ export const TabsBlock = () => {
 
         {TABS.map((tab) => (
           <TabsContent
+            className="mt-6 rounded-3xl border border-border py-8 text-center"
             key={tab.value}
             value={tab.value}
-            className="mt-6 text-center border border-border rounded-3xl py-8"
           >
             <p className="text-gray-600">Content for {tab.name}</p>
           </TabsContent>
@@ -45,21 +44,21 @@ const TABS = [
   {
     name: "Payments",
     value: "payments",
-    icon: <Wallet className="w-4 h-4" />,
+    icon: <Wallet className="h-4 w-4" />,
   },
   {
     name: "Balances",
     value: "balances",
-    icon: <BarChart3 className="w-4 h-4" />,
+    icon: <BarChart3 className="h-4 w-4" />,
   },
   {
     name: "Customers",
     value: "customers",
-    icon: <Users className="w-4 h-4" />,
+    icon: <Users className="h-4 w-4" />,
   },
   {
     name: "Billing",
     value: "billing",
-    icon: <Receipt className="w-4 h-4" />,
+    icon: <Receipt className="h-4 w-4" />,
   },
 ];

@@ -8,7 +8,7 @@ import { cacheLife } from "next/cache";
  */
 export async function getCachedLocationName(
   lat: number,
-  lon: number,
+  lon: number
 ): Promise<string> {
   "use cache";
   cacheLife("days");
@@ -20,7 +20,7 @@ export async function getCachedLocationName(
         headers: {
           "User-Agent": "Moon Demo App",
         },
-      },
+      }
     );
 
     if (!response.ok) {
@@ -32,9 +32,15 @@ export async function getCachedLocationName(
       const { city, town, village, county, state, country } = data.address;
       const place = city || town || village || county;
       const region = state || country;
-      if (place && region) return `${place}, ${region}`;
-      if (place) return place;
-      if (region) return region;
+      if (place && region) {
+        return `${place}, ${region}`;
+      }
+      if (place) {
+        return place;
+      }
+      if (region) {
+        return region;
+      }
     }
     return `${lat.toFixed(4)}°, ${lon.toFixed(4)}°`;
   } catch (err) {

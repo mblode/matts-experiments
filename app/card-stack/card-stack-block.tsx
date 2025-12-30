@@ -25,76 +25,76 @@ export const CardStackBlock = () => {
   const centerOffset = (containerWidth - 170) / 2;
 
   return (
-    <div className="bg-card border border-border rounded-3xl p-8 overflow-x-auto max-w-[1000px]">
+    <div className="max-w-[1000px] overflow-x-auto rounded-3xl border border-border bg-card p-8">
       <div
-        className="relative h-[400px] w-full pointer-events-none z-[1]"
+        className="pointer-events-none relative z-[1] h-[400px] w-full"
         ref={containerRef}
       >
         <div
-          className="relative w-full h-full flex items-center cursor-pointer pointer-events-auto justify-start"
+          className="pointer-events-auto relative flex h-full w-full cursor-pointer items-center justify-start"
           onClick={() => setIsOpen(!isOpen)}
         >
           <motion.div
-            initial={{
-              x: centerOffset - 30,
-              y: 0,
-              rotate: -6,
-              scale: 0.92,
-            }}
             animate={{
               x: isOpen ? 0 : centerOffset - 60,
               y: 0,
               rotate: isOpen ? 0 : -6,
               scale: isOpen ? 1 : 0.92,
             }}
+            className="pointer-events-auto absolute aspect-[9/16] w-full max-w-[170px] rounded-2xl bg-blue-500 shadow-lg transition-[shadow,scale] hover:scale-[1.02] hover:shadow-2xl"
+            initial={{
+              x: centerOffset - 30,
+              y: 0,
+              rotate: -6,
+              scale: 0.92,
+            }}
+            style={{ zIndex: 1 }}
             transition={{
               duration: 0.6,
               ease: [0.165, 0.84, 0.44, 1],
             }}
-            style={{ zIndex: 1 }}
-            className="absolute aspect-[9/16] max-w-[170px] w-full pointer-events-auto bg-blue-500 rounded-2xl shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-[shadow,scale]"
           />
 
           <motion.div
-            initial={{
-              x: centerOffset + 30,
-              y: 0,
-              rotate: 6,
-              scale: 0.92,
-            }}
             animate={{
               x: isOpen ? 190 : centerOffset + 60,
               y: 0,
               rotate: isOpen ? 0 : 6,
               scale: isOpen ? 1 : 0.92,
             }}
+            className="pointer-events-auto absolute aspect-[9/16] w-full max-w-[170px] rounded-2xl bg-green-500 shadow-lg transition-[shadow,scale] hover:scale-[1.02] hover:shadow-2xl"
+            initial={{
+              x: centerOffset + 30,
+              y: 0,
+              rotate: 6,
+              scale: 0.92,
+            }}
+            style={{ zIndex: 2 }}
             transition={{
               duration: 0.6,
               ease: [0.165, 0.84, 0.44, 1],
             }}
-            style={{ zIndex: 2 }}
-            className="absolute aspect-[9/16] max-w-[170px] w-full pointer-events-auto bg-green-500 rounded-2xl shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-[shadow,scale]"
           />
 
           <motion.div
-            initial={{
-              x: centerOffset,
-              y: 0,
-              rotate: 0,
-              scale: 1,
-            }}
             animate={{
               x: isOpen ? 380 : centerOffset,
               y: 0,
               rotate: 0,
               scale: 1,
             }}
+            className="pointer-events-auto absolute aspect-[9/16] w-full max-w-[170px] rounded-2xl bg-red-500 shadow-xl transition-[shadow,scale] hover:scale-[1.02] hover:shadow-2xl"
+            initial={{
+              x: centerOffset,
+              y: 0,
+              rotate: 0,
+              scale: 1,
+            }}
+            style={{ zIndex: 3 }}
             transition={{
               duration: 0.6,
               ease: [0.165, 0.84, 0.44, 1],
             }}
-            style={{ zIndex: 3 }}
-            className="absolute aspect-[9/16] max-w-[170px] w-full pointer-events-auto bg-red-500 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-[shadow,scale]"
           />
         </div>
       </div>

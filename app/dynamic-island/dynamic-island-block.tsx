@@ -1,18 +1,18 @@
 "use client";
 
-import React, {
+import { AnimatePresence, motion } from "motion/react";
+import type React from "react";
+import {
   createContext,
+  memo,
   useContext,
-  useState,
   useEffect,
   useLayoutEffect,
   useRef,
-  memo,
+  useState,
 } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import Image from "next/image";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface DynamicIslandContextType {
   state: string;
@@ -57,7 +57,7 @@ const AudioBar = memo(function AudioBar({
     const heights = [];
     for (let i = 0; i < 5; i++) {
       heights.push(
-        (Math.floor(Math.random() * 24) - 24) / 2 + (base / 100) * 24,
+        (Math.floor(Math.random() * 24) - 24) / 2 + (base / 100) * 24
       );
     }
     heights.push(heights[0]);
@@ -66,7 +66,6 @@ const AudioBar = memo(function AudioBar({
 
   return (
     <motion.div
-      className="col-span-1 mx-auto my-auto h-6 w-[1.25px] scale-125 rounded-full bg-gradient-to-t from-[#675470] to-[#395978]"
       animate={{
         height: paused
           ? 1
@@ -74,6 +73,7 @@ const AudioBar = memo(function AudioBar({
             ? generateHeights(baseLength)
             : baseLength / 5,
       }}
+      className="col-span-1 mx-auto my-auto h-6 w-[1.25px] scale-125 rounded-full bg-gradient-to-t from-[#675470] to-[#395978]"
       transition={
         paused || !animating
           ? {
@@ -104,7 +104,7 @@ function Timer({ className, paused }: TimerProps) {
       setSeconds((prev) => (paused ? prev : prev === 60 ? 0 : prev + 1));
     }, 1000);
     return () => clearInterval(interval);
-  }, [seconds, paused]);
+  }, [paused]);
 
   const digits = seconds.toString().padStart(2, "0").split("");
 
@@ -116,23 +116,23 @@ function Timer({ className, paused }: TimerProps) {
       <AnimatePresence initial={false} mode="popLayout">
         {digits.map((digit, index) => (
           <motion.div
-            key={digit + index}
-            className="inline-block tabular-nums"
-            initial={{
-              y: "12px",
-              filter: "blur(2px)",
-              opacity: 0,
-            }}
             animate={{
               y: "0",
               filter: "blur(0px)",
               opacity: 1,
             }}
+            className="inline-block tabular-nums"
             exit={{
               y: "-12px",
               filter: "blur(2px)",
               opacity: 0,
             }}
+            initial={{
+              y: "12px",
+              filter: "blur(2px)",
+              opacity: 0,
+            }}
+            key={digit + index}
             transition={springTransition}
           >
             {digit}
@@ -154,20 +154,20 @@ function PlayPauseButton({ initial, active, isActive }: PlayPauseButtonProps) {
     <AnimatePresence initial={false} mode="wait">
       {isActive ? (
         <motion.div
-          key="play"
-          initial={{ opacity: 0, scale: 0.5 }}
-          exit={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.5 }}
+          initial={{ opacity: 0, scale: 0.5 }}
+          key="play"
           transition={{ duration: 0.1, bounce: 0.4 }}
         >
           {active}
         </motion.div>
       ) : (
         <motion.div
-          key="pause"
-          initial={{ opacity: 0, scale: 0.5 }}
-          exit={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.5 }}
+          initial={{ opacity: 0, scale: 0.5 }}
+          key="pause"
           transition={{ duration: 0.1, bounce: 0.4 }}
         >
           {initial}
@@ -185,28 +185,28 @@ function TimerView() {
     <div className="flex w-full items-center gap-2 p-4 py-3">
       <button
         aria-label="Pause timer"
-        onClick={() => setPaused((prev) => !prev)}
         className="flex h-10 w-10 items-center justify-center rounded-full bg-[#5A3C07] transition-colors hover:bg-[#694608]"
+        onClick={() => setPaused((prev) => !prev)}
       >
         <PlayPauseButton
-          initial={
-            <svg
-              viewBox="0 0 10 13"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 fill-current text-[#FDB000]"
-            >
-              <path d="M1.03906 12.7266H2.82031C3.5 12.7266 3.85938 12.3672 3.85938 11.6797V1.03906C3.85938 0.328125 3.5 0 2.82031 0H1.03906C0.359375 0 0 0.359375 0 1.03906V11.6797C0 12.3672 0.359375 12.7266 1.03906 12.7266ZM6.71875 12.7266H8.49219C9.17969 12.7266 9.53125 12.3672 9.53125 11.6797V1.03906C9.53125 0.328125 9.17969 0 8.49219 0H6.71875C6.03125 0 5.67188 0.359375 5.67188 1.03906V11.6797C5.67188 12.3672 6.03125 12.7266 6.71875 12.7266Z" />
-            </svg>
-          }
           active={
             <svg
-              viewBox="0 0 12 14"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4 fill-current text-[#FDB000]"
+              fill="none"
+              viewBox="0 0 12 14"
+              xmlns="http://www.w3.org/2000/svg"
             >
               <path d="M0.9375 13.2422C1.25 13.2422 1.51562 13.1172 1.82812 12.9375L10.9375 7.67188C11.5859 7.28906 11.8125 7.03906 11.8125 6.625C11.8125 6.21094 11.5859 5.96094 10.9375 5.58594L1.82812 0.3125C1.51562 0.132812 1.25 0.015625 0.9375 0.015625C0.359375 0.015625 0 0.453125 0 1.13281V12.1172C0 12.7969 0.359375 13.2422 0.9375 13.2422Z" />
+            </svg>
+          }
+          initial={
+            <svg
+              className="h-4 w-4 fill-current text-[#FDB000]"
+              fill="none"
+              viewBox="0 0 10 13"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M1.03906 12.7266H2.82031C3.5 12.7266 3.85938 12.3672 3.85938 11.6797V1.03906C3.85938 0.328125 3.5 0 2.82031 0H1.03906C0.359375 0 0 0.359375 0 1.03906V11.6797C0 12.3672 0.359375 12.7266 1.03906 12.7266ZM6.71875 12.7266H8.49219C9.17969 12.7266 9.53125 12.3672 9.53125 11.6797V1.03906C9.53125 0.328125 9.17969 0 8.49219 0H6.71875C6.03125 0 5.67188 0.359375 5.67188 1.03906V11.6797C5.67188 12.3672 6.03125 12.7266 6.71875 12.7266Z" />
             </svg>
           }
           isActive={paused}
@@ -214,27 +214,27 @@ function TimerView() {
       </button>
       <button
         aria-label="Exit"
-        onClick={() => setState("idle")}
         className="mr-12 flex h-10 w-10 items-center justify-center rounded-full bg-[#3C3D3C] text-white transition-colors hover:bg-[#4A4B4A]"
+        onClick={() => setState("idle")}
       >
         <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={2}
-          stroke="currentColor"
           className="h-6 w-6"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
         >
           <path
+            d="M6 18L18 6M6 6l12 12"
             strokeLinecap="round"
             strokeLinejoin="round"
-            d="M6 18L18 6M6 6l12 12"
           />
         </svg>
       </button>
       <div className="flex items-baseline gap-1.5 text-[#FDB000]">
-        <span className="text-sm font-semibold leading-none">Timer</span>
-        <Timer paused={paused} className="w-[64px] text-3xl font-light" />
+        <span className="font-semibold text-sm leading-none">Timer</span>
+        <Timer className="w-[64px] font-light text-3xl" paused={paused} />
       </div>
     </div>
   );
@@ -254,45 +254,45 @@ function RingModeView() {
         setIsInitial(false);
         setIsSilent((prev) => !prev);
       },
-      isInitial ? 1000 : 2000,
+      isInitial ? 1000 : 2000
     );
     return () => clearTimeout(timer);
-  }, [isSilent, isInitial]);
+  }, [isInitial]);
 
   return (
     <motion.div
-      initial={{ width: 128 }}
       animate={{ width: isSilent ? 148 : 128 }}
-      transition={{ type: "spring", bounce: 0.5 }}
       className="relative flex h-[28px] items-center justify-between px-2.5"
+      initial={{ width: 128 }}
+      transition={{ type: "spring", bounce: 0.5 }}
     >
       <motion.div
-        initial={{ width: 0, opacity: 0, filter: "blur(4px)" }}
         animate={{
           width: isSilent ? 40 : 0,
           opacity: isSilent ? 1 : 0,
           filter: isSilent ? "blur(0px)" : "blur(4px)",
         }}
-        transition={springTransition}
         className="absolute left-[5px] h-[18px] w-12 cursor-pointer rounded-full bg-[#FD4F30]"
+        initial={{ width: 0, opacity: 0, filter: "blur(4px)" }}
+        transition={springTransition}
       />
       <button
         className="relative h-[12.75px] w-[11.25px]"
         onClick={() => setIsSilent((prev) => !prev)}
       >
         <motion.svg
-          className="absolute inset-0"
-          initial={false}
           animate={{
             rotate: isSilent
               ? [0, -15, 5, -2, 0]
               : [0, 20, -15, 12.5, -10, 10, -7.5, 7.5, -5, 5, 0],
             x: isSilent ? 8.5 : 0,
           }}
-          width="11.25"
-          height="12.75"
-          viewBox="0 0 15 17"
+          className="absolute inset-0"
           fill="none"
+          height="12.75"
+          initial={false}
+          viewBox="0 0 15 17"
+          width="11.25"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
@@ -301,23 +301,23 @@ function RingModeView() {
           />
         </motion.svg>
         <motion.div
-          className="absolute inset-0"
           animate={{
             rotate: isSilent
               ? [0, -15, 5, -2, 0]
               : [0, 20, -15, 12.5, -10, 10, -7.5, 7.5, -5, 5, 0],
             x: isSilent ? 8.5 : 0,
           }}
+          className="absolute inset-0"
         >
-          <motion.div className="h-5 -translate-y-[5px] translate-x-[5.25px] rotate-[-40deg] overflow-hidden">
+          <motion.div className="h-5 translate-x-[5.25px] -translate-y-[5px] rotate-[-40deg] overflow-hidden">
             <motion.div
               animate={{ height: isSilent ? 16 : 0 }}
+              className="w-fit rounded-full"
               transition={{
                 ease: "easeInOut",
                 duration: isSilent ? 0.125 : 0.05,
                 delay: isSilent ? 0.15 : 0,
               }}
-              className="w-fit rounded-full"
             >
               <div className="flex h-full w-[3px] items-center justify-center rounded-full bg-[#FD4F30]">
                 <div className="h-full w-[0.75px] rounded-full bg-white" />
@@ -331,7 +331,7 @@ function RingModeView() {
           animate={
             isSilent ? { opacity: 0, scale: 0.25, filter: "blur(4px)" } : {}
           }
-          className="ml-auto text-xs font-medium text-white"
+          className="ml-auto font-medium text-white text-xs"
         >
           Ring
         </motion.span>
@@ -341,7 +341,7 @@ function RingModeView() {
               ? { opacity: 1, scale: 1, filter: "blur(0)" }
               : { opacity: 0, scale: 0.25, filter: "blur(4px)" }
           }
-          className="absolute text-xs font-medium text-[#FD4F30]"
+          className="absolute font-medium text-[#FD4F30] text-xs"
         >
           Silent
         </motion.span>
@@ -357,7 +357,9 @@ function ListeningView() {
   useEffect(() => {
     const interval = setInterval(() => {
       setSeconds((prev) => {
-        if (paused) return prev;
+        if (paused) {
+          return prev;
+        }
         if (prev === 214) {
           return 0;
         }
@@ -378,55 +380,55 @@ function ListeningView() {
     <div className="w-[316px] p-[18px]">
       <div className="flex items-center gap-3">
         <img
-          className="rounded-lg"
           alt="Anniversary's album cover"
+          className="rounded-lg"
+          height={52}
           src="https://placehold.co/100x100"
           width={52}
-          height={52}
         />
         <div className="flex flex-col gap-1 pr-12">
-          <span className="whitespace-nowrap text-sm font-medium leading-none text-white">
+          <span className="whitespace-nowrap font-medium text-sm text-white leading-none">
             Timeless Interlude
           </span>
-          <span className="text-sm leading-none text-gray-400">
+          <span className="text-gray-400 text-sm leading-none">
             Bryson Tiller
           </span>
         </div>
         <div className="grid h-full grid-cols-11 justify-center gap-[2px] bg-transparent">
-          <AudioBar paused={paused} baseLength={50} />
-          <AudioBar paused={paused} baseLength={60} />
-          <AudioBar paused={paused} baseLength={70} />
-          <AudioBar paused={paused} baseLength={90} />
-          <AudioBar paused={paused} baseLength={80} />
-          <AudioBar paused={paused} baseLength={90} />
-          <AudioBar paused={paused} baseLength={70} />
-          <AudioBar paused={paused} baseLength={60} />
-          <AudioBar paused={paused} baseLength={50} />
+          <AudioBar baseLength={50} paused={paused} />
+          <AudioBar baseLength={60} paused={paused} />
+          <AudioBar baseLength={70} paused={paused} />
+          <AudioBar baseLength={90} paused={paused} />
+          <AudioBar baseLength={80} paused={paused} />
+          <AudioBar baseLength={90} paused={paused} />
+          <AudioBar baseLength={70} paused={paused} />
+          <AudioBar baseLength={60} paused={paused} />
+          <AudioBar baseLength={50} paused={paused} />
         </div>
       </div>
       <div className="mt-3 flex items-center gap-1">
-        <span className="text-xs tabular-nums text-gray-400 transition-colors">
+        <span className="text-gray-400 text-xs tabular-nums transition-colors">
           {formatTime()}
         </span>
         <div className="relative h-[3px] flex-grow overflow-hidden rounded-full bg-[#2C2C29]">
           <motion.div
-            initial={{ x: "-100%" }}
             animate={{ x: `${(seconds / 214) * 100 - 99}%` }}
+            className="absolute top-0 bottom-0 left-0 w-full bg-gray-400"
+            initial={{ x: "-100%" }}
             transition={{ duration: 1, ease: "linear" }}
-            className="absolute bottom-0 left-0 top-0 w-full bg-gray-400"
           />
         </div>
-        <span className="text-xs tabular-nums text-gray-400 transition-colors">
+        <span className="text-gray-400 text-xs tabular-nums transition-colors">
           3:34
         </span>
       </div>
       <div className="mt-3 flex items-center justify-center gap-4 pb-1">
         <button>
           <svg
-            width="22"
+            fill="none"
             height="13"
             viewBox="0 0 22 13"
-            fill="none"
+            width="22"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
@@ -437,24 +439,24 @@ function ListeningView() {
         </button>
         <button onClick={() => setPaused((prev) => !prev)}>
           <PlayPauseButton
-            initial={
-              <svg
-                viewBox="0 0 10 13"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 fill-current text-white"
-              >
-                <path d="M1.03906 12.7266H2.82031C3.5 12.7266 3.85938 12.3672 3.85938 11.6797V1.03906C3.85938 0.328125 3.5 0 2.82031 0H1.03906C0.359375 0 0 0.359375 0 1.03906V11.6797C0 12.3672 0.359375 12.7266 1.03906 12.7266ZM6.71875 12.7266H8.49219C9.17969 12.7266 9.53125 12.3672 9.53125 11.6797V1.03906C9.53125 0.328125 9.17969 0 8.49219 0H6.71875C6.03125 0 5.67188 0.359375 5.67188 1.03906V11.6797C5.67188 12.3672 6.03125 12.7266 6.71875 12.7266Z" />
-              </svg>
-            }
             active={
               <svg
-                viewBox="0 0 12 14"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5 fill-current text-white"
+                fill="none"
+                viewBox="0 0 12 14"
+                xmlns="http://www.w3.org/2000/svg"
               >
                 <path d="M0.9375 13.2422C1.25 13.2422 1.51562 13.1172 1.82812 12.9375L10.9375 7.67188C11.5859 7.28906 11.8125 7.03906 11.8125 6.625C11.8125 6.21094 11.5859 5.96094 10.9375 5.58594L1.82812 0.3125C1.51562 0.132812 1.25 0.015625 0.9375 0.015625C0.359375 0.015625 0 0.453125 0 1.13281V12.1172C0 12.7969 0.359375 13.2422 0.9375 13.2422Z" />
+              </svg>
+            }
+            initial={
+              <svg
+                className="h-5 w-5 fill-current text-white"
+                fill="none"
+                viewBox="0 0 10 13"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M1.03906 12.7266H2.82031C3.5 12.7266 3.85938 12.3672 3.85938 11.6797V1.03906C3.85938 0.328125 3.5 0 2.82031 0H1.03906C0.359375 0 0 0.359375 0 1.03906V11.6797C0 12.3672 0.359375 12.7266 1.03906 12.7266ZM6.71875 12.7266H8.49219C9.17969 12.7266 9.53125 12.3672 9.53125 11.6797V1.03906C9.53125 0.328125 9.17969 0 8.49219 0H6.71875C6.03125 0 5.67188 0.359375 5.67188 1.03906V11.6797C5.67188 12.3672 6.03125 12.7266 6.71875 12.7266Z" />
               </svg>
             }
             isActive={paused}
@@ -462,10 +464,10 @@ function ListeningView() {
         </button>
         <button>
           <svg
-            width="22"
+            fill="none"
             height="13"
             viewBox="0 0 22 13"
-            fill="none"
+            width="22"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
@@ -537,7 +539,7 @@ export const DynamicIslandBlock = () => {
       setPreviousHeight(height);
       setBounceValue(bounce);
     }
-  }, [state]);
+  }, [previousHeight]);
 
   const handleStateChange = (newState: string) => {
     const transitionKey = `${state}-${newState}`;
@@ -551,28 +553,15 @@ export const DynamicIslandBlock = () => {
         <div className="flex flex-col items-center gap-8">
           <div className="relative">
             <motion.div
+              className="min-w-[100px] overflow-hidden rounded-full bg-black"
               layout
+              style={{ borderRadius: "32px" }}
               transition={{
                 type: "spring",
                 bounce: bounceValue,
               }}
-              style={{ borderRadius: "32px" }}
-              className="min-w-[100px] overflow-hidden rounded-full bg-black"
             >
               <motion.div
-                ref={contentRef}
-                key={state}
-                transition={{
-                  type: "spring",
-                  bounce: bounceValue,
-                }}
-                initial={{
-                  scale: 0.9,
-                  opacity: 0,
-                  filter: "blur(5px)",
-                  originX: 0.5,
-                  originY: 0.5,
-                }}
                 animate={{
                   scale: 1,
                   opacity: 1,
@@ -581,21 +570,34 @@ export const DynamicIslandBlock = () => {
                   originY: 0.5,
                   transition: { delay: 0.05 },
                 }}
+                initial={{
+                  scale: 0.9,
+                  opacity: 0,
+                  filter: "blur(5px)",
+                  originX: 0.5,
+                  originY: 0.5,
+                }}
+                key={state}
+                ref={contentRef}
+                transition={{
+                  type: "spring",
+                  bounce: bounceValue,
+                }}
               >
                 {renderContent()}
               </motion.div>
             </motion.div>
 
-            <div className="pointer-events-none absolute left-1/2 top-0 flex h-[200px] w-[300px] -translate-x-1/2 items-start justify-center opacity-0">
+            <div className="pointer-events-none absolute top-0 left-1/2 flex h-[200px] w-[300px] -translate-x-1/2 items-start justify-center opacity-0">
               <AnimatePresence
+                custom={transition}
                 initial={false}
                 mode="popLayout"
-                custom={transition}
               >
                 <motion.div
-                  key={state + "second"}
-                  initial={{ opacity: 0 }}
                   exit="exit"
+                  initial={{ opacity: 0 }}
+                  key={`${state}second`}
                   variants={exitVariants}
                 >
                   {renderContent()}

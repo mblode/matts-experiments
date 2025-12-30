@@ -1,8 +1,8 @@
 "use client";
 
-import * as React from "react";
 import { Eye, EyeOff } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
+import * as React from "react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
@@ -86,19 +86,19 @@ export const PasswordInput = React.forwardRef<
     <div className="space-y-2">
       <div className="relative">
         <Input
-          type={showPassword ? "text" : "password"}
           className={cn("pr-10", className)}
-          ref={ref}
-          value={value}
-          onChange={handleChange}
           data-1p-ignore
+          onChange={handleChange}
+          ref={ref}
+          type={showPassword ? "text" : "password"}
+          value={value}
           {...props}
         />
         <button
-          type="button"
+          className="absolute top-0 right-0 flex h-full cursor-pointer items-center pr-3 text-muted-foreground hover:text-foreground"
           onClick={() => setShowPassword(!showPassword)}
-          className="cursor-pointer absolute right-0 top-0 flex h-full items-center pr-3 text-muted-foreground hover:text-foreground"
           tabIndex={-1}
+          type="button"
         >
           {showPassword ? (
             <EyeOff className="size-4" />
@@ -119,8 +119,6 @@ export const PasswordInput = React.forwardRef<
                 { bar: 3, height: "h-[12px]" },
               ].map(({ bar, height }) => (
                 <motion.div
-                  key={bar}
-                  className={cn("w-1 rounded-sm", height)}
                   animate={{
                     backgroundColor:
                       bar <= strength.bars
@@ -133,6 +131,8 @@ export const PasswordInput = React.forwardRef<
                               : "rgb(209 213 219)"
                         : "rgb(209 213 219)",
                   }}
+                  className={cn("w-1 rounded-sm", height)}
+                  key={bar}
                   transition={{
                     type: "spring",
                     stiffness: 350,
@@ -143,16 +143,11 @@ export const PasswordInput = React.forwardRef<
             </div>
 
             {/* Strength label with staggered animation */}
-            <div className={cn("text-sm font-medium", strength.textColor)}>
-              <AnimatePresence mode="popLayout" initial={false}>
-                <span key={strength.label} className="inline-flex">
+            <div className={cn("font-medium text-sm", strength.textColor)}>
+              <AnimatePresence initial={false} mode="popLayout">
+                <span className="inline-flex" key={strength.label}>
                   {strength.label.split("").map((letter, index) => (
                     <motion.span
-                      key={index + letter + strength.label}
-                      initial={{
-                        opacity: 0,
-                        filter: "blur(2px)",
-                      }}
                       animate={{
                         opacity: 1,
                         filter: "blur(0px)",
@@ -163,6 +158,7 @@ export const PasswordInput = React.forwardRef<
                           delay: index * 0.015,
                         },
                       }}
+                      className="inline-block"
                       exit={{
                         opacity: 0,
                         filter: "blur(2px)",
@@ -172,7 +168,11 @@ export const PasswordInput = React.forwardRef<
                           damping: 55,
                         },
                       }}
-                      className="inline-block"
+                      initial={{
+                        opacity: 0,
+                        filter: "blur(2px)",
+                      }}
+                      key={index + letter + strength.label}
                     >
                       {letter === " " ? "\u00A0" : letter}
                     </motion.span>

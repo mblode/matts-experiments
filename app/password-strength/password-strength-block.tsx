@@ -1,6 +1,6 @@
+import { useState } from "react";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { PasswordInput } from "./password-input";
-import { useState } from "react";
 
 export const PasswordStrengthBlock = () => {
   const [password, setPassword] = useState("");
@@ -9,11 +9,11 @@ export const PasswordStrengthBlock = () => {
     <Field>
       <FieldLabel htmlFor="password">Password</FieldLabel>
       <PasswordInput
-        id="password"
         autoComplete="new-password"
+        id="password"
+        onInput={(e) => setPassword((e.target as HTMLInputElement).value)}
         showStrength
         value={password}
-        onInput={(e) => setPassword((e.target as HTMLInputElement).value)}
       />
     </Field>
   );

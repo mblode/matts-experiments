@@ -40,13 +40,13 @@ function ChapterIndicator({
 
   return (
     <a
-      href={`#${marker.id}`}
-      onClick={handleClick}
       className={cn(
         styles.bookmark,
         styles.chaptermark,
-        show && styles.bookmarkShow,
+        show && styles.bookmarkShow
       )}
+      href={`#${marker.id}`}
+      onClick={handleClick}
       style={{ top: `${marker.position}vh` }}
     >
       <div className={styles.dot} />
@@ -191,7 +191,7 @@ export const MarkersBlock = () => {
   return (
     <div className={cn("relative", styles.scope)}>
       {/* Progress Bar */}
-      <ProgressBar show={show} progress={progress} />
+      <ProgressBar progress={progress} show={show} />
 
       {/* Chapter Indicators */}
       <div className={styles.chapterIndicators}>
@@ -204,9 +204,9 @@ export const MarkersBlock = () => {
       <article className="prose prose-neutral dark:prose-invert max-w-none prose-headings:scroll-mt-20">
         {sections.map((section) => (
           <section
-            key={section.id}
-            id={section.id}
             data-section-id={section.id}
+            id={section.id}
+            key={section.id}
           >
             <h2>{section.title}</h2>
             {section.content.split("\n\n").map((paragraph, i) => {

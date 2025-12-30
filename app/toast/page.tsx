@@ -1,10 +1,10 @@
 "use client";
-import { ToastBlock } from "./toast-block";
 import { Header } from "@/components/ui/header";
+import { ToastBlock } from "./toast-block";
 
 export default function Page() {
   return (
-    <div className="min-h-screen p-8 bg-background">
+    <div className="min-h-screen bg-background p-8">
       <div className="mx-auto max-w-4xl">
         <Header id="toast" />
         <ToastBlock />

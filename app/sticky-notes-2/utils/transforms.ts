@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import type { Point2D, FoldGeometry, PageTransforms } from "../types";
+import type { FoldGeometry, PageTransforms, Point2D } from "../types";
 
 // ============================================================================
 // 3D Support Detection
@@ -9,7 +9,9 @@ import type { Point2D, FoldGeometry, PageTransforms } from "../types";
  * Detect if browser supports 3D transforms
  */
 function has3dSupport(): boolean {
-  if (typeof window === "undefined") return true;
+  if (typeof window === "undefined") {
+    return true;
+  }
   return (
     "WebKitCSSMatrix" in window ||
     "MozPerspective" in document.body.style ||
@@ -27,7 +29,7 @@ const has3d = has3dSupport();
  * Generate CSS translate transform string
  * Uses translate3d for hardware acceleration when available
  */
-export function translate(x: number, y: number, use3d: boolean = true): string {
+export function translate(x: number, y: number, use3d = true): string {
   return has3d && use3d
     ? ` translate3d(${x}px, ${y}px, 0px) `
     : ` translate(${x}px, ${y}px) `;
@@ -55,7 +57,7 @@ interface GradientStop {
 export function createGradient(
   p0: Point2D,
   p1: Point2D,
-  stops: GradientStop[],
+  stops: GradientStop[]
 ): string {
   // Calculate angle from points
   const dx = p1.x - p0.x;
@@ -78,7 +80,7 @@ export function createGradient(
 export function createFrontGradient(
   geometry: FoldGeometry,
   width: number,
-  height: number,
+  height: number
 ): CSSProperties {
   const { gradientOpacity, gradientSize, gradientStartV, alpha } = geometry;
   const A90 = Math.PI / 2;
@@ -117,7 +119,7 @@ export function createFrontGradient(
 export function createBackGradient(
   geometry: FoldGeometry,
   width: number,
-  height: number,
+  height: number
 ): CSSProperties {
   const { gradientOpacity, gradientSize, alpha } = geometry;
 
@@ -177,7 +179,7 @@ export function generatePageTransforms(
   width: number,
   height: number,
   wrapperHeight: number,
-  showGradients: boolean,
+  showGradients: boolean
 ): PageTransforms {
   const { angle, translate: tr, movement: mv, df } = geometry;
   const a = angle;

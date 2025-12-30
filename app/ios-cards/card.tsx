@@ -1,53 +1,53 @@
 import { motion } from "motion/react";
 
-type Props = {
+interface Props {
   id: string;
   title: string;
   category: string;
   backgroundColor: string;
   imageUrl: string;
   setSelectedId: (id: string | null) => void;
-};
+}
 
 export const Card = ({
   id,
   title,
   category,
-  backgroundColor,
+  backgroundColor: _backgroundColor,
   imageUrl,
   setSelectedId,
 }: Props) => {
   return (
-    <li className="flex flex-col justify-between items-center hover:bg-card/5 rounded-xl cursor-pointer h-[300px] sm:h-[420px] transition-colors">
+    <li className="flex h-[300px] cursor-pointer flex-col items-center justify-between rounded-xl transition-colors hover:bg-card/5 sm:h-[420px]">
       <div
-        className="w-full h-full relative block cursor-pointer"
+        className="relative block h-full w-full cursor-pointer"
         onClick={() => setSelectedId(id)}
       >
         <motion.div
-          className="relative rounded-[20px] bg-ios-card-bg overflow-hidden w-full h-full"
+          className="relative h-full w-full overflow-hidden rounded-[20px] bg-ios-card-bg"
           layoutId={`card-container-${id}`}
         >
           <motion.div
-            className="absolute top-0 left-0 overflow-hidden h-full w-full"
+            className="absolute top-0 left-0 h-full w-full overflow-hidden"
             layoutId={`card-image-container-${id}`}
           >
             <img
-              src={imageUrl}
               alt={title}
-              width={600}
+              className="h-full w-full object-cover"
               height={400}
-              className="w-full h-full object-cover"
+              src={imageUrl}
+              width={600}
             />
           </motion.div>
 
           <motion.div
-            className="absolute top-3 sm:top-4 left-3 sm:left-4 max-w-[250px] sm:max-w-[300px]"
+            className="absolute top-3 left-3 max-w-[250px] sm:top-4 sm:left-4 sm:max-w-[300px]"
             layoutId={`title-container-${id}`}
           >
-            <span className="text-white text-xs sm:text-sm uppercase">
+            <span className="text-white text-xs uppercase sm:text-sm">
               {category}
             </span>
-            <h2 className="text-white my-1 sm:my-2 text-lg sm:text-xl font-semibold">
+            <h2 className="my-1 font-semibold text-lg text-white sm:my-2 sm:text-xl">
               {title}
             </h2>
           </motion.div>

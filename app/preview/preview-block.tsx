@@ -1,6 +1,6 @@
 "use client";
-import React, { useState } from "react";
-import { motion, LayoutGroup } from "motion/react";
+import { LayoutGroup, motion } from "motion/react";
+import { useState } from "react";
 
 interface RabbitCardProps {
   id: number;
@@ -20,60 +20,56 @@ const Card = ({ id, isExpanded, onToggle }: RabbitCardProps) => {
   return (
     <motion.div
       className="w-full"
-      layout="position"
       initial={false}
+      layout="position"
       transition={springConfig}
     >
       <motion.div
-        className="relative cursor-pointer overflow-hidden border border-border"
-        onClick={onToggle}
-        initial={false}
         animate={{
           height: isExpanded ? 400 : 120,
           backgroundColor: isExpanded ? "#ffffff" : "#f3f4f6",
         }}
-        whileHover={!isExpanded ? { scale: 1.02 } : { scale: 1 }}
-        whileTap={{ scale: 0.98 }}
-        transition={{
-          height: { duration: 0.5, ease: smoothEasing },
-          backgroundColor: { duration: 0.5, ease: smoothEasing },
-          scale: { duration: 0.15, ease: "easeOut" },
-        }}
+        className="relative cursor-pointer overflow-hidden border border-border"
+        initial={false}
+        onClick={onToggle}
         style={{
           borderRadius: 16,
           transformOrigin: "center top",
           WebkitBackfaceVisibility: "hidden",
           backfaceVisibility: "hidden",
         }}
+        transition={{
+          height: { duration: 0.5, ease: smoothEasing },
+          backgroundColor: { duration: 0.5, ease: smoothEasing },
+          scale: { duration: 0.15, ease: "easeOut" },
+        }}
+        whileHover={isExpanded ? { scale: 1 } : { scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
       >
         {/* Content wrapper */}
         <motion.div
-          className="p-4 h-full"
-          layout="position"
+          className="h-full p-4"
           initial={false}
-          transition={springConfig}
+          layout="position"
           style={{
             display: "flex",
             flexDirection: isExpanded ? "column" : "row",
             justifyContent: isExpanded ? "center" : "flex-start",
             alignItems: isExpanded ? "center" : "center",
           }}
+          transition={springConfig}
         >
           {/* Image */}
           <motion.img
-            src="https://placehold.co/500x500"
             alt={`Rabbit ${id}`}
-            className="object-cover select-none"
-            layout="position"
-            initial={false}
             animate={{
               width: isExpanded ? "100%" : 86,
               height: isExpanded ? "auto" : 86,
             }}
-            transition={{
-              width: { duration: 0.5, ease: smoothEasing },
-              height: { duration: 0.5, ease: smoothEasing },
-            }}
+            className="select-none object-cover"
+            initial={false}
+            layout="position"
+            src="https://placehold.co/500x500"
             style={{
               borderRadius: isExpanded ? 24 : 12,
               aspectRatio: isExpanded ? "1/1" : undefined,
@@ -83,26 +79,30 @@ const Card = ({ id, isExpanded, onToggle }: RabbitCardProps) => {
               backfaceVisibility: "hidden",
               transform: "translate3d(0, 0, 0)",
             }}
+            transition={{
+              width: { duration: 0.5, ease: smoothEasing },
+              height: { duration: 0.5, ease: smoothEasing },
+            }}
           />
 
           {/* Text */}
           <motion.h1
-            className="font-semibold whitespace-nowrap select-none"
-            layout="position"
-            initial={false}
             animate={{
               fontSize: isExpanded ? "1.5rem" : "1.125rem",
               marginLeft: isExpanded ? 0 : 16,
               marginBottom: isExpanded ? 16 : 0,
             }}
+            className="select-none whitespace-nowrap font-semibold"
+            initial={false}
+            layout="position"
+            style={{
+              order: isExpanded ? 1 : 2,
+              textAlign: isExpanded ? "center" : "left",
+            }}
             transition={{
               fontSize: { duration: 0.5, ease: smoothEasing },
               marginLeft: { duration: 0.5, ease: smoothEasing },
               marginBottom: { duration: 0.5, ease: smoothEasing },
-            }}
-            style={{
-              order: isExpanded ? 1 : 2,
-              textAlign: isExpanded ? "center" : "left",
             }}
           >
             Rabbit #{id}
@@ -124,16 +124,16 @@ export const PreviewBlock = () => {
   return (
     <LayoutGroup>
       <motion.div
-        className="flex flex-col gap-3 items-center"
-        layout="position"
+        className="flex flex-col items-center gap-3"
         initial={false}
+        layout="position"
         transition={springConfig}
       >
         {rabbitIds.map((id) => (
           <Card
-            key={id}
             id={id}
             isExpanded={expandedCard === id}
+            key={id}
             onToggle={() => handleToggle(id)}
           />
         ))}

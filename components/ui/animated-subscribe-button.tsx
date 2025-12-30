@@ -1,9 +1,8 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { HTMLMotionProps } from "motion/react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, type HTMLMotionProps, motion } from "motion/react";
 import React, { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 interface AnimatedSubscribeButtonProps
   extends Omit<HTMLMotionProps<"button">, "ref"> {
@@ -18,7 +17,7 @@ export const AnimatedSubscribeButton = React.forwardRef<
 >(({ subscribeStatus, onClick, className, children, ...props }, ref) => {
   const isControlled = subscribeStatus !== undefined; // controlled vs uncontrolled check
   const [isSubscribed, setIsSubscribed] = useState<boolean>(
-    subscribeStatus ?? false,
+    subscribeStatus ?? false
   );
 
   useEffect(() => {
@@ -30,11 +29,11 @@ export const AnimatedSubscribeButton = React.forwardRef<
   if (
     React.Children.count(children) !== 2 ||
     !React.Children.toArray(children).every(
-      (child) => React.isValidElement(child) && child.type === "span",
+      (child) => React.isValidElement(child) && child.type === "span"
     )
   ) {
     throw new Error(
-      "AnimatedSubscribeButton expects two children, both of which must be <span> elements.",
+      "AnimatedSubscribeButton expects two children, both of which must be <span> elements."
     );
   }
 
@@ -46,54 +45,54 @@ export const AnimatedSubscribeButton = React.forwardRef<
     <AnimatePresence mode="wait">
       {isSubscribed ? (
         <motion.button
-          ref={ref}
+          animate={{ opacity: 1 }}
           className={cn(
             "relative flex h-10 w-fit items-center justify-center overflow-hidden rounded-lg bg-primary px-6 text-primary-foreground",
-            className,
+            className
           )}
+          exit={{ opacity: 0 }}
+          initial={{ opacity: 0 }}
           onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
             if (!isControlled) {
               setIsSubscribed(false); // Only toggle manually if uncontrolled
             }
             onClick?.(e);
           }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          ref={ref}
           {...props}
         >
           <motion.span
-            key="action"
+            animate={{ y: 0 }}
             className="relative flex h-full w-full items-center justify-center font-semibold"
             initial={{ y: -50 }}
-            animate={{ y: 0 }}
+            key="action"
           >
             {changeChild} {/* Use children for subscribed state */}
           </motion.span>
         </motion.button>
       ) : (
         <motion.button
-          ref={ref}
+          animate={{ opacity: 1 }}
           className={cn(
             "relative flex h-10 w-fit cursor-pointer items-center justify-center rounded-lg border-none bg-primary px-6 text-primary-foreground",
-            className,
+            className
           )}
+          exit={{ opacity: 0 }}
+          initial={{ opacity: 0 }}
           onClick={(e) => {
             if (!isControlled) {
               setIsSubscribed(true); // Only toggle manually if uncontrolled
             }
             onClick?.(e);
           }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          ref={ref}
           {...props}
         >
           <motion.span
-            key="reaction"
             className="relative flex items-center justify-center font-semibold"
-            initial={{ x: 0 }}
             exit={{ x: 50, transition: { duration: 0.1 } }}
+            initial={{ x: 0 }}
+            key="reaction"
           >
             {initialChild} {/* Use children for unsubscribed state */}
           </motion.span>

@@ -1,7 +1,7 @@
-type Props = {
+interface Props {
   locationLabel?: string;
   title?: string;
-};
+}
 
 export const AbsoluteMapLabel = ({ locationLabel, title }: Props) => {
   let mainText = null;
@@ -33,16 +33,14 @@ export const AbsoluteMapLabel = ({ locationLabel, title }: Props) => {
   }
 
   return (
-    <>
-      <div className="p-4 absolute bottom-0 left-0 flex w-full flex-col items-start justify-start bg-linear-to-b from-transparent to-black/60">
-        {(title || mainText) && (
-          <span className="page-heading line-clamp-2 text-lg text-white!">
-            {title || mainText}
-          </span>
-        )}
+    <div className="absolute bottom-0 left-0 flex w-full flex-col items-start justify-start bg-linear-to-b from-transparent to-black/60 p-4">
+      {(title || mainText) && (
+        <span className="page-heading line-clamp-2 text-lg text-white!">
+          {title || mainText}
+        </span>
+      )}
 
-        {subText && <span className="text-white">{subText}</span>}
-      </div>
-    </>
+      {subText && <span className="text-white">{subText}</span>}
+    </div>
   );
 };

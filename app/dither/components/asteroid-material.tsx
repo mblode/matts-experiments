@@ -10,10 +10,10 @@ interface AsteroidMaterialProps {
 // Better hash function to avoid stripes
 function hash2D(x: number, y: number, seed: number): number {
   // Use bitwise operations for better randomization
-  let h = seed + x * 374761393 + y * 668265263;
-  h = (h ^ (h >>> 13)) * 1274126177;
-  h = h ^ (h >>> 16);
-  return (h >>> 0) / 4294967296; // Normalize to 0-1
+  let h = seed + x * 374_761_393 + y * 668_265_263;
+  h = (h ^ (h >>> 13)) * 1_274_126_177;
+  h ^= h >>> 16;
+  return (h >>> 0) / 4_294_967_296; // Normalize to 0-1
 }
 
 // Interpolate function for smooth noise
@@ -62,8 +62,8 @@ function generateAsteroidTexture(seed: number): THREE.Texture {
   // Simple seeded random
   let randomSeed = seed;
   const seededRandom = () => {
-    randomSeed = (randomSeed * 9301 + 49297) % 233280;
-    return randomSeed / 233280;
+    randomSeed = (randomSeed * 9301 + 49_297) % 233_280;
+    return randomSeed / 233_280;
   };
 
   // Add rocky texture with noise
@@ -94,7 +94,7 @@ function generateAsteroidTexture(seed: number): THREE.Texture {
         frequency *= 2;
       }
 
-      value = value / maxValue;
+      value /= maxValue;
 
       // Base bright gray color with variation
       const base = 160 + value * 80; // 160-240 range (much brighter)
@@ -109,7 +109,7 @@ function generateAsteroidTexture(seed: number): THREE.Texture {
 
       const finalValue = Math.max(
         0,
-        Math.min(255, base + darkSpots + highlights),
+        Math.min(255, base + darkSpots + highlights)
       );
 
       // Bright grayscale with slight warm tint
@@ -241,18 +241,18 @@ export const AsteroidMaterial = ({
 }: AsteroidMaterialProps) => {
   const texture = useMemo(
     () => generateAsteroidTexture(shapeSeed),
-    [shapeSeed],
+    [shapeSeed]
   );
   const normalMap = useMemo(() => generateNormalMap(shapeSeed), [shapeSeed]);
 
   return (
     <meshStandardMaterial
+      color={color}
       map={texture}
+      metalness={0.1}
       normalMap={normalMap}
       normalScale={new THREE.Vector2(1.5, 1.5)}
-      color={color}
       roughness={roughness}
-      metalness={0.1}
     />
   );
 };
