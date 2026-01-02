@@ -21,8 +21,8 @@ export const AnimatedSubscribeButton = React.forwardRef<
   );
 
   useEffect(() => {
-    if (isControlled) {
-      setIsSubscribed(subscribeStatus!);
+    if (isControlled && subscribeStatus !== undefined) {
+      setIsSubscribed(subscribeStatus);
     }
   }, [subscribeStatus, isControlled]);
 

@@ -1,6 +1,6 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import * as React from "react";
+import { type ButtonHTMLAttributes, forwardRef } from "react";
 import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
 
@@ -61,13 +61,13 @@ const buttonVariants = cva(
 );
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   loading?: boolean;
 }
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     { className, variant, size, loading, asChild = false, disabled, ...props },
     ref
@@ -109,7 +109,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(buttonVariants({ variant, size, className }))}
         disabled={disabled}
         ref={ref}
-        {...(props as any)}
+        {...props}
       />
     );
   }
@@ -127,13 +127,15 @@ const ButtonDiv = ({
   onClick,
 }: ButtonProps) => {
   return (
-    <div
+    <button
       className={cn("truncate", buttonVariants({ variant, size, className }), {
         "cursor-wait": loading,
         "pointer-events-none opacity-50": disabled || loading,
       })}
-      onClick={loading ? undefined : (onClick as any)}
+      disabled={disabled || loading}
+      onClick={loading ? undefined : onClick}
       style={style}
+      type="button"
     >
       {loading ? (
         <span
@@ -154,7 +156,7 @@ const ButtonDiv = ({
           <Spinner size={20} strokeWidth={4} />
         </span>
       )}
-    </div>
+    </button>
   );
 };
 

@@ -19,6 +19,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
               width="20"
               xmlns="http://www.w3.org/2000/svg"
             >
+              <title>Error</title>
               <circle cx="10" cy="10" fill="#FF403F" r="9" />
               <text
                 fill="white"
@@ -42,6 +43,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
               width="20"
               xmlns="http://www.w3.org/2000/svg"
             >
+              <title>Success</title>
               <circle cx="10" cy="10" fill="#35C759" r="9" />
               <path
                 d="M6 10L9 13L14 7"
@@ -63,6 +65,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
               width="20"
               xmlns="http://www.w3.org/2000/svg"
             >
+              <title>Loading</title>
               <circle
                 cx="10"
                 cy="10"

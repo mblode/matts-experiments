@@ -1,5 +1,6 @@
 "use client";
 
+import type { HTMLAttributes } from "react";
 import { Children, useMemo } from "react";
 import { useFlipbook } from "./hooks/use-flipbook";
 import type { FlipbookProps } from "./types";
@@ -43,6 +44,11 @@ export function Flipbook({
   onPageChange,
   className,
 }: FlipbookProps) {
+  type FlipbookHandlers = Pick<
+    HTMLAttributes<HTMLDivElement>,
+    "onPointerDown" | "onPointerMove" | "onPointerUp" | "onPointerLeave"
+  >;
+
   // Convert children to array
   const pages = useMemo(() => Children.toArray(children), [children]);
 
@@ -65,7 +71,7 @@ export function Flipbook({
     cornerSize,
     gradients,
     onPageChange,
-  }) as ReturnType<typeof useFlipbook> & { _handlers: any };
+  }) as ReturnType<typeof useFlipbook> & { _handlers: FlipbookHandlers };
 
   // Calculate wrapper height for fold element
   const _wrapperHeight = useMemo(
@@ -204,10 +210,3 @@ export function Flipbook({
     </div>
   );
 }
-
-// ============================================================================
-// Exports
-// ============================================================================
-
-export { useFlipbook } from "./hooks/use-flipbook";
-export type { FlipbookProps } from "./types";

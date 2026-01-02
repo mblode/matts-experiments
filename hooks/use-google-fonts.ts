@@ -11,6 +11,78 @@ interface FontStatus {
   error: boolean;
 }
 
+const isSystemFont = (family: string) =>
+  family.toLowerCase() === "helvetica neue";
+
+const buildFontMap = (fontConfigs: FontConfig[]) => {
+  const fontMap = new Map<string, Set<string>>();
+
+  for (const config of fontConfigs) {
+    const { family, weights = [], style = "" } = config;
+
+    if (!family || isSystemFont(family)) {
+      continue;
+    }
+
+    const fontVariants = fontMap.get(family) ?? new Set<string>();
+
+    if (weights.length === 0) {
+      const variant = style ? `${style},400` : "400";
+      fontVariants.add(variant);
+      fontMap.set(family, fontVariants);
+      continue;
+    }
+
+    for (const weight of weights) {
+      if (weight && weight.trim() !== "") {
+        const variant = style ? `${style},${weight}` : weight;
+        fontVariants.add(variant);
+      }
+    }
+
+    fontMap.set(family, fontVariants);
+  }
+
+  return fontMap;
+};
+
+const buildFontUrl = (family: string, variants: Set<string>) => {
+  const variantsArray = [...variants];
+  const hasItalic = variantsArray.some((variant) => variant.includes("italic"));
+  const hasWeight = variantsArray.some(
+    (variant) => !variant.includes("italic") || variant.includes(",")
+  );
+
+  if (hasItalic && hasWeight) {
+    const axisParams: string[] = [];
+    for (const variant of variants) {
+      if (variant.includes("italic")) {
+        const weight = variant.includes(",") ? variant.split(",")[1] : "400";
+        axisParams.push(`1,${weight}`);
+      } else {
+        axisParams.push(`0,${variant}`);
+      }
+    }
+    axisParams.sort((a, b) => {
+      const weightA = Number.parseInt(a.split(",")[1], 10);
+      const weightB = Number.parseInt(b.split(",")[1], 10);
+      const italicA = Number.parseInt(a.split(",")[0], 10);
+      const italicB = Number.parseInt(b.split(",")[0], 10);
+      return weightA - weightB || italicA - italicB;
+    });
+    return `https://fonts.googleapis.com/css2?family=${family.replace(/ /g, "+")}:ital,wght@${axisParams.join(";")}&display=swap`;
+  }
+
+  if (hasItalic) {
+    return `https://fonts.googleapis.com/css2?family=${family.replace(/ /g, "+")}:ital@1&display=swap`;
+  }
+
+  const sortedWeights = variantsArray.sort(
+    (a, b) => Number.parseInt(a, 10) - Number.parseInt(b, 10)
+  );
+  return `https://fonts.googleapis.com/css2?family=${family.replace(/ /g, "+")}:wght@${sortedWeights.join(";")}&display=swap`;
+};
+
 export const useGoogleFonts = (fontConfigs: FontConfig[]): FontStatus => {
   const [status, setStatus] = useState<FontStatus>({
     loaded: false,
@@ -18,39 +90,7 @@ export const useGoogleFonts = (fontConfigs: FontConfig[]): FontStatus => {
   });
 
   useEffect(() => {
-    // Create a map to deduplicate font families and collect their variants (weights + styles)
-    const fontMap = new Map<string, Set<string>>();
-
-    // Process all font configurations
-    fontConfigs.forEach((config) => {
-      const { family, weights = [], style = "" } = config;
-
-      // Skip empty families or Helvetica Neue (which is system font)
-      if (!family || family.toLowerCase() === "helvetica neue") {
-        return;
-      }
-
-      if (!fontMap.has(family)) {
-        fontMap.set(family, new Set<string>());
-      }
-
-      const fontVariants = fontMap.get(family)!;
-
-      // If no weights specified, add default with the specified style
-      if (weights.length === 0) {
-        const variant = style ? `${style},400` : "400";
-        fontVariants.add(variant);
-        return;
-      }
-
-      // Add all combinations of weights and styles
-      weights.forEach((weight) => {
-        if (weight && weight.trim() !== "") {
-          const variant = style ? `${style},${weight}` : weight;
-          fontVariants.add(variant);
-        }
-      });
-    });
+    const fontMap = buildFontMap(fontConfigs);
 
     // No fonts to load
     if (fontMap.size === 0) {
@@ -62,61 +102,21 @@ export const useGoogleFonts = (fontConfigs: FontConfig[]): FontStatus => {
     const links: HTMLLinkElement[] = [];
     let pendingLoads = fontMap.size;
     let hasError = false;
-
-    fontMap.forEach((variants, family) => {
-      // Format the font URL based on variants
-      let paramString = "";
-
-      const variantsArray = [...variants];
-      const hasItalic = variantsArray.some((v) => v.includes("italic"));
-      const hasWeight = variantsArray.some(
-        (v) => !v.includes("italic") || v.includes(",")
-      );
-
-      if (hasItalic && hasWeight) {
-        // Handle combined weight and style (ital,wght@0,400;1,400;etc)
-        const axisParams: string[] = [];
-        variants.forEach((variant) => {
-          if (variant.includes("italic")) {
-            const weight = variant.includes(",")
-              ? variant.split(",")[1]
-              : "400";
-            axisParams.push(`1,${weight}`);
-          } else {
-            axisParams.push(`0,${variant}`);
-          }
-        });
-        // Sort axis params by weight (second part of each param)
-        axisParams.sort((a, b) => {
-          const weightA = Number.parseInt(a.split(",")[1], 10);
-          const weightB = Number.parseInt(b.split(",")[1], 10);
-          const italicA = Number.parseInt(a.split(",")[0], 10);
-          const italicB = Number.parseInt(b.split(",")[0], 10);
-          // Sort by weight first, then by italic flag
-          return weightA - weightB || italicA - italicB;
-        });
-        paramString = `:ital,wght@${axisParams.join(";")}`;
-      } else if (hasItalic) {
-        // Only italic styles
-        paramString = ":ital@1";
-      } else {
-        // Only weights - sort numerically
-        const sortedWeights = variantsArray.sort(
-          (a, b) => Number.parseInt(a, 10) - Number.parseInt(b, 10)
-        );
-        paramString = `:wght@${sortedWeights.join(";")}`;
+    const updateStatus = () => {
+      if (pendingLoads === 0) {
+        setStatus({ loaded: true, error: hasError });
       }
+    };
 
-      const url = `https://fonts.googleapis.com/css2?family=${family.replace(/ /g, "+")}${paramString}&display=swap`;
+    for (const [family, variants] of fontMap) {
+      const url = buildFontUrl(family, variants);
 
       // Check if font is already loaded
       const existingLink = document.querySelector(`link[href="${url}"]`);
       if (existingLink) {
-        pendingLoads--;
-        if (pendingLoads === 0) {
-          setStatus({ loaded: true, error: hasError });
-        }
-        return;
+        pendingLoads -= 1;
+        updateStatus();
+        continue;
       }
 
       const link = document.createElement("link");
@@ -124,36 +124,32 @@ export const useGoogleFonts = (fontConfigs: FontConfig[]): FontStatus => {
       link.rel = "stylesheet";
 
       link.onload = () => {
-        pendingLoads--;
-        if (pendingLoads === 0) {
-          setStatus({ loaded: true, error: hasError });
-        }
+        pendingLoads -= 1;
+        updateStatus();
       };
 
       link.onerror = () => {
         hasError = true;
-        pendingLoads--;
-        if (pendingLoads === 0) {
-          setStatus({ loaded: true, error: true });
-        }
+        pendingLoads -= 1;
+        updateStatus();
       };
 
       document.head.appendChild(link);
       links.push(link);
-    });
+    }
 
     // If no links were added, all fonts were already loaded
     if (links.length === 0) {
-      setStatus({ loaded: true, error: false });
+      setStatus({ loaded: true, error: hasError });
     }
 
     // Cleanup function
     return () => {
-      links.forEach((link) => {
+      for (const link of links) {
         if (document.head.contains(link)) {
           document.head.removeChild(link);
         }
-      });
+      }
     };
   }, [fontConfigs]);
 

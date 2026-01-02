@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 const CountdownTimer = ({
   initialSeconds,
   intervalSeconds = 1,
-  onFinish = () => {},
+  onFinish = () => undefined,
 }: {
   initialSeconds: number;
   intervalSeconds?: number;
@@ -27,20 +27,20 @@ const CountdownTimer = ({
     return () => clearInterval(timer);
   }, [intervalSeconds, onFinish]);
   const secondsString = `${seconds}`;
-  const digits = secondsString.split("");
+  const digits = buildKeyedCharacters(secondsString);
   return (
     <div className="w-10 rounded-full bg-red-500 py-1 text-white">
       <AnimatePresence initial={false} mode="popLayout">
-        {digits.map((digit, index) => {
+        {digits.map(({ char: digit, key, order }) => {
           return (
             <motion.span
               animate={{ y: 0, scale: 1, filter: "blur(0px)", opacity: 1 }}
               className="inline-block"
               exit={{ y: 10, scale: 0.8, filter: "blur(3px)", opacity: 0 }}
               initial={{ y: -10, scale: 0.8, filter: "blur(3px)", opacity: 0 }}
-              key={`${digit}-${index}`}
+              key={key}
               transition={{
-                delay: index * 0.1,
+                delay: order * 0.1,
                 type: "spring",
                 bounce: 0.3,
                 stiffness: 180,
@@ -70,15 +70,15 @@ const StaggeredText = ({
   text: string;
   initialAnimationEnabled?: boolean;
 }) => {
-  const characters = text.split("");
+  const characters = buildKeyedCharacters(text);
   return (
     // This position:relative is intentional. It prevents the text from layout shift
     // The layout prop here ensures that text doesn't stretch too much
     <motion.div layout style={{ position: "relative" }}>
       <AnimatePresence initial={initialAnimationEnabled} mode="popLayout">
-        {characters.map((char, index) => {
+        {characters.map(({ char, key, order }) => {
           if (char === " ") {
-            return <span key={`nbsp-${index}`}>&nbsp;</span>;
+            return <span key={key}>&nbsp;</span>;
           }
           return (
             <motion.span
@@ -91,9 +91,9 @@ const StaggeredText = ({
                 opacity: 0,
                 scale: 0.8,
               }}
-              key={`${char}-${index}`}
+              key={key}
               transition={{
-                delay: index * 0.01,
+                delay: order * 0.01,
               }}
             >
               {char}
@@ -103,6 +103,18 @@ const StaggeredText = ({
       </AnimatePresence>
     </motion.div>
   );
+};
+
+const buildKeyedCharacters = (value: string) => {
+  const counts = new Map<string, number>();
+  let order = 0;
+  return Array.from(value).map((char) => {
+    const nextCount = (counts.get(char) ?? 0) + 1;
+    counts.set(char, nextCount);
+    const entry = { char, key: `${char}-${nextCount}`, order };
+    order += 1;
+    return entry;
+  });
 };
 
 export const TimedUndoBlock = () => {

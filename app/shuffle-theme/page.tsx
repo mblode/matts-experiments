@@ -6,21 +6,28 @@ import { ThemeStyle } from "@/components/theme/theme-style";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/ui/header";
 import { themes } from "@/lib/themes";
+import type { VenueThemeSchema } from "@/lib/types";
 import { CardBlock } from "./card-block";
 
 export default function Page() {
-  const [themeContent, setThemeContent] = useState<any>(null);
+  const [themeContent, setThemeContent] = useState<
+    Partial<VenueThemeSchema> | undefined
+  >(undefined);
 
   useEffect(() => {
     const randomIndex = Math.floor(Math.random() * themes.length);
     const randomTheme = themes[randomIndex];
-    setThemeContent(JSON.parse(randomTheme?.content));
+    setThemeContent(
+      JSON.parse(randomTheme?.content) as Partial<VenueThemeSchema>
+    );
   }, []);
 
   const handleShuffleClick = useCallback(() => {
     const randomIndex = Math.floor(Math.random() * themes.length);
     const randomTheme = themes[randomIndex];
-    setThemeContent(JSON.parse(randomTheme?.content));
+    setThemeContent(
+      JSON.parse(randomTheme?.content) as Partial<VenueThemeSchema>
+    );
   }, []);
 
   return (

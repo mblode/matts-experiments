@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useRef } from "react";
-import * as THREE from "three";
+import { CanvasTexture, SRGBColorSpace } from "three";
 
 interface UseSvgToTextureOptions {
   width: number;
@@ -11,11 +11,11 @@ interface UseSvgToTextureOptions {
 
 export function useSvgToTexture(options: UseSvgToTextureOptions) {
   const { width, height, backgroundColor } = options;
-  const textureRef = useRef<THREE.CanvasTexture | null>(null);
+  const textureRef = useRef<CanvasTexture | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const captureToTexture = useCallback(
-    async (svgElement: SVGSVGElement): Promise<THREE.CanvasTexture | null> => {
+    async (svgElement: SVGSVGElement): Promise<CanvasTexture | null> => {
       try {
         // Create or reuse canvas
         if (!canvasRef.current) {
@@ -75,10 +75,10 @@ export function useSvgToTexture(options: UseSvgToTextureOptions) {
         }
 
         // Create Three.js texture
-        const texture = new THREE.CanvasTexture(canvas);
+        const texture = new CanvasTexture(canvas);
         texture.needsUpdate = true;
         texture.flipY = false; // Shader handles Y inversion via 1 - clickPos.y
-        texture.colorSpace = THREE.SRGBColorSpace;
+        texture.colorSpace = SRGBColorSpace;
 
         textureRef.current = texture;
         return texture;

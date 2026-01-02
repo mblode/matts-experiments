@@ -192,7 +192,7 @@ const useLayoutState = () => {
   };
 
   const cycleCornerRadius = () => {
-    const currentIndex = CORNER_RADIUS_VALUES.indexOf(cornerRadius as any);
+    const currentIndex = CORNER_RADIUS_VALUES.indexOf(cornerRadius);
     const nextIndex = (currentIndex + 1) % CORNER_RADIUS_VALUES.length;
     setCornerRadius(CORNER_RADIUS_VALUES[nextIndex]);
   };
@@ -286,6 +286,7 @@ export const ControlsBlock = () => {
                   viewBox="0 0 24 24"
                   width="28"
                 >
+                  <title>Social icon</title>
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                 </svg>
               </motion.div>
@@ -420,6 +421,7 @@ export const ControlsBlock = () => {
                   viewBox="0 0 24 24"
                   width="20"
                 >
+                  <title>External link</title>
                   <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
                   <polyline points="15 3 21 3 21 9" />
                   <line x1="10" x2="21" y1="14" y2="3" />
@@ -521,7 +523,7 @@ export const ControlsBlock = () => {
                               <motion.button
                                 aria-label={`Hue ${color.hue}`}
                                 className="relative cursor-pointer touch-manipulation overflow-hidden"
-                                key={index}
+                                key={color.hue}
                                 onClick={() =>
                                   colorState.setSelectedColorIndex(index)
                                 }
@@ -578,7 +580,7 @@ export const ControlsBlock = () => {
                         return (
                           <motion.div
                             className="pointer-events-none relative"
-                            key={index}
+                            key={`${level.sat}-${level.lightness}`}
                             style={{
                               backgroundColor: `oklch(${level.lightness} ${level.sat} ${level.hue})`,
                               borderRadius: "var(--saturation-radius)",
@@ -702,11 +704,11 @@ export const ControlsBlock = () => {
                         right: `calc(25% - ${layoutState.gap} / 4)`,
                         transform: "translate(50%, 50%)",
                       },
-                    ].map((position, idx) => (
+                    ].map((position, _idx) => (
                       <motion.button
                         aria-label="Corner radius control"
                         className="absolute cursor-pointer touch-manipulation"
-                        key={idx}
+                        key={`corner-${position.top ?? position.bottom}-${position.left ?? position.right}`}
                         onClick={layoutState.cycleCornerRadius}
                         onHoverEnd={() => layoutState.setIsCornerHovered(false)}
                         onHoverStart={() =>

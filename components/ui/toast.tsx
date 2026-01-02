@@ -11,7 +11,7 @@ interface DynamicIslandContextType {
 
 const ToastLoadingContext = createContext<DynamicIslandContextType>({
   state: "idle",
-  setState: () => {},
+  setState: () => undefined,
 });
 
 function PendingView() {
@@ -26,6 +26,7 @@ function PendingView() {
           width="20"
           xmlns="http://www.w3.org/2000/svg"
         >
+          <title>Loading</title>
           <circle
             cx="10"
             cy="10"
@@ -67,6 +68,7 @@ function ErrorView() {
           width="24"
           xmlns="http://www.w3.org/2000/svg"
         >
+          <title>Error</title>
           <path
             clipRule="evenodd"
             d="M8.6026 4.07088C10.1677 1.5532 13.8318 1.5532 15.3969 4.07088L21.4996 13.8884C23.156 16.5529 21.2399 20.0001 18.1025 20.0001H5.89699C2.75962 20.0001 0.843525 16.5529 2.49985 13.8884L8.6026 4.07088ZM12 8C12.5523 8 13 8.44771 13 9V12C13 12.5523 12.5523 13 12 13C11.4477 13 11 12.5523 11 12V9C11 8.44771 11.4477 8 12 8ZM10.75 15C10.75 14.3096 11.3096 13.75 12 13.75C12.6904 13.75 13.25 14.3096 13.25 15C13.25 15.6904 12.6904 16.25 12 16.25C11.3096 16.25 10.75 15.6904 10.75 15Z"
@@ -93,6 +95,7 @@ function SuccessView() {
           width="24"
           xmlns="http://www.w3.org/2000/svg"
         >
+          <title>Success</title>
           <path
             clipRule="evenodd"
             d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM15.774 10.1333C16.1237 9.70582 16.0607 9.0758 15.6332 8.72607C15.2058 8.37635 14.5758 8.43935 14.226 8.86679L10.4258 13.5116L9.20711 12.2929C8.81658 11.9024 8.18342 11.9024 7.79289 12.2929C7.40237 12.6834 7.40237 13.3166 7.79289 13.7071L9.79289 15.7071C9.99267 15.9069 10.2676 16.0129 10.5498 15.9988C10.832 15.9847 11.095 15.8519 11.274 15.6333L15.774 10.1333Z"
@@ -108,7 +111,14 @@ function SuccessView() {
   );
 }
 
-const transitionVariants: Record<string, any> = {
+interface TransitionVariant {
+  scale?: number;
+  scaleX?: number;
+  scaleY?: number;
+  y?: number;
+}
+
+const transitionVariants: Record<string, TransitionVariant> = {
   "ring-mode-idle": { scale: 0.9, scaleX: 0.9 },
   "timer-ring-mode": { scale: 0.7, y: -7.5 },
   "ring-mode-timer": { scale: 1.4, y: 7.5 },
@@ -125,7 +135,7 @@ const transitionVariants: Record<string, any> = {
 
 export const ToastLoading = () => {
   const [state, setState] = useState("idle");
-  const [transition, setTransition] = useState<any>();
+  const [transition, setTransition] = useState<TransitionVariant>();
   const [bounceValue, setBounceValue] = useState(1);
   const [previousHeight, setPreviousHeight] = useState(28);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -213,8 +223,8 @@ export const ToastLoading = () => {
                   initial={{ opacity: 0 }}
                   key={`${state}second`}
                   variants={{
-                    exit: (custom: any) => ({
-                      ...custom,
+                    exit: (custom: TransitionVariant | undefined) => ({
+                      ...(custom ?? {}),
                       opacity: [1, 0],
                     }),
                   }}

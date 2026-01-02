@@ -4,8 +4,41 @@ import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
+interface TableCellHeader {
+  type: "header";
+  content: string;
+  icon?: string;
+  hiddenOnMobile?: boolean;
+}
+
+interface TableCellUser {
+  type: "user";
+  content: string;
+  avatar?: boolean;
+}
+
+interface TableCellText {
+  type: "text";
+  content: string;
+}
+
+interface TableCellBadge {
+  type: "badge";
+  content: string;
+  variant: string;
+  hiddenOnMobile?: boolean;
+}
+
+type TableCell =
+  | TableCellHeader
+  | TableCellUser
+  | TableCellText
+  | TableCellBadge;
+type TableRow = TableCell[];
+type Tables = Record<string, TableRow[]>;
+
 export const TableBlock = () => {
-  const [activeTable, setActiveTable] = useState("scale-ups");
+  const [activeTable, setActiveTable] = useState<keyof Tables>("scale-ups");
   function animation(row: number, column: number) {
     return {
       initial: { opacity: 0, y: "-100%" },
@@ -19,7 +52,7 @@ export const TableBlock = () => {
     };
   }
 
-  const tables = {
+  const tables: Tables = {
     "scale-ups": [
       // Header row
       [
@@ -214,7 +247,7 @@ export const TableBlock = () => {
     ],
   };
 
-  const tableData = tables[activeTable as keyof typeof tables];
+  const tableData = tables[activeTable];
 
   const getBadgeStyles = (variant: string) => {
     const styles = {
@@ -227,7 +260,11 @@ export const TableBlock = () => {
     return styles[variant as keyof typeof styles] || styles.blue;
   };
 
-  const renderCellContent = (cell: any, rowIndex: number, colIndex: number) => {
+  const renderCellContent = (
+    cell: TableCell,
+    rowIndex: number,
+    colIndex: number
+  ) => {
     switch (cell.type) {
       case "header":
         if (
@@ -303,7 +340,11 @@ export const TableBlock = () => {
     }
   };
 
-  const getCellClasses = (cell: any, _rowIndex: number, colIndex: number) => {
+  const getCellClasses = (
+    cell: TableCell,
+    _rowIndex: number,
+    colIndex: number
+  ) => {
     const baseClasses =
       "h-full w-full flex items-center truncate border-[#EEEFF1] border-r border-b font-medium text-secondary-foreground gap-x-1 pt-[7px] pb-1.5 text-[10px] leading-[14px] tracking-[-0.2px] lg:gap-x-1.5 lg:pt-[10px] lg:pb-[9px] lg:text-[14px] lg:leading-5 lg:tracking-[-0.28px]";
 
@@ -311,19 +352,25 @@ export const TableBlock = () => {
       return `${baseClasses} pl-2.5 lg:pl-4`;
     }
 
-    if (cell.hiddenOnMobile) {
+    const hiddenOnMobile =
+      (cell.type === "header" || cell.type === "badge") && cell.hiddenOnMobile;
+
+    if (hiddenOnMobile) {
       return `${baseClasses} pl-1.5 lg:pl-2 hidden md:flex`;
     }
 
     return `${baseClasses} pl-1.5 lg:pl-2`;
   };
 
-  const buttons = [
+  const buttons: Array<{ id: keyof Tables; label: string }> = [
     { id: "scale-ups", label: "Scale-ups" },
     { id: "saas-startups", label: "SaaS startups" },
     { id: "smbs", label: "SMBs" },
     { id: "investors", label: "Investors" },
   ];
+
+  const getRowKey = (row: TableRow) =>
+    row.map((cell) => `${cell.type}:${cell.content}`).join("|");
 
   return (
     <div className="space-y-6">
@@ -343,16 +390,17 @@ export const TableBlock = () => {
       {/* Table */}
       <div className="pointer-events-none grid select-none auto-rows-[28px] grid-cols-[118px_1fr_1fr] border-[#EEEFF1] border-t border-l transition-[grid-template-columns] duration-700 [transition-timing-function:cubic-bezier(0.65,0,0.35,1)] md:grid-cols-[118px_1fr_1fr_1fr] lg:auto-rows-[40px] lg:grid-cols-[173px_1fr_1fr_1fr]">
         <AnimatePresence mode="popLayout">
-          {tableData.map((row, rowIndex) =>
-            row.map((cell, colIndex) => (
+          {tableData.map((row, rowIndex) => {
+            const rowKey = getRowKey(row);
+            return row.map((cell, colIndex) => (
               <div
                 className={getCellClasses(cell, rowIndex, colIndex)}
-                key={`${activeTable}-${rowIndex}-${colIndex}`}
+                key={`${activeTable}-${rowKey}-${cell.type}-${cell.content}`}
               >
                 {renderCellContent(cell, rowIndex, colIndex)}
               </div>
-            ))
-          )}
+            ));
+          })}
         </AnimatePresence>
       </div>
     </div>

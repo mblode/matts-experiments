@@ -1,20 +1,19 @@
 import { CircleXIcon } from "lucide-react";
-import * as React from "react";
+import { forwardRef, type InputHTMLAttributes, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   hasError?: boolean;
   clearable?: boolean;
   onClear?: () => void;
   clearClassName?: string;
-  leftAddon?: React.ReactNode | null;
-  rightAddon?: React.ReactNode | null;
-  leftControl?: React.ReactNode | null;
-  rightControl?: React.ReactNode | null;
+  leftAddon?: ReactNode | null;
+  rightAddon?: ReactNode | null;
+  leftControl?: ReactNode | null;
+  rightControl?: ReactNode | null;
 }
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
+const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
       className,

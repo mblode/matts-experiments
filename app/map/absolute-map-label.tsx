@@ -4,8 +4,8 @@ interface Props {
 }
 
 export const AbsoluteMapLabel = ({ locationLabel, title }: Props) => {
-  let mainText = null;
-  let subText = null;
+  let mainText: string | null = null;
+  let subText: string | null = null;
 
   if (locationLabel) {
     const locationLabelParts = locationLabel

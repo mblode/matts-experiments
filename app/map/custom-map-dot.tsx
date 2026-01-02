@@ -31,11 +31,13 @@ export const CustomMapDot = ({ size, pulsating }: Props) => {
 export const CustomMapDotRadar = (props: SVGProps<SVGSVGElement>) => {
   return (
     <svg
+      aria-label="Map location indicator"
       fill="none"
       viewBox="0 0 400 400"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
+      <title>Map location indicator</title>
       <g transform="translate(200,200)">
         <circle className="drop-shadow-lg" cx={0} cy={0} fill="#fff" r={50} />
         <circle

@@ -36,6 +36,7 @@ const GRID_SIZE = 4;
 const COLORS_PER_ROW = 4;
 const CHROMATIC_COLORS = 16;
 const HUE_STEP = 360 / CHROMATIC_COLORS;
+const OKLCH_REGEX = /oklch\(([\d.]+)\s+([\d.]+)\s+([\d.]+)\)/;
 
 export function formatOklch(
   lightness: number,
@@ -99,7 +100,7 @@ const generateGrayscaleRow = (): Color[] => {
 const parseOklch = (
   oklchString: string
 ): { l: number; c: number; h: number } => {
-  const match = oklchString.match(/oklch\(([\d.]+)\s+([\d.]+)\s+([\d.]+)\)/);
+  const match = oklchString.match(OKLCH_REGEX);
   if (!match) {
     return { l: 0.65, c: 0.2, h: 0 };
   }
@@ -331,6 +332,7 @@ export function QRCodeBlock() {
                               height: "100%",
                               width: `${widthPercent}%`,
                             }}
+                            type="button"
                           >
                             {isSelected && (
                               <div className="absolute inset-0 flex items-center justify-center">
@@ -393,6 +395,7 @@ export function QRCodeBlock() {
                               height: "100%",
                               width: `${widthPercent}%`,
                             }}
+                            type="button"
                           >
                             {isSelected && (
                               <div className="absolute inset-0 flex items-center justify-center">
@@ -437,10 +440,12 @@ export function QRCodeBlock() {
                     const staggerDelay =
                       (totalBars - distanceFromTop - 1) * 150; // 150ms between each
 
+                    const levelKey = `${level.hue}-${level.sat}-${level.lightness}`;
+
                     return (
                       <div
                         className="relative transition-transform duration-200 ease-out [@media(hover:hover)]:hover:scale-[1.03]"
-                        key={index}
+                        key={levelKey}
                         style={{
                           backgroundColor: `oklch(${level.lightness} ${level.sat} ${level.hue})`,
                           borderRadius: 12,
@@ -481,6 +486,7 @@ export function QRCodeBlock() {
                     className="cursor-pointer py-2 pr-2"
                     key={value}
                     onClick={() => setRadius(value)}
+                    type="button"
                   >
                     <div
                       className="relative cursor-pointer transition-transform duration-200 ease-out active:scale-95 [@media(hover:hover)]:hover:scale-105"
@@ -520,6 +526,7 @@ export function QRCodeBlock() {
                 aria-label="Download SVG"
                 className="flex cursor-pointer items-center justify-center gap-2 rounded-full bg-gray-100 px-4 py-2 transition-all duration-200 ease-out active:scale-95 [@media(hover:hover)]:hover:bg-gray-200"
                 onClick={handleDownloadSVG}
+                type="button"
               >
                 <Download className="size-4" />
                 <span className="font-medium text-sm">SVG</span>
@@ -529,6 +536,7 @@ export function QRCodeBlock() {
                 aria-label="Download PNG"
                 className="flex cursor-pointer items-center justify-center gap-2 rounded-full bg-gray-100 px-4 py-2 transition-all duration-200 ease-out active:scale-95 [@media(hover:hover)]:hover:bg-gray-200"
                 onClick={handleDownloadPNG}
+                type="button"
               >
                 <Download className="size-4" />
                 <span className="font-medium text-sm">PNG</span>

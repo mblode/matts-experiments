@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -6,9 +7,11 @@ export const AlbumBlock = () => {
   const [isPlaying, setIsPlaying] = useState(false);
 
   return (
-    <div
-      className="relative aspect-square w-full max-w-[400px] overflow-hidden rounded-[40px] bg-gray-400 shadow-2xl"
+    <button
+      aria-pressed={isPlaying}
+      className="relative aspect-square w-full max-w-[400px] overflow-hidden rounded-[40px] bg-gray-400 p-0 text-left shadow-2xl"
       onClick={() => setIsPlaying(!isPlaying)}
+      type="button"
     >
       <div className="absolute bottom-8 flex w-full flex-col justify-center text-center text-foreground">
         <h1 className="font-bold text-base">Bridge Over Troubled Water</h1>
@@ -24,7 +27,13 @@ export const AlbumBlock = () => {
           }
         )}
       >
-        <img alt="Album" className="size-full object-cover" src="./album.png" />
+        <Image
+          alt="Album cover"
+          className="object-cover"
+          fill
+          sizes="(max-width: 400px) 100vw, 400px"
+          src="/album.png"
+        />
         <div
           className={cn(
             "absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full transition-opacity duration-1000",
@@ -40,6 +49,6 @@ export const AlbumBlock = () => {
           <div className="absolute z-[6] size-24 rounded-full bg-white" />
         </div>
       </div>
-    </div>
+    </button>
   );
 };

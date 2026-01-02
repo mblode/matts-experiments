@@ -169,6 +169,7 @@ export const StickyNoteComponent = forwardRef<StickyNoteRef, StickyNoteProps>(
         }}
       >
         <svg
+          aria-label={`Sticky note ${note.id}`}
           className="touch-none"
           height={NOTE_SIZE}
           onPointerDown={handlePointerDown}
@@ -180,6 +181,7 @@ export const StickyNoteComponent = forwardRef<StickyNoteRef, StickyNoteProps>(
           viewBox={`0 0 ${NOTE_SIZE} ${NOTE_SIZE}`}
           width={NOTE_SIZE}
         >
+          <title>{`Sticky note ${note.id}`}</title>
           {/* Background rect for texture capture */}
           <rect fill={note.color} height={NOTE_SIZE} width={NOTE_SIZE} />
           {note.paths.map(renderPath)}

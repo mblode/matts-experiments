@@ -76,8 +76,6 @@ export const ShootingStars: React.FC<ShootingStarsProps> = ({
     };
 
     createStar();
-
-    return () => {};
   }, [minSpeed, maxSpeed, minDelay, maxDelay]);
 
   useEffect(() => {
@@ -123,6 +121,7 @@ export const ShootingStars: React.FC<ShootingStarsProps> = ({
       className={cn("absolute inset-0 h-full w-full", className)}
       ref={svgRef}
     >
+      <title>Shooting stars</title>
       {star && (
         <rect
           fill="url(#gradient)"

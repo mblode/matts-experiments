@@ -1,6 +1,17 @@
 "use client";
-import * as PopoverPrimitive from "@radix-ui/react-popover";
-import * as TooltipPrimitive from "@radix-ui/react-tooltip";
+import {
+  Anchor as PopoverAnchor,
+  Content as PopoverContent,
+  Portal as PopoverPortal,
+  Root as PopoverRoot,
+} from "@radix-ui/react-popover";
+import {
+  Content as TooltipContent,
+  Portal as TooltipPortal,
+  Provider as TooltipProvider,
+  Root as TooltipRoot,
+  Trigger as TooltipTrigger,
+} from "@radix-ui/react-tooltip";
 import { CircleDotDashedIcon, XIcon } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
@@ -22,13 +33,9 @@ export const StatusBlock = () => {
   const splitText = (status ? statuses[status]?.text : "Set status")?.split("");
 
   return (
-    <PopoverPrimitive.Root
-      data-slot="popover"
-      onOpenChange={setIsOpen}
-      open={isOpen}
-    >
-      <TooltipPrimitive.Provider data-slot="tooltip-provider">
-        <PopoverPrimitive.Anchor asChild>
+    <PopoverRoot data-slot="popover" onOpenChange={setIsOpen} open={isOpen}>
+      <TooltipProvider data-slot="tooltip-provider">
+        <PopoverAnchor asChild>
           <motion.button
             className="relative flex w-fit cursor-pointer select-none items-center justify-center overflow-hidden whitespace-nowrap rounded-full bg-muted px-3 py-2 text-foreground"
             onClick={() => (status ? setStatus(null) : setIsOpen(true))}
@@ -134,11 +141,11 @@ export const StatusBlock = () => {
               <XIcon size={12} />
             </motion.div>
           </motion.button>
-        </PopoverPrimitive.Anchor>
+        </PopoverAnchor>
 
-        <PopoverPrimitive.Portal>
+        <PopoverPortal>
           <AnimatePresence>
-            <PopoverPrimitive.Content
+            <PopoverContent
               align="center"
               asChild
               className="z-50 origin-(--radix-popover-content-transform-origin) rounded-full border border-border bg-popover text-popover-foreground outline-hidden"
@@ -177,11 +184,8 @@ export const StatusBlock = () => {
                 }}
               >
                 {Object.entries(statuses).map(([id, { text, emoji }]) => (
-                  <TooltipPrimitive.Root data-slot="tooltip" key={id}>
-                    <TooltipPrimitive.Trigger
-                      asChild
-                      data-slot="tooltip-trigger"
-                    >
+                  <TooltipRoot data-slot="tooltip" key={id}>
+                    <TooltipTrigger asChild data-slot="tooltip-trigger">
                       <motion.button
                         className="cursor-pointer"
                         initial={{
@@ -199,24 +203,24 @@ export const StatusBlock = () => {
                           {emoji}
                         </div>
                       </motion.button>
-                    </TooltipPrimitive.Trigger>
+                    </TooltipTrigger>
 
-                    <TooltipPrimitive.Portal>
-                      <TooltipPrimitive.Content
+                    <TooltipPortal>
+                      <TooltipContent
                         className="fade-in-0 zoom-in-95 data-[state=closed]:fade-out-0 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:zoom-out-95 z-50 w-fit origin-(--radix-tooltip-content-transform-origin) animate-in text-balance rounded-full bg-muted px-3 py-1.5 text-muted-foreground text-xs blur-in-xs duration-300 data-[state=closed]:animate-out data-[state=closed]:blur-out-xs"
                         data-slot="tooltip-content"
                         sideOffset={8}
                       >
                         {text}
-                      </TooltipPrimitive.Content>
-                    </TooltipPrimitive.Portal>
-                  </TooltipPrimitive.Root>
+                      </TooltipContent>
+                    </TooltipPortal>
+                  </TooltipRoot>
                 ))}
               </motion.div>
-            </PopoverPrimitive.Content>
+            </PopoverContent>
           </AnimatePresence>
-        </PopoverPrimitive.Portal>
-      </TooltipPrimitive.Provider>
-    </PopoverPrimitive.Root>
+        </PopoverPortal>
+      </TooltipProvider>
+    </PopoverRoot>
   );
 };

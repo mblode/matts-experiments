@@ -13,6 +13,7 @@ const FRAGMENT_SCALE_MAX = 0.5; // Maximum fragment size
 const FRAGMENT_VELOCITY_DECAY = 0.95; // Per-frame velocity multiplier (slowdown)
 
 interface Fragment {
+  id: string;
   position: [number, number, number];
   velocity: [number, number, number];
   rotation: [number, number, number];
@@ -67,6 +68,7 @@ const ExplosionEffect = ({ explosion }: ExplosionEffectProps) => {
       const vz = Math.cos(phi) * speed;
 
       frags.push({
+        id: `${explosion.id}-${i}`,
         position: [...explosion.position] as [number, number, number],
         velocity: [vx, vy, vz],
         rotation: [
@@ -90,7 +92,7 @@ const ExplosionEffect = ({ explosion }: ExplosionEffectProps) => {
 
   // Update fragment positions
   useFrame((_, delta) => {
-    fragments.forEach((frag) => {
+    for (const frag of fragments) {
       frag.position[0] += frag.velocity[0] * delta;
       frag.position[1] += frag.velocity[1] * delta;
       frag.position[2] += frag.velocity[2] * delta;
@@ -103,7 +105,7 @@ const ExplosionEffect = ({ explosion }: ExplosionEffectProps) => {
       frag.velocity[0] *= FRAGMENT_VELOCITY_DECAY;
       frag.velocity[1] *= FRAGMENT_VELOCITY_DECAY;
       frag.velocity[2] *= FRAGMENT_VELOCITY_DECAY;
-    });
+    }
   });
 
   // Calculate opacity based on age
@@ -113,9 +115,9 @@ const ExplosionEffect = ({ explosion }: ExplosionEffectProps) => {
 
   return (
     <>
-      {fragments.map((frag, i) => (
+      {fragments.map((frag) => (
         <mesh
-          key={i}
+          key={frag.id}
           position={frag.position}
           rotation={frag.rotation}
           scale={frag.scale}

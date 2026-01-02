@@ -17,6 +17,8 @@
  *
  */
 
+/* biome-ignore-all lint: third-party library */
+
 (($) => {
   let has3d,
     vendor = "",

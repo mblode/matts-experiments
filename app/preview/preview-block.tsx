@@ -1,5 +1,6 @@
 "use client";
 import { LayoutGroup, motion } from "motion/react";
+import Image from "next/image";
 import { useState } from "react";
 
 interface RabbitCardProps {
@@ -60,21 +61,17 @@ const Card = ({ id, isExpanded, onToggle }: RabbitCardProps) => {
           transition={springConfig}
         >
           {/* Image */}
-          <motion.img
-            alt={`Rabbit ${id}`}
+          <motion.div
             animate={{
-              width: isExpanded ? "100%" : 86,
-              height: isExpanded ? "auto" : 86,
+              width: isExpanded ? 280 : 86,
+              height: isExpanded ? 280 : 86,
             }}
-            className="select-none object-cover"
+            className="relative select-none overflow-hidden"
             initial={false}
             layout="position"
-            src="https://placehold.co/500x500"
             style={{
               borderRadius: isExpanded ? 24 : 12,
-              aspectRatio: isExpanded ? "1/1" : undefined,
               order: isExpanded ? 2 : 1,
-              maxWidth: isExpanded ? 280 : 86,
               WebkitBackfaceVisibility: "hidden",
               backfaceVisibility: "hidden",
               transform: "translate3d(0, 0, 0)",
@@ -83,7 +80,15 @@ const Card = ({ id, isExpanded, onToggle }: RabbitCardProps) => {
               width: { duration: 0.5, ease: smoothEasing },
               height: { duration: 0.5, ease: smoothEasing },
             }}
-          />
+          >
+            <Image
+              alt={`Rabbit ${id}`}
+              className="object-cover"
+              fill
+              sizes={isExpanded ? "280px" : "86px"}
+              src="https://placehold.co/500x500"
+            />
+          </motion.div>
 
           {/* Text */}
           <motion.h1

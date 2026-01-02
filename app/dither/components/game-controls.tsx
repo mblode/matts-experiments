@@ -1,5 +1,5 @@
 import { useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { type Object3D, Raycaster, Vector2, Vector3 } from "three";
 import { INITIAL_CAMERA_POSITION, useGame } from "../game";
 
@@ -48,7 +48,7 @@ export const GameControls = () => {
   }, [score]);
 
   // Extract shoot logic into reusable function
-  const shootRaycast = () => {
+  const shootRaycast = useCallback(() => {
     if (!isPlaying) {
       return;
     }
@@ -101,10 +101,10 @@ export const GameControls = () => {
         speedMultiplier
       );
     }
-  };
+  }, [camera, handleAsteroidDestroyed, isPlaying, scene, setLastShotTime]);
 
   // Auto-fire management
-  const startAutoFire = () => {
+  const startAutoFire = useCallback(() => {
     if (autoFireInterval.current !== null) {
       return;
     }
@@ -116,14 +116,14 @@ export const GameControls = () => {
     autoFireInterval.current = window.setInterval(() => {
       shootRaycast();
     }, SHOT_COOLDOWN_MS);
-  };
+  }, [shootRaycast]);
 
-  const stopAutoFire = () => {
+  const stopAutoFire = useCallback(() => {
     if (autoFireInterval.current !== null) {
       clearInterval(autoFireInterval.current);
       autoFireInterval.current = null;
     }
-  };
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

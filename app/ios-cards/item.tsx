@@ -2,6 +2,7 @@
 
 import { X } from "lucide-react";
 import { motion } from "motion/react";
+import Image from "next/image";
 import { items } from "./data";
 
 interface ItemProps {
@@ -47,12 +48,12 @@ export function Item({ id, setSelectedId }: ItemProps) {
             className="relative h-[250px] w-full overflow-hidden sm:h-[420px]"
             layoutId={`card-image-container-${id}`}
           >
-            <img
+            <Image
               alt={title}
-              className="h-full w-full object-cover"
-              height={600}
+              className="object-cover"
+              fill
+              sizes="(max-width: 640px) 100vw, 800px"
               src={item.imageUrl}
-              width={800}
             />
           </motion.div>
 

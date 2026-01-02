@@ -243,6 +243,7 @@ export const UI = () => {
               fontWeight: "bold",
               touchAction: "manipulation",
             }}
+            type="button"
           >
             RESTART
           </button>

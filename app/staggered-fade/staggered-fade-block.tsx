@@ -123,6 +123,7 @@ export const StaggeredFadeBlock = () => {
             <button
               className="rounded p-0.5 transition-colors hover:bg-gray-100"
               onClick={handleCollapse}
+              type="button"
             >
               <ChevronsUpDownIcon className="size-3 text-gray-400" />
             </button>

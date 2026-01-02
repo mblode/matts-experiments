@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { useState } from "react";
 
 interface ShadowShape {
@@ -88,7 +89,7 @@ export const DocumentShadowBlock = () => {
 
   const rollDice = () => {
     setDegree((prev) => prev + 90);
-    let newValue;
+    let newValue = 0;
     do {
       newValue = Math.floor(Math.random() * 6) + 1;
     } while (newValue === diceValue);
@@ -117,7 +118,7 @@ export const DocumentShadowBlock = () => {
 
     const positions = dotPositions[diceValue];
 
-    return positions.map((pos, i) => {
+    return positions.map((pos, _i) => {
       let positionClasses = "";
       switch (pos) {
         case "top-left":
@@ -142,12 +143,15 @@ export const DocumentShadowBlock = () => {
         case "bottom-right":
           positionClasses = "bottom-2 right-2";
           break;
+        default:
+          positionClasses =
+            "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2";
       }
 
       return (
         <div
           className={`absolute h-2 w-2 rounded-full bg-gray-900 ${positionClasses}`}
-          key={i}
+          key={pos}
         />
       );
     });
@@ -157,9 +161,12 @@ export const DocumentShadowBlock = () => {
     <div className="relative flex min-h-screen w-full items-center justify-center bg-[#D1D7DC] px-6 py-12">
       {/* Shadow Image Overlay */}
       <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center overflow-hidden">
-        <img
+        <Image
           alt="Shadow overlay"
-          className="h-full w-full object-cover opacity-20 mix-blend-multiply transition-opacity duration-1000"
+          className="object-cover opacity-20 mix-blend-multiply transition-opacity duration-1000"
+          fill
+          priority
+          sizes="100vw"
           src={`/shadows/${String(shadowNumber).padStart(3, "0")}.png`}
         />
       </div>
@@ -180,6 +187,7 @@ export const DocumentShadowBlock = () => {
           style={{
             boxShadow: "var(--shadow-elevation-high)",
           }}
+          type="button"
         >
           <div className="group relative size-12">
             <motion.div

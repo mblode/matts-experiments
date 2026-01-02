@@ -1,7 +1,21 @@
 import { OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Suspense, useEffect, useMemo, useRef } from "react";
-import * as THREE from "three";
+import {
+  BasicShadowMap,
+  ClampToEdgeWrapping,
+  type DirectionalLight,
+  FrontSide,
+  type Group,
+  LinearFilter,
+  LinearMipmapLinearFilter,
+  type Mesh,
+  RepeatWrapping,
+  RGBAFormat,
+  type Texture,
+  TextureLoader,
+  Vector2,
+} from "three";
 import { type Inputs, solveMoon } from "./astro";
 
 interface Props {
@@ -19,36 +33,33 @@ interface Props {
 function MoonMesh(props: Props) {
   const { inputs, textures, speed = 0 } = props;
   const { gl } = useThree(); // Get renderer for anisotropy settings
-  const group = useRef<THREE.Group>(null);
-  const light = useRef<THREE.DirectionalLight>(null);
-  const moon = useRef<THREE.Mesh>(null);
+  const group = useRef<Group>(null);
+  const light = useRef<DirectionalLight>(null);
+  const moon = useRef<Mesh>(null);
 
   const colorMap = useMemo(
-    () => new THREE.TextureLoader().load(textures.color),
+    () => new TextureLoader().load(textures.color),
     [textures.color]
   );
   const normalMap = useMemo(
-    () => new THREE.TextureLoader().load(textures.normal),
+    () => new TextureLoader().load(textures.normal),
     [textures.normal]
   );
   const roughnessMap = useMemo(
-    () => new THREE.TextureLoader().load(textures.roughness),
+    () => new TextureLoader().load(textures.roughness),
     [textures.roughness]
   );
   const displacementMap = useMemo(
-    () => new THREE.TextureLoader().load(textures.displacement),
+    () => new TextureLoader().load(textures.displacement),
     [textures.displacement]
   );
 
   // Configure NASA LRO textures for optimal lunar surface rendering
   useMemo(() => {
-    const configureLunarTexture = (
-      texture: THREE.Texture,
-      isNormalMap = false
-    ) => {
+    const configureLunarTexture = (texture: Texture, isNormalMap = false) => {
       // NASA LRO textures are in equirectangular projection
-      texture.wrapS = THREE.RepeatWrapping;
-      texture.wrapT = THREE.ClampToEdgeWrapping;
+      texture.wrapS = RepeatWrapping;
+      texture.wrapT = ClampToEdgeWrapping;
 
       // Proper texture orientation for lunar coordinate system
       texture.flipY = true;
@@ -57,15 +68,15 @@ function MoonMesh(props: Props) {
 
       // High-quality filtering for detailed lunar surface
       texture.anisotropy = Math.min(16, gl.capabilities.getMaxAnisotropy());
-      texture.magFilter = THREE.LinearFilter;
-      texture.minFilter = THREE.LinearMipmapLinearFilter;
+      texture.magFilter = LinearFilter;
+      texture.minFilter = LinearMipmapLinearFilter;
 
       // Generate mipmaps for better performance
       texture.generateMipmaps = true;
 
       // Normal map specific settings
       if (isNormalMap) {
-        texture.format = THREE.RGBAFormat;
+        texture.format = RGBAFormat;
       }
     };
 
@@ -178,12 +189,12 @@ function MoonMesh(props: Props) {
           metalness={0.0} // Lunar regolith is non-metallic
           normalMap={normalMap} // No clear coating
           // Displacement for surface height variation
-          normalScale={new THREE.Vector2(1.2, 1.2)} // LRO LOLA elevation data
+          normalScale={new Vector2(1.2, 1.2)} // LRO LOLA elevation data
           reflectivity={0.12} // More pronounced height variation
           roughness={0.9}
           // Enhanced lunar surface reflectance for better visibility
           roughnessMap={roughnessMap}
-          side={THREE.FrontSide} // Very low - lunar regolith is matte/dusty
+          side={FrontSide} // Very low - lunar regolith is matte/dusty
           specularIntensity={0.02}
           transparent={false}
         />
@@ -223,7 +234,7 @@ export const MoonScene = (props: Props) => {
       }}
       onCreated={({ gl }) => {
         gl.shadowMap.enabled = true;
-        gl.shadowMap.type = THREE.BasicShadowMap; // Raw pixelated shadows - zero filtering
+        gl.shadowMap.type = BasicShadowMap; // Raw pixelated shadows - zero filtering
         gl.shadowMap.autoUpdate = true;
         // Disable any WebGL shadow filtering
         gl.shadowMap.needsUpdate = true;

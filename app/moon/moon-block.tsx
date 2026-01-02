@@ -134,17 +134,21 @@ export const MoonBlock = () => {
     <>
       <div className="controls">
         <div>
-          <label>
+          <label htmlFor="time-travel-input">
             Time Travel:{" "}
             {totalScrubHours >= 0 ? `+${totalScrubHours}` : totalScrubHours}h (
-            {scrubDays > 0
-              ? `+${scrubDays}d ${scrubHours}h`
-              : scrubDays < 0
-                ? `-${scrubDays}d ${scrubHours}h`
-                : `${scrubHours}h`}
-            )
+            {(() => {
+              if (scrubDays > 0) {
+                return `+${scrubDays}d ${scrubHours}h`;
+              }
+              if (scrubDays < 0) {
+                return `-${scrubDays}d ${scrubHours}h`;
+              }
+              return `${scrubHours}h`;
+            })()})
           </label>
           <input
+            id="time-travel-input"
             max={+360}
             min={-360} // -30 days in 2-hour increments
             onChange={(e) => setScrubIncrement(Number(e.target.value))} // +30 days in 2-hour increments

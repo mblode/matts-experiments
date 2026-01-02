@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import Image from "next/image";
 
 interface Props {
   id: string;
@@ -19,9 +20,10 @@ export const Card = ({
 }: Props) => {
   return (
     <li className="flex h-[300px] cursor-pointer flex-col items-center justify-between rounded-xl transition-colors hover:bg-card/5 sm:h-[420px]">
-      <div
+      <button
         className="relative block h-full w-full cursor-pointer"
         onClick={() => setSelectedId(id)}
+        type="button"
       >
         <motion.div
           className="relative h-full w-full overflow-hidden rounded-[20px] bg-ios-card-bg"
@@ -31,12 +33,12 @@ export const Card = ({
             className="absolute top-0 left-0 h-full w-full overflow-hidden"
             layoutId={`card-image-container-${id}`}
           >
-            <img
+            <Image
               alt={title}
-              className="h-full w-full object-cover"
-              height={400}
+              className="object-cover"
+              fill
+              sizes="(max-width: 640px) 100vw, 600px"
               src={imageUrl}
-              width={600}
             />
           </motion.div>
 
@@ -52,7 +54,7 @@ export const Card = ({
             </h2>
           </motion.div>
         </motion.div>
-      </div>
+      </button>
     </li>
   );
 };

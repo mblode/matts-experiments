@@ -1,5 +1,10 @@
 import { useMemo } from "react";
-import * as THREE from "three";
+import {
+  type BufferGeometry,
+  DodecahedronGeometry,
+  IcosahedronGeometry,
+  OctahedronGeometry,
+} from "three";
 import { mergeVertices } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
 interface AsteroidGeometryProps {
@@ -7,19 +12,17 @@ interface AsteroidGeometryProps {
   shapeSeed: number;
 }
 
-// Mulberry32 PRNG - better distribution than sine-based
+// Simple LCG PRNG - deterministic without bitwise ops
 class SeededRandom {
   private state: number;
 
   constructor(seed: number) {
-    this.state = seed;
+    this.state = Math.abs(seed) % 4_294_967_296;
   }
 
   next(): number {
-    let t = (this.state += 0x6d_2b_79_f5);
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4_294_967_296;
+    this.state = (this.state * 1_664_525 + 1_013_904_223) % 4_294_967_296;
+    return this.state / 4_294_967_296;
   }
 }
 
@@ -107,20 +110,20 @@ export const AsteroidGeometry = ({
 
     // Use seed to pick base geometry type (weighted toward icosahedron)
     const typeRand = rng.next();
-    let baseGeometry: THREE.BufferGeometry;
+    let baseGeometry: BufferGeometry;
 
     if (typeRand < 0.6) {
       // 60% icosahedron (best for asteroids)
       const detail = 2 + Math.floor(rng.next() * 2); // 2-3 subdivisions
-      baseGeometry = new THREE.IcosahedronGeometry(radius, detail);
+      baseGeometry = new IcosahedronGeometry(radius, detail);
     } else if (typeRand < 0.85) {
       // 25% dodecahedron
       const detail = 2 + Math.floor(rng.next() * 2);
-      baseGeometry = new THREE.DodecahedronGeometry(radius, detail);
+      baseGeometry = new DodecahedronGeometry(radius, detail);
     } else {
       // 15% octahedron (remove tetrahedron - too simple)
       const detail = 2 + Math.floor(rng.next() * 2);
-      baseGeometry = new THREE.OctahedronGeometry(radius, detail);
+      baseGeometry = new OctahedronGeometry(radius, detail);
     }
 
     // Merge vertices to ensure no gaps (vertices at same position become one)

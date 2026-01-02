@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
+import Image from "next/image";
 import type React from "react";
 import {
   createContext,
@@ -21,7 +22,7 @@ interface DynamicIslandContextType {
 
 const DynamicIslandContext = createContext<DynamicIslandContextType>({
   state: "idle",
-  setState: () => {},
+  setState: () => undefined,
 });
 
 const springTransition = {
@@ -54,7 +55,7 @@ const AudioBar = memo(function AudioBar({
   }, [paused]);
 
   const generateHeights = (base: number) => {
-    const heights = [];
+    const heights: number[] = [];
     for (let i = 0; i < 5; i++) {
       heights.push(
         (Math.floor(Math.random() * 24) - 24) / 2 + (base / 100) * 24
@@ -64,29 +65,32 @@ const AudioBar = memo(function AudioBar({
     return heights;
   };
 
+  let heightValue: number | number[] = baseLength / 5;
+  if (paused) {
+    heightValue = 1;
+  } else if (animating) {
+    heightValue = generateHeights(baseLength);
+  }
+
+  const transitionConfig =
+    paused || !animating
+      ? {
+          duration: 0.3,
+        }
+      : {
+          duration: 1.1,
+          ease: [0.42, 0, 0.58, 1] as [number, number, number, number],
+          times: [0.2, 0.3, 0.5, 0.7, 1.1, 1.3, 1.7],
+          repeat: Number.POSITIVE_INFINITY,
+        };
+
   return (
     <motion.div
       animate={{
-        height: paused
-          ? 1
-          : animating
-            ? generateHeights(baseLength)
-            : baseLength / 5,
+        height: heightValue,
       }}
       className="col-span-1 mx-auto my-auto h-6 w-[1.25px] scale-125 rounded-full bg-gradient-to-t from-[#675470] to-[#395978]"
-      transition={
-        paused || !animating
-          ? {
-              duration: 0.3,
-              ease: "easeInOut",
-            }
-          : {
-              duration: 1.1,
-              ease: "easeInOut",
-              times: [0.2, 0.3, 0.5, 0.7, 1.1, 1.3, 1.7],
-              repeat: 1 / 0,
-            }
-      }
+      transition={transitionConfig}
     />
   );
 });
@@ -101,12 +105,21 @@ function Timer({ className, paused }: TimerProps) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setSeconds((prev) => (paused ? prev : prev === 60 ? 0 : prev + 1));
+      setSeconds((prev) => {
+        if (paused) {
+          return prev;
+        }
+        return prev === 60 ? 0 : prev + 1;
+      });
     }, 1000);
     return () => clearInterval(interval);
   }, [paused]);
 
   const digits = seconds.toString().padStart(2, "0").split("");
+  const digitSlots = [
+    { slot: "tens", value: digits[0] ?? "0" },
+    { slot: "ones", value: digits[1] ?? "0" },
+  ];
 
   return (
     <div
@@ -114,7 +127,7 @@ function Timer({ className, paused }: TimerProps) {
     >
       0:
       <AnimatePresence initial={false} mode="popLayout">
-        {digits.map((digit, index) => (
+        {digitSlots.map(({ slot, value }) => (
           <motion.div
             animate={{
               y: "0",
@@ -132,10 +145,10 @@ function Timer({ className, paused }: TimerProps) {
               filter: "blur(2px)",
               opacity: 0,
             }}
-            key={digit + index}
+            key={`${slot}-${value}`}
             transition={springTransition}
           >
-            {digit}
+            {value}
           </motion.div>
         ))}
       </AnimatePresence>
@@ -187,6 +200,7 @@ function TimerView() {
         aria-label="Pause timer"
         className="flex h-10 w-10 items-center justify-center rounded-full bg-[#5A3C07] transition-colors hover:bg-[#694608]"
         onClick={() => setPaused((prev) => !prev)}
+        type="button"
       >
         <PlayPauseButton
           active={
@@ -196,6 +210,7 @@ function TimerView() {
               viewBox="0 0 12 14"
               xmlns="http://www.w3.org/2000/svg"
             >
+              <title>Play</title>
               <path d="M0.9375 13.2422C1.25 13.2422 1.51562 13.1172 1.82812 12.9375L10.9375 7.67188C11.5859 7.28906 11.8125 7.03906 11.8125 6.625C11.8125 6.21094 11.5859 5.96094 10.9375 5.58594L1.82812 0.3125C1.51562 0.132812 1.25 0.015625 0.9375 0.015625C0.359375 0.015625 0 0.453125 0 1.13281V12.1172C0 12.7969 0.359375 13.2422 0.9375 13.2422Z" />
             </svg>
           }
@@ -206,6 +221,7 @@ function TimerView() {
               viewBox="0 0 10 13"
               xmlns="http://www.w3.org/2000/svg"
             >
+              <title>Pause</title>
               <path d="M1.03906 12.7266H2.82031C3.5 12.7266 3.85938 12.3672 3.85938 11.6797V1.03906C3.85938 0.328125 3.5 0 2.82031 0H1.03906C0.359375 0 0 0.359375 0 1.03906V11.6797C0 12.3672 0.359375 12.7266 1.03906 12.7266ZM6.71875 12.7266H8.49219C9.17969 12.7266 9.53125 12.3672 9.53125 11.6797V1.03906C9.53125 0.328125 9.17969 0 8.49219 0H6.71875C6.03125 0 5.67188 0.359375 5.67188 1.03906V11.6797C5.67188 12.3672 6.03125 12.7266 6.71875 12.7266Z" />
             </svg>
           }
@@ -216,6 +232,7 @@ function TimerView() {
         aria-label="Exit"
         className="mr-12 flex h-10 w-10 items-center justify-center rounded-full bg-[#3C3D3C] text-white transition-colors hover:bg-[#4A4B4A]"
         onClick={() => setState("idle")}
+        type="button"
       >
         <svg
           className="h-6 w-6"
@@ -225,6 +242,7 @@ function TimerView() {
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
         >
+          <title>Close</title>
           <path
             d="M6 18L18 6M6 6l12 12"
             strokeLinecap="round"
@@ -279,6 +297,7 @@ function RingModeView() {
       <button
         className="relative h-[12.75px] w-[11.25px]"
         onClick={() => setIsSilent((prev) => !prev)}
+        type="button"
       >
         <motion.svg
           animate={{
@@ -295,6 +314,7 @@ function RingModeView() {
           width="11.25"
           xmlns="http://www.w3.org/2000/svg"
         >
+          <title>Bell</title>
           <path
             d="M1.17969 13.3125H13.5625C14.2969 13.3125 14.7422 12.9375 14.7422 12.3672C14.7422 11.5859 13.9453 10.8828 13.2734 10.1875C12.7578 9.64844 12.6172 8.53906 12.5547 7.64062C12.5 4.64062 11.7031 2.57812 9.625 1.82812C9.32812 0.804688 8.52344 0 7.36719 0C6.21875 0 5.40625 0.804688 5.11719 1.82812C3.03906 2.57812 2.24219 4.64062 2.1875 7.64062C2.125 8.53906 1.98438 9.64844 1.46875 10.1875C0.789062 10.8828 0 11.5859 0 12.3672C0 12.9375 0.4375 13.3125 1.17969 13.3125ZM7.36719 16.4453C8.69531 16.4453 9.66406 15.4766 9.76562 14.3828H4.97656C5.07812 15.4766 6.04688 16.4453 7.36719 16.4453Z"
             fill="white"
@@ -379,7 +399,7 @@ function ListeningView() {
   return (
     <div className="w-[316px] p-[18px]">
       <div className="flex items-center gap-3">
-        <img
+        <Image
           alt="Anniversary's album cover"
           className="rounded-lg"
           height={52}
@@ -423,7 +443,7 @@ function ListeningView() {
         </span>
       </div>
       <div className="mt-3 flex items-center justify-center gap-4 pb-1">
-        <button>
+        <button type="button">
           <svg
             fill="none"
             height="13"
@@ -431,13 +451,14 @@ function ListeningView() {
             width="22"
             xmlns="http://www.w3.org/2000/svg"
           >
+            <title>Previous</title>
             <path
               d="M9.64844 12.2891C10.2578 12.2891 10.7734 11.8203 10.7734 10.9531V1.35156C10.7734 0.484375 10.2578 0.015625 9.64844 0.015625C9.32812 0.015625 9.07031 0.117188 8.75 0.304688L0.789062 4.99219C0.234375 5.32031 0 5.70312 0 6.14844C0 6.60156 0.234375 6.98438 0.789062 7.3125L8.75 12C9.0625 12.1875 9.32812 12.2891 9.64844 12.2891ZM20.3828 12.2891C20.9922 12.2891 21.5078 11.8203 21.5078 10.9531V1.35156C21.5078 0.484375 20.9922 0.015625 20.3828 0.015625C20.0625 0.015625 19.8047 0.117188 19.4844 0.304688L11.5234 4.99219C10.9688 5.32031 10.7344 5.70312 10.7344 6.14844C10.7344 6.60156 10.9688 6.98438 11.5234 7.3125L19.4844 12C19.7969 12.1875 20.0625 12.2891 20.3828 12.2891Z"
               fill="white"
             />
           </svg>
         </button>
-        <button onClick={() => setPaused((prev) => !prev)}>
+        <button onClick={() => setPaused((prev) => !prev)} type="button">
           <PlayPauseButton
             active={
               <svg
@@ -446,6 +467,7 @@ function ListeningView() {
                 viewBox="0 0 12 14"
                 xmlns="http://www.w3.org/2000/svg"
               >
+                <title>Play</title>
                 <path d="M0.9375 13.2422C1.25 13.2422 1.51562 13.1172 1.82812 12.9375L10.9375 7.67188C11.5859 7.28906 11.8125 7.03906 11.8125 6.625C11.8125 6.21094 11.5859 5.96094 10.9375 5.58594L1.82812 0.3125C1.51562 0.132812 1.25 0.015625 0.9375 0.015625C0.359375 0.015625 0 0.453125 0 1.13281V12.1172C0 12.7969 0.359375 13.2422 0.9375 13.2422Z" />
               </svg>
             }
@@ -456,13 +478,14 @@ function ListeningView() {
                 viewBox="0 0 10 13"
                 xmlns="http://www.w3.org/2000/svg"
               >
+                <title>Pause</title>
                 <path d="M1.03906 12.7266H2.82031C3.5 12.7266 3.85938 12.3672 3.85938 11.6797V1.03906C3.85938 0.328125 3.5 0 2.82031 0H1.03906C0.359375 0 0 0.359375 0 1.03906V11.6797C0 12.3672 0.359375 12.7266 1.03906 12.7266ZM6.71875 12.7266H8.49219C9.17969 12.7266 9.53125 12.3672 9.53125 11.6797V1.03906C9.53125 0.328125 9.17969 0 8.49219 0H6.71875C6.03125 0 5.67188 0.359375 5.67188 1.03906V11.6797C5.67188 12.3672 6.03125 12.7266 6.71875 12.7266Z" />
               </svg>
             }
             isActive={paused}
           />
         </button>
-        <button>
+        <button type="button">
           <svg
             fill="none"
             height="13"
@@ -470,6 +493,7 @@ function ListeningView() {
             width="22"
             xmlns="http://www.w3.org/2000/svg"
           >
+            <title>Next</title>
             <path
               d="M1.125 12.2891C1.44531 12.2891 1.71094 12.1875 2.02344 12L9.98438 7.3125C10.5391 6.98438 10.7812 6.60156 10.7812 6.14844C10.7812 5.70312 10.5391 5.32031 9.98438 4.99219L2.02344 0.304688C1.70312 0.117188 1.44531 0.015625 1.125 0.015625C0.515625 0.015625 0 0.484375 0 1.35156V10.9531C0 11.8203 0.515625 12.2891 1.125 12.2891ZM11.8594 12.2891C12.1797 12.2891 12.4453 12.1875 12.7578 12L20.7266 7.3125C21.2734 6.98438 21.5156 6.60156 21.5156 6.14844C21.5156 5.70312 21.2734 5.32031 20.7266 4.99219L12.7578 0.304688C12.4453 0.117188 12.1797 0.015625 11.8594 0.015625C11.25 0.015625 10.7344 0.484375 10.7344 1.35156V10.9531C10.7344 11.8203 11.25 12.2891 11.8594 12.2891Z"
               fill="white"
@@ -481,7 +505,14 @@ function ListeningView() {
   );
 }
 
-const transitionVariants: Record<string, any> = {
+type TransitionVariant = Partial<{
+  scale: number;
+  scaleX: number;
+  scaleY: number;
+  y: number;
+}>;
+
+const transitionVariants: Record<string, TransitionVariant> = {
   "ring-mode-idle": { scale: 0.9, scaleX: 0.9 },
   "timer-ring-mode": { scale: 0.7, y: -7.5 },
   "ring-mode-timer": { scale: 1.4, y: 7.5 },
@@ -493,8 +524,13 @@ const transitionVariants: Record<string, any> = {
   "listenning-idle": { scale: 0.4, y: -36 },
 };
 
-const exitVariants = {
-  exit: (custom: any) => ({
+const exitVariants: {
+  exit: (custom?: TransitionVariant) => TransitionVariant & {
+    opacity: number[];
+    filter: string;
+  };
+} = {
+  exit: (custom: TransitionVariant = {}) => ({
     ...custom,
     opacity: [1, 0],
     filter: "blur(5px)",
@@ -503,7 +539,7 @@ const exitVariants = {
 
 export const DynamicIslandBlock = () => {
   const [state, setState] = useState("idle");
-  const [transition, setTransition] = useState<any>();
+  const [transition, setTransition] = useState<TransitionVariant>();
   const [bounceValue, setBounceValue] = useState(1);
   const [previousHeight, setPreviousHeight] = useState(28);
   const contentRef = useRef<HTMLDivElement>(null);

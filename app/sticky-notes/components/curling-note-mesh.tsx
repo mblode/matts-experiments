@@ -2,7 +2,14 @@
 
 import { useFrame } from "@react-three/fiber";
 import { useCallback, useMemo, useRef } from "react";
-import * as THREE from "three";
+import {
+  Color,
+  DoubleSide,
+  PlaneGeometry,
+  ShaderMaterial,
+  type Texture,
+  Vector2,
+} from "three";
 import {
   CURL_MAX_RADIUS,
   CURL_MIN_RADIUS,
@@ -18,7 +25,7 @@ import type { AnimationState, Vec2 } from "../store";
 import { paperEase } from "../utils/easing";
 
 interface CurlingNoteMeshProps {
-  texture: THREE.Texture | null;
+  texture: Texture | null;
   clickPos: Vec2;
   dragPos: Vec2;
   baseColor?: string;
@@ -46,7 +53,7 @@ export function CurlingNoteMesh({
   targetProgress,
   onAnimationComplete,
 }: CurlingNoteMeshProps) {
-  const materialRef = useRef<THREE.ShaderMaterial>(null);
+  const materialRef = useRef<ShaderMaterial>(null);
   const springRef = useRef<SpringState>({
     value: 0,
     velocity: 0,
@@ -57,25 +64,25 @@ export function CurlingNoteMesh({
 
   // Simple plane geometry - all curl logic is in fragment shader
   const geometry = useMemo(() => {
-    return new THREE.PlaneGeometry(1, 1, 1, 1);
+    return new PlaneGeometry(1, 1, 1, 1);
   }, []);
 
   // Create shader material with uniforms
   const material = useMemo(() => {
-    const baseColorVec = new THREE.Color(baseColor);
+    const baseColorVec = new Color(baseColor);
 
-    return new THREE.ShaderMaterial({
+    return new ShaderMaterial({
       vertexShader,
       fragmentShader,
       uniforms: {
-        uClickPos: { value: new THREE.Vector2(clickPos.x, 1 - clickPos.y) },
-        uDragPos: { value: new THREE.Vector2(dragPos.x, 1 - dragPos.y) },
+        uClickPos: { value: new Vector2(clickPos.x, 1 - clickPos.y) },
+        uDragPos: { value: new Vector2(dragPos.x, 1 - dragPos.y) },
         uRadius: { value: 0.1 },
         uNoteTexture: { value: texture },
         uBaseColor: { value: baseColorVec },
         uBackColor: { value: baseColorVec.clone() }, // Back matches front for sticky notes
       },
-      side: THREE.DoubleSide,
+      side: DoubleSide,
       transparent: false,
     });
   }, [texture, baseColor, clickPos.x, clickPos.y, dragPos.x, dragPos.y]);

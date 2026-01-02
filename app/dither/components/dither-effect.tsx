@@ -2,12 +2,16 @@ import { useThree } from "@react-three/fiber";
 import { Effect } from "postprocessing";
 import { forwardRef, useMemo } from "react";
 import {
+  type Camera,
+  type Matrix4,
   RepeatWrapping,
   type Texture,
   TextureLoader,
   Uniform,
   Vector2,
   Vector3,
+  type WebGLRenderer,
+  type WebGLRenderTarget,
 } from "three";
 import { fragmentShader } from "../shaders/dither.frag";
 
@@ -15,7 +19,7 @@ import { fragmentShader } from "../shaders/dither.frag";
 class DitherEffectImpl extends Effect {
   constructor(
     blueNoiseTexture: Texture,
-    camera: any,
+    camera: Camera,
     patternScale: number,
     threshold: number,
     pixelSize: number,
@@ -26,7 +30,10 @@ class DitherEffectImpl extends Effect {
     blueNoiseTexture.wrapT = RepeatWrapping;
 
     super("DitherEffect", fragmentShader, {
-      uniforms: new Map<string, Uniform<any>>([
+      uniforms: new Map<
+        string,
+        Uniform<number | Texture | Vector2 | Vector3 | Matrix4>
+      >([
         ["tBlueNoise", new Uniform(blueNoiseTexture)],
         ["patternScale", new Uniform(patternScale)],
         ["threshold", new Uniform(threshold)],
@@ -44,16 +51,26 @@ class DitherEffectImpl extends Effect {
     this.cameraRef = camera;
   }
 
-  private readonly cameraRef: any;
+  private readonly cameraRef: Camera;
 
-  update(_renderer: any, inputBuffer: any, _deltaTime: number) {
+  update(
+    _renderer: WebGLRenderer,
+    inputBuffer: WebGLRenderTarget,
+    _deltaTime: number
+  ) {
     // Update camera uniforms each frame
     if (this.cameraRef) {
       this.uniforms.get("cameraPosition")?.value.copy(this.cameraRef.position);
-      this.uniforms.get("cameraWorldMatrix")!.value =
-        this.cameraRef.matrixWorld;
-      this.uniforms.get("cameraProjectionMatrixInverse")!.value =
-        this.cameraRef.projectionMatrixInverse;
+      const cameraWorldMatrix = this.uniforms.get("cameraWorldMatrix");
+      if (cameraWorldMatrix) {
+        cameraWorldMatrix.value = this.cameraRef.matrixWorld;
+      }
+      const projectionMatrixInverse = this.uniforms.get(
+        "cameraProjectionMatrixInverse"
+      );
+      if (projectionMatrixInverse) {
+        projectionMatrixInverse.value = this.cameraRef.projectionMatrixInverse;
+      }
     }
 
     // Update resolution uniform
@@ -97,9 +114,18 @@ const DitherEffect = forwardRef<typeof DitherEffectImpl, DitherEffectProps>(
     // Update uniform values when props change
     useMemo(() => {
       if (effect) {
-        effect.uniforms.get("patternScale")!.value = patternScale;
-        effect.uniforms.get("threshold")!.value = threshold;
-        effect.uniforms.get("pixelSize")!.value = pixelSize;
+        const patternScaleUniform = effect.uniforms.get("patternScale");
+        if (patternScaleUniform) {
+          patternScaleUniform.value = patternScale;
+        }
+        const thresholdUniform = effect.uniforms.get("threshold");
+        if (thresholdUniform) {
+          thresholdUniform.value = threshold;
+        }
+        const pixelSizeUniform = effect.uniforms.get("pixelSize");
+        if (pixelSizeUniform) {
+          pixelSizeUniform.value = pixelSize;
+        }
       }
     }, [effect, patternScale, threshold, pixelSize]);
 

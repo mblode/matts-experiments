@@ -30,9 +30,11 @@ export const CardStackBlock = () => {
         className="pointer-events-none relative z-[1] h-[400px] w-full"
         ref={containerRef}
       >
-        <div
-          className="pointer-events-auto relative flex h-full w-full cursor-pointer items-center justify-start"
+        <button
+          aria-pressed={isOpen}
+          className="pointer-events-auto relative flex h-full w-full cursor-pointer items-center justify-start border-0 bg-transparent p-0"
           onClick={() => setIsOpen(!isOpen)}
+          type="button"
         >
           <motion.div
             animate={{
@@ -96,7 +98,7 @@ export const CardStackBlock = () => {
               ease: [0.165, 0.84, 0.44, 1],
             }}
           />
-        </div>
+        </button>
       </div>
     </div>
   );

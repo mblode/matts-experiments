@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import * as THREE from "three";
+import { CanvasTexture, RepeatWrapping, type Texture, Vector2 } from "three";
 
 interface AsteroidMaterialProps {
   color: string;
@@ -9,11 +9,10 @@ interface AsteroidMaterialProps {
 
 // Better hash function to avoid stripes
 function hash2D(x: number, y: number, seed: number): number {
-  // Use bitwise operations for better randomization
-  let h = seed + x * 374_761_393 + y * 668_265_263;
-  h = (h ^ (h >>> 13)) * 1_274_126_177;
-  h ^= h >>> 16;
-  return (h >>> 0) / 4_294_967_296; // Normalize to 0-1
+  // Use a sine-based hash to keep values deterministic without bitwise ops
+  const value =
+    Math.sin(x * 127.1 + y * 311.7 + seed * 74.7) * 43_758.545_312_3;
+  return value - Math.floor(value);
 }
 
 // Interpolate function for smooth noise
@@ -48,12 +47,23 @@ function valueNoise(x: number, y: number, seed: number): number {
 }
 
 // Generate procedural asteroid texture
-function generateAsteroidTexture(seed: number): THREE.Texture {
+function createTexture(canvas: HTMLCanvasElement): Texture {
+  const texture = new CanvasTexture(canvas);
+  texture.wrapS = RepeatWrapping;
+  texture.wrapT = RepeatWrapping;
+  texture.needsUpdate = true;
+  return texture;
+}
+
+function generateAsteroidTexture(seed: number): Texture {
   const size = 128; // Reduced from 512 for better performance (16x faster)
   const canvas = document.createElement("canvas");
   canvas.width = size;
   canvas.height = size;
-  const ctx = canvas.getContext("2d")!;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) {
+    return createTexture(canvas);
+  }
 
   // Fill base color (bright gray)
   ctx.fillStyle = "#c0c0c0";
@@ -151,21 +161,19 @@ function generateAsteroidTexture(seed: number): THREE.Texture {
     ctx.fillRect(x, y, 1, 1);
   }
 
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.wrapS = THREE.RepeatWrapping;
-  texture.wrapT = THREE.RepeatWrapping;
-  texture.needsUpdate = true;
-
-  return texture;
+  return createTexture(canvas);
 }
 
 // Generate normal map for surface detail
-function generateNormalMap(seed: number): THREE.Texture {
+function generateNormalMap(seed: number): Texture {
   const size = 128; // Reduced from 512 for better performance
   const canvas = document.createElement("canvas");
   canvas.width = size;
   canvas.height = size;
-  const ctx = canvas.getContext("2d")!;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) {
+    return createTexture(canvas);
+  }
 
   const imageData = ctx.getImageData(0, 0, size, size);
   const data = imageData.data;
@@ -226,12 +234,7 @@ function generateNormalMap(seed: number): THREE.Texture {
 
   ctx.putImageData(imageData, 0, 0);
 
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.wrapS = THREE.RepeatWrapping;
-  texture.wrapT = THREE.RepeatWrapping;
-  texture.needsUpdate = true;
-
-  return texture;
+  return createTexture(canvas);
 }
 
 export const AsteroidMaterial = ({
@@ -251,7 +254,7 @@ export const AsteroidMaterial = ({
       map={texture}
       metalness={0.1}
       normalMap={normalMap}
-      normalScale={new THREE.Vector2(1.5, 1.5)}
+      normalScale={new Vector2(1.5, 1.5)}
       roughness={roughness}
     />
   );

@@ -1,16 +1,32 @@
 "use client";
-import * as TabsPrimitive from "@radix-ui/react-tabs";
+import {
+  Content as TabsContentPrimitive,
+  List as TabsListPrimitive,
+  Root as TabsRoot,
+  Trigger as TabsTriggerPrimitive,
+} from "@radix-ui/react-tabs";
 import mergeRefs from "merge-refs";
-import * as React from "react";
+import {
+  Children,
+  type ComponentPropsWithoutRef,
+  cloneElement,
+  type ElementRef,
+  forwardRef,
+  isValidElement,
+  type ReactElement,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { useTabObserver } from "@/hooks/use-tab-observer";
 import { cn } from "@/lib/utils";
 
-const Tabs = TabsPrimitive.Root;
+const Tabs = TabsRoot;
 
-const TabsList = React.forwardRef<
-  React.ElementRef<typeof TabsPrimitive.List>,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.List> & {
+const TabsList = forwardRef<
+  ElementRef<typeof TabsListPrimitive>,
+  ComponentPropsWithoutRef<typeof TabsListPrimitive> & {
     floatingBgClassName?: string;
     variant?: "default" | "clip-path";
   }
@@ -19,8 +35,8 @@ const TabsList = React.forwardRef<
     { className, floatingBgClassName, variant = "default", children, ...props },
     ref
   ) => {
-    const [lineStyle, setLineStyle] = React.useState({ width: 0, left: 0 });
-    const [hasInitialized, setHasInitialized] = React.useState(false);
+    const [lineStyle, setLineStyle] = useState({ width: 0, left: 0 });
+    const [hasInitialized, setHasInitialized] = useState(false);
     const { mounted, listRef } = useTabObserver({
       onActiveTabChange: (_, activeTab) => {
         const { offsetWidth: width, offsetLeft: left } = activeTab;
@@ -31,9 +47,9 @@ const TabsList = React.forwardRef<
       },
     });
 
-    const containerRef = React.useRef<HTMLDivElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
 
-    React.useEffect(() => {
+    useEffect(() => {
       if (variant === "clip-path" && mounted && containerRef.current) {
         const { width, left } = lineStyle;
         const container = containerRef.current;
@@ -49,7 +65,7 @@ const TabsList = React.forwardRef<
       return (
         <div className="overflow-x-auto">
           <div className="relative inline-block min-w-max">
-            <TabsPrimitive.List
+            <TabsListPrimitive
               className={cn(
                 "relative inline-flex items-center justify-start gap-2",
                 className
@@ -58,7 +74,7 @@ const TabsList = React.forwardRef<
               {...props}
             >
               {children}
-            </TabsPrimitive.List>
+            </TabsListPrimitive>
 
             <div
               aria-hidden
@@ -73,30 +89,28 @@ const TabsList = React.forwardRef<
                   : "inset(0px 100% 0px 0% round 17px)",
               }}
             >
-              <TabsPrimitive.List
+              <TabsListPrimitive
                 className={cn(
                   "inline-flex items-center justify-start gap-2",
                   floatingBgClassName || "bg-blue-500",
                   className
                 )}
               >
-                {React.Children.map(children, (child) => {
-                  if (React.isValidElement(child)) {
-                    return React.cloneElement(
-                      child as React.ReactElement<any>,
-                      {
-                        className: cn(
-                          (child.props as any).className,
-                          "text-primary-foreground data-[state=active]:text-primary-foreground"
-                        ),
-                        tabIndex: -1,
-                        "aria-hidden": true,
-                      }
-                    );
+                {Children.map(children, (child) => {
+                  if (!isValidElement(child)) {
+                    return child;
                   }
-                  return child;
+                  const element = child as ReactElement;
+                  return cloneElement(element, {
+                    className: cn(
+                      (element.props as { className?: string }).className,
+                      "text-primary-foreground data-[state=active]:text-primary-foreground"
+                    ),
+                    tabIndex: -1,
+                    "aria-hidden": true,
+                  } as Partial<typeof element.props>);
                 })}
-              </TabsPrimitive.List>
+              </TabsListPrimitive>
             </div>
           </div>
         </div>
@@ -105,7 +119,7 @@ const TabsList = React.forwardRef<
 
     return (
       <div className="overflow-x-auto">
-        <TabsPrimitive.List
+        <TabsListPrimitive
           className={cn(
             "relative isolate inline-flex h-10 min-w-max items-center justify-start rounded-xl bg-card p-1 text-muted-foreground",
             className
@@ -130,18 +144,18 @@ const TabsList = React.forwardRef<
               transitionTimingFunction: "cubic-bezier(0.65, 0, 0.35, 1)",
             }}
           />
-        </TabsPrimitive.List>
+        </TabsListPrimitive>
       </div>
     );
   }
 );
-TabsList.displayName = TabsPrimitive.List.displayName;
+TabsList.displayName = TabsListPrimitive.displayName;
 
-const TabsTrigger = React.forwardRef<
-  React.ElementRef<typeof TabsPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
+const TabsTrigger = forwardRef<
+  ElementRef<typeof TabsTriggerPrimitive>,
+  ComponentPropsWithoutRef<typeof TabsTriggerPrimitive>
 >(({ className, ...props }, ref) => (
-  <TabsPrimitive.Trigger
+  <TabsTriggerPrimitive
     className={cn(
       "inline-flex flex-shrink-0 cursor-pointer items-center justify-center whitespace-nowrap rounded-lg px-3 py-1.5 font-medium text-sm ring-offset-background transition-all focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:text-foreground",
       className
@@ -150,13 +164,13 @@ const TabsTrigger = React.forwardRef<
     {...props}
   />
 ));
-TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;
+TabsTrigger.displayName = TabsTriggerPrimitive.displayName;
 
-const TabsContent = React.forwardRef<
-  React.ElementRef<typeof TabsPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
+const TabsContent = forwardRef<
+  ElementRef<typeof TabsContentPrimitive>,
+  ComponentPropsWithoutRef<typeof TabsContentPrimitive>
 >(({ className, ...props }, ref) => (
-  <TabsPrimitive.Content
+  <TabsContentPrimitive
     className={cn(
       "mt-2 ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
       className
@@ -165,6 +179,6 @@ const TabsContent = React.forwardRef<
     {...props}
   />
 ));
-TabsContent.displayName = TabsPrimitive.Content.displayName;
+TabsContent.displayName = TabsContentPrimitive.displayName;
 
 export { Tabs, TabsList, TabsTrigger, TabsContent };

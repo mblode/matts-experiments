@@ -158,7 +158,7 @@ export const MarkersBlock = () => {
       const markers: ChapterMarker[] = [];
       const docHeight = document.documentElement.scrollHeight;
 
-      sections.forEach((section) => {
+      for (const section of sections) {
         const element = document.getElementById(section.id);
         if (element) {
           const rect = element.getBoundingClientRect();
@@ -170,7 +170,7 @@ export const MarkersBlock = () => {
             position,
           });
         }
-      });
+      }
 
       setChapterMarkers(markers);
     };
@@ -209,15 +209,15 @@ export const MarkersBlock = () => {
             key={section.id}
           >
             <h2>{section.title}</h2>
-            {section.content.split("\n\n").map((paragraph, i) => {
+            {section.content.split("\n\n").map((paragraph) => {
               if (paragraph.startsWith("> ")) {
                 return (
-                  <blockquote key={i}>
+                  <blockquote key={paragraph.slice(0, 50)}>
                     <p>{paragraph.slice(2)}</p>
                   </blockquote>
                 );
               }
-              return <p key={i}>{paragraph}</p>;
+              return <p key={paragraph.slice(0, 50)}>{paragraph}</p>;
             })}
           </section>
         ))}

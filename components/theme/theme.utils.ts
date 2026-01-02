@@ -1,13 +1,39 @@
 import type { Media, VenueThemeSchema } from "@/lib/types";
 
+const RGBA_REGEX = /rgba\((\d+), (\d+), (\d+), ([01]?.?\d*)\)/;
+
+const FALLBACK_MEDIA: Media = {
+  type: "COLOR",
+  altText: "",
+  width: 0,
+  height: 0,
+  color: "#fff",
+  focalPointX: 0,
+  focalPointY: 0,
+  gaussianBlur: 0,
+  assetBucket: "",
+  assetSrc: "",
+  assetId: "",
+  assetFileName: "",
+  unsplashId: "",
+  unsplashUrl: "",
+  unsplashSearchTerm: "",
+  customUrl: "",
+  blurDataUrl: "",
+  unsplashAttribution: "",
+  backgroundColor2: "",
+  cropX: 0,
+  cropY: 0,
+  cropW: 0,
+  cropH: 0,
+  overlayBackground: "",
+  size: 0,
+};
+
 const FALLBACK_PAGE_THEME: Partial<VenueThemeSchema> = {
   css: "",
   html: "",
-  media: {
-    type: "COLOR",
-    color: "#fff",
-    backgroundColor2: "",
-  } as any as Media,
+  media: FALLBACK_MEDIA,
   cardSlug: "geex-one",
   iconSlug: "geex-one",
   iconColor: "#4973d4",
@@ -93,7 +119,7 @@ export const convertToOverlayNumber = (
     return 0;
   }
 
-  const match = rgbaString.match(/rgba\((\d+), (\d+), (\d+), ([01]?.?\d*)\)/);
+  const match = rgbaString.match(RGBA_REGEX);
   if (!match) {
     return 0; // Default to 0 if the string does not match the expected format
   }
