@@ -11,7 +11,8 @@
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
     "format:check": "biome format .",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "codepen": "node scripts/codepen-server.mjs"
   },
   "dependencies": {
     "@beautiful-qr-code/react": "^1.0.7",

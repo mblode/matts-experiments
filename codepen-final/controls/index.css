@@ -1,0 +1,59 @@
+* { box-sizing: border-box; }
+
+body { margin: 0; }
+
+:root {
+  --demo-gap-tight: calc(6px * var(--control-scale));
+  --demo-gap-cozy: calc(32px * var(--control-scale));
+  --demo-gap-roomy: calc(64px * var(--control-scale));
+  --border-radius-fluid-0: 0px;
+  --border-radius-fluid-16: calc(16px * var(--control-scale));
+  --border-radius-fluid-32: calc(
+    32px *
+    var(--control-scale)
+  );
+  --border-radius-fluid-48: calc(
+    48px *
+    var(--control-scale)
+  );
+  --border-radius-fluid-64: calc(
+    64px *
+    var(--control-scale)
+  );
+  --control-bottom-spacing: var(--spacing-fluid-8);
+  --control-container-max-width: calc(
+    676px *
+    var(--control-scale)
+  );
+  --border-radius-fluid-50: calc(
+    50px *
+    var(--control-scale)
+  );
+  --border-radius-fluid-34: calc(
+    34px *
+    var(--control-scale)
+  );
+  --color-row-height-expanded: var(--spacing-fluid-18);
+  --color-row-height: var(--spacing-fluid-9);
+  --color-cell-radius: var(--spacing-fluid-4_5);
+  --icon-size-fluid-8: calc(32px * var(--control-scale));
+  --saturation-width: var(--spacing-fluid-18);
+  --saturation-radius: var(--spacing-fluid-2_5);
+  --saturation-level-height: var(
+    --spacing-fluid-7
+  );
+  --control-outer-size: calc(
+    204px *
+    var(--control-scale)
+  );
+  --control-padding: var(--spacing-fluid-4);
+  --control-marker-size: var(--spacing-fluid-6);
+  --control-marker-border-width: calc(
+    2.5px *
+    var(--control-scale)
+  );
+  --control-marker-dot-size: calc(
+    14px *
+    var(--control-scale)
+  );
+}
