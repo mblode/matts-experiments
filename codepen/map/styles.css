@@ -1,0 +1,19 @@
+* { box-sizing: border-box; }
+
+body { margin: 0; }
+
+@keyframes pulse-map {
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+    35% {
+      transform: translate(-50%, -50%) scale(8);
+      opacity: 0;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(8);
+      opacity: 0;
+    }
+  }
+
