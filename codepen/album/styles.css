@@ -1,0 +1,15 @@
+* { box-sizing: border-box; }
+
+body { margin: 0; }
+
+@keyframes album-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animation-album-spin { animation: album-spin 3s linear infinite; }
+
