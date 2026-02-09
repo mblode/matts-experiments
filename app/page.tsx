@@ -32,7 +32,7 @@ export default function Page() {
 
         <footer className="mt-8 border-border border-t px-4 py-8 text-center">
           <div className="text-sm">
-            © 2025{" "}
+            © {new Date().getFullYear()}{" "}
             <a
               className="text-foreground underline-offset-2 hover:underline"
               href="https://matthewblode.com"
